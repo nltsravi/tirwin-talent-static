@@ -37,13 +37,20 @@
             "styles": [
               "src/styles.css",
               "src/assets/css/fonts.css",
+              "src/assets/css/style.css",
               "src/assets/css/plugins.css",
-              "src/assets/css/theme.css"
+              "src/assets/css/theme.css",
+              "node_modules/flickity/css/flickity.css"
+
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.slim.min.js",
+              "src/assets/js/jquery.js",
+              "src/assets/js/plugins.js",
+              "src/assets/js/functions.js",
               "node_modules/popper.js/dist/umd/popper.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/flickity/dist/flickity.pkgd.min.js"
+
             ]
           },
           "configurations": {
