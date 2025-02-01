@@ -50,3 +50,23 @@
   h3 {
     font-weight: bold;
   }
+
+  /* Register as Trainer Button */
+.btn-outline-primary {
+  border: 2px solid #007bff;
+  color: #007bff;
+}
+
+.btn-outline-primary:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+
+
+/* No Background Button */
+.no-bg {
+  background-color: unset !important;
+  color: #555 !important;
+  border: 1px solid #ccc;
+}

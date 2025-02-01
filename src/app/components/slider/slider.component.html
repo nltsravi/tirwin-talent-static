@@ -1,11 +1,18 @@
-<div class="banner d-flex align-items-center">
-  <div class="banner-content">
+<div class="banner d-flex flex-column flex-md-row align-items-center">
+  
+  <!-- Left: Banner Content -->
+  <div class="banner-content text-md-left">
     <h1 class="animate-title">{{ slide.title }}</h1>
     <p class="animate-description" [innerHTML]="slide.description"></p>
-    <a href="/auth/login" class="btn btn-primary scroll-to float-left">Login</a>
-    <a href="/auth/register" class="btn no-bg scroll-to float-left">Register</a>
+    <div class="button-group">
+      <a href="/auth/login" class="btn btn-primary">Login</a>
+      <a href="/auth/register" class="btn no-bg">Register</a>
+    </div>
   </div>
+
+  <!-- Right: Banner Image -->
   <div class="banner-image">
     <img [src]="slide.image" alt="Banner Image" class="img-fluid">
   </div>
+  
 </div>
