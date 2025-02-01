@@ -11,11 +11,11 @@ import { HeaderModule } from './components/header/header.module';
 import { DefaultLayoutComponent } from './layout/default-layout/default-layout.component';
 import { SliderComponent } from './components/slider/slider.component';
 import { HomeModule } from './pages/home/home.module';
+import { AuthModule } from './pages/auth/auth.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AuthComponent,
     DefaultLayoutComponent,
     SliderComponent,
   ],
@@ -25,7 +25,8 @@ import { HomeModule } from './pages/home/home.module';
     FormsModule,
     HttpClientModule,
     HeaderModule,
-    HomeModule
+    HomeModule,
+    AuthModule
   ],
   providers: [],
   bootstrap: [AppComponent],

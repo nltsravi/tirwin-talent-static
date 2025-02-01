@@ -1,1 +1,55 @@
-<p>auth works!</p>
+<div class="body-inner">
+    <div class="login-section">
+      <div class="container-fluid">
+        <div class="row align-items-center min-vh-100">
+          
+          <!-- Left: Custom Full-Screen Carousel -->
+          <div class="col-md-8 d-none d-md-block p-0">
+            <div class="custom-carousel">
+              <img [src]="currentImage" class="custom-banner fade-in" alt="Carousel Image">
+            </div>
+          </div>
+  
+          <!-- Right: Login Form -->
+          <div class="col-md-4 d-flex align-items-center justify-content-center">
+            <div class="card login-card">
+              <div class="card-body">
+                <div class="mb-3 text-center">
+                  <h3>Login with OTP</h3>
+                  <p class="text-muted">Enter your email to receive an OTP.</p>
+                </div>
+                <form (ngSubmit)="sendOtp()">
+                  <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      [(ngModel)]="email"
+                      name="email"
+                      placeholder="Enter your email"
+                      required
+                    />
+                  </div>
+                  <div class="mt-3">
+                    <button type="submit" class="btn btn-primary btn-block w-100">Send OTP</button>
+                  </div>
+                </form>
+  
+                <div class="mt-3 text-center">
+                  <button (click)="linkedInLogin()" class="btn btn-secondary btn-block w-100">
+                    <i class="fab fa-linkedin"></i> Sign in with LinkedIn
+                  </button>
+                </div>
+  
+                <div class="mt-4 text-center">
+                  <small>Not registered?</small>
+                  <a routerLink="/register" class="small fw-bold">Create account</a>
+                </div>
+              </div>
+            </div>
+          </div> <!-- End of Right Form -->
+        </div>
+      </div>
+    </div>
+  </div>

@@ -3,7 +3,7 @@
     <!-- Body Inner -->
     <div class="body-inner">
         <app-header></app-header>
-        <app-slider></app-slider><!-- Content Wrapper. Contains page content -->
+        <app-slider *ngIf="showSlider"></app-slider><!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <router-outlet></router-outlet>
         </div>
