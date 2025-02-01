@@ -31,7 +31,6 @@
 
 .banner-content .btn {
   padding: 10px 20px;
-  background-color: #ff6600;
   color: #fff;
   text-decoration: none;
   font-size: 1rem;
@@ -72,4 +71,9 @@
   100% {
     opacity: 1;
   }
+}
+
+.no-bg  {
+  background-color: unset !important;
+  color: #555 !important;
 }
