@@ -1,0 +1,52 @@
+/* Custom Carousel */
+.register-section {
+    position: relative;
+    top: -26px;
+}
+
+.custom-carousel {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 95vh; /* Full screen height */
+  }
+  
+  .custom-banner {
+    width: 100%;
+    height: 95vh; /* Full height */
+    object-fit: cover;
+    position: absolute;
+    transition: opacity 1.5s ease-in-out;
+  }
+  
+  /* Smooth fade effect */
+  .fade-in {
+    animation: fadeEffect 1.5s;
+  }
+  
+  @keyframes fadeEffect {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
+  }
+  
+  /* Registration Card */
+  .register-card {
+    width: 100%;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Form Elements */
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+  }
+  
+  h3 {
+    font-weight: bold;
+  }
