@@ -1,0 +1,25 @@
+<div class="home-course-content">
+    <h2 class="section-title">Specializations and Professional Certificates</h2>
+    <p class="section-subtitle">Explore our most popular programs, get job-ready for an in-demand career.</p>
+
+    <!-- Card Grid -->
+    <div class="card-grid">
+        <div class="card" *ngFor="let course of courses">
+            <div class="card-banner">
+                <span class="badge">{{ course.badge }}</span>
+                <img [src]="course.image" [alt]="course.title" class="course-image" />
+            </div>
+            <div class="card-content">
+                <h3 class="course-title">{{ course.title }}</h3>
+                <a href="#" class="course-link">Build toward a degree</a>
+                <p class="course-type">{{ course.type }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="button-container">
+        <button class="btn">Show 8 more</button>
+        <button class="btn btn-primary">View all</button>
+    </div>
+</div>

@@ -6,14 +6,15 @@ const routes: Routes = [
   {
     path: '',
     component: DefaultLayoutComponent,
-    // canActivate: [authGuard],
     data: {
       title: 'Home'
     },
     children: [
-      
+      { path: '', redirectTo: 'home', pathMatch: 'full' },  // ✅ Redirect to /home
+      { path: 'home', loadChildren: () => import('../app/pages/home/home.module').then(m => m.HomeModule) } // ✅ Ensure correct module path
     ]
-  }
+  },
+  { path: '**', redirectTo: 'home' }  // ✅ Catch-all redirect
 ];
 
 @NgModule({

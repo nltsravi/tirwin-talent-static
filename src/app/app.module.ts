@@ -10,12 +10,12 @@ import { HomeComponent } from './pages/home/home.component';
 import { HeaderModule } from './components/header/header.module';
 import { DefaultLayoutComponent } from './layout/default-layout/default-layout.component';
 import { SliderComponent } from './components/slider/slider.component';
+import { HomeModule } from './pages/home/home.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthComponent,
-    HomeComponent,
     DefaultLayoutComponent,
     SliderComponent,
   ],
@@ -24,7 +24,8 @@ import { SliderComponent } from './components/slider/slider.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    HeaderModule
+    HeaderModule,
+    HomeModule
   ],
   providers: [],
   bootstrap: [AppComponent],
