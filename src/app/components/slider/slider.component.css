@@ -1,0 +1,75 @@
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center content horizontally */
+  height: 400px;
+  padding: 40px; /* Add padding to prevent edges from looking empty */
+  background-color: #fff;
+  position: relative;
+}
+
+.banner-content {
+  max-width: 45%; /* Slightly reduce width for better centering */
+  text-align: left;
+  margin-right: 5%; /* Add space between content and image */
+}
+
+.banner-content h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #000;
+  animation: fadeInUp 1s ease-in-out forwards;
+}
+
+.banner-content p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: #555;
+  animation: fadeInUp 1.2s ease-in-out forwards;
+}
+
+.banner-content .btn {
+  padding: 10px 20px;
+  background-color: #ff6600;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  animation: fadeInUp 1.4s ease-in-out forwards;
+}
+
+.banner-content .btn:hover {
+  background-color: #e05500;
+}
+
+.banner-image {
+  max-width: 45%; /* Slightly reduce width for better centering */
+}
+
+.banner-image img {
+  width: 100%;
+  height: auto;
+  animation: fadeIn 1.5s ease-in-out forwards;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
