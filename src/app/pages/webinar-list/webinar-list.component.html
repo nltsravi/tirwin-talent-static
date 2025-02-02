@@ -1,0 +1,44 @@
+<div class="container-fluid mt-4">
+    <!-- Filter Section -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search Webinars..."
+          [(ngModel)]="searchQuery"
+          (input)="filterWebinars()"
+        />
+      </div>
+      <div class="col-md-4">
+        <select class="form-select" [(ngModel)]="selectedCategory" (change)="filterWebinars()">
+          <option value="">All Categories</option>
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </select>
+      </div>
+    </div>
+  
+    <!-- Webinar Cards -->
+    <div class="row">
+        <div *ngFor="let webinar of filteredWebinars" class="col-lg-4 col-md-6 mb-4">
+          <div class="card webinar-card">
+            
+            <!-- Banner Section -->
+            <div class="card-banner">
+              <img [src]="webinar.image" class="card-img-top" alt="{{ webinar.title }}">
+              <span *ngIf="webinar.isNew" class="badge bg-danger webinar-badge">New</span>
+            </div>
+      
+            <!-- Card Body -->
+            <div class="card-body">
+              <h5 class="card-title">{{ webinar.title }}</h5>
+              <p class="card-text">{{ webinar.description }}</p>
+              <p class="text-muted"><i class="fas fa-user"></i> {{ webinar.author }}</p>
+              <p class="text-muted"><i class="fas fa-calendar"></i> {{ webinar.date }} | {{ webinar.time }}</p>
+              <button class="btn btn-primary w-100">View Details</button>
+            </div>
+      
+          </div>
+        </div>
+      </div>
+  </div>

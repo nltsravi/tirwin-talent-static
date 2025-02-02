@@ -15,6 +15,8 @@ import { AuthModule } from './pages/auth/auth.module';
 import { FooterModule } from './components/footer/footer.module';
 import { TrainerProfileComponent } from './pages/profile/trainer/trainer-profile.component';
 import { ProfileModule } from './pages/profile/profile.module';
+import { WebinarListComponent } from './pages/webinar-list/webinar-list.component';
+import { WebinarListModule } from './pages/webinar-list/webinar-list.module';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { ProfileModule } from './pages/profile/profile.module';
     FooterModule,
     HomeModule,
     AuthModule,
-    ProfileModule
+    ProfileModule,
+    WebinarListModule
   ],
   providers: [],
   bootstrap: [AppComponent],

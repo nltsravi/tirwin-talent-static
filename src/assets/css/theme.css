@@ -104,7 +104,7 @@ select:focus {
 	Icon Box
 -------------------------------------------------------------------------*/
 .icon-box.effect.dark .icon i:after {
-  box-shado: 0 0 0 3px #7341B4; }
+  box-shadow: 0 0 0 3px #7341B4; }
 .icon-box.effect.dark .icon i:hover, .icon-box.effect.dark:hover .icon i {
   background-color: #7341B4; }
 
