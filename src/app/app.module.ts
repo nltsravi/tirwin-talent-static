@@ -12,6 +12,7 @@ import { DefaultLayoutComponent } from './layout/default-layout/default-layout.c
 import { SliderComponent } from './components/slider/slider.component';
 import { HomeModule } from './pages/home/home.module';
 import { AuthModule } from './pages/auth/auth.module';
+import { FooterModule } from './components/footer/footer.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { AuthModule } from './pages/auth/auth.module';
     FormsModule,
     HttpClientModule,
     HeaderModule,
+    FooterModule,
     HomeModule,
     AuthModule
   ],
