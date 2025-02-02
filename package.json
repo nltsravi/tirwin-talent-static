@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "generate-components": "ng generate c components/home-card-view"
+    "generate-components": "ng generate c pages/profile/trainer"
   },
   "private": true,
   "dependencies": {

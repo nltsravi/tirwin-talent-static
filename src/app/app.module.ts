@@ -13,12 +13,14 @@ import { SliderComponent } from './components/slider/slider.component';
 import { HomeModule } from './pages/home/home.module';
 import { AuthModule } from './pages/auth/auth.module';
 import { FooterModule } from './components/footer/footer.module';
+import { TrainerProfileComponent } from './pages/profile/trainer/trainer-profile.component';
+import { ProfileModule } from './pages/profile/profile.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     DefaultLayoutComponent,
-    SliderComponent,
+    SliderComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +30,8 @@ import { FooterModule } from './components/footer/footer.module';
     HeaderModule,
     FooterModule,
     HomeModule,
-    AuthModule
+    AuthModule,
+    ProfileModule
   ],
   providers: [],
   bootstrap: [AppComponent],

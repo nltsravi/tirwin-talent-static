@@ -1,0 +1,187 @@
+/* Profile Container */
+.profile-container {
+  display: flex;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+/* Sidebar */
+.profile-sidebar {
+  width: 280px;
+  padding: 0; /* Remove padding to let the image touch edges */
+  background: #f9f9f9;
+  border-radius: 10px;
+  text-align: center;
+  overflow: hidden; /* Ensures the image doesn’t overflow */
+}
+
+/* Profile Picture - Full Width, No Rounded Corners */
+.profile-picture img {
+  width: 100%; /* Full width inside sidebar */
+  height: 200px; /* Fixed height for consistency */
+  object-fit: cover; /* Ensures image scales properly */
+  border-radius: 0; /* Remove rounded corners */
+}
+
+/* Followers & Webinars */
+.followers, .total-webinars {
+  font-size: 14px;
+  margin: 10px 0;
+  padding: 10px;
+  background: #fff;
+}
+
+/* Rating Stars */
+.rating i {
+  color: #ffcc00;
+  font-size: 18px;
+  margin: 5px;
+}
+
+/* Profile Main Content */
+.profile-main {
+  flex-grow: 1;
+}
+
+/* Profile Header */
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #eee;
+}
+
+.trainer-info h2 {
+  font-size: 24px;
+}
+
+.contact-info h4 {
+  margin-bottom: 5px;
+}
+
+/* Social Links */
+.social-links a {
+  font-size: 20px;
+  margin-right: 10px;
+  color: #0077b5;
+}
+
+/* Webinars */
+.webinar-list {
+  display: flex;
+  gap: 15px;
+}
+
+.webinar-card {
+  width: 250px;
+  padding: 15px;
+  background: #f1f1f1;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.webinar-card img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+/* Testimonials */
+.testimonial-list {
+  margin-top: 20px;
+}
+
+.testimonial-card {
+  padding: 10px;
+  border-left: 4px solid #007bff;
+  margin-bottom: 10px;
+}
+
+.testimonial-card p {
+  font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-container {
+    flex-direction: column;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .webinar-list {
+    flex-direction: column;
+  }
+}
+
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-banner {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #ff5a5f;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.course-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 15px;
+  text-align: center;
+}
+
+.provider-logo {
+  width: 50px;
+  margin-bottom: 10px;
+}
+
+.course-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.course-link {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.course-type {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+}

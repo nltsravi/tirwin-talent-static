@@ -1,0 +1,92 @@
+<div class="profile-container">
+  <!-- Left Sidebar -->
+  <aside class="profile-sidebar">
+    <div class="profile-picture">
+      <img [src]="trainer.image" alt="Trainer Image">
+    </div>
+    <h3>{{ trainer.name }}</h3>
+    <p class="followers"><i class="fas fa-users"></i> {{ trainer.followers }} Followers</p>
+    <p class="total-webinars"><i class="fas fa-video"></i> {{ trainer.totalWebinars }} Webinars</p>
+
+    <!-- Rating Stars -->
+    <div class="rating">
+      <i *ngFor="let star of starsArray" class="fas fa-star" [class.filled]="star <= trainer.rating"></i>
+    </div>
+  </aside>
+
+  <!-- Right Side Content -->
+  <div class="profile-main">
+
+    <!-- Top Section: Trainer Info -->
+    <div class="profile-header">
+      <div class="trainer-info">
+        <h2>{{ trainer.name }}</h2>
+        <p class="text-muted">{{ trainer.jobTitle }} at {{ trainer.company }}</p>
+        <p class="bio">{{ trainer.bio }}</p>
+      </div>
+
+      <div class="contact-info">
+        <h4>Contact</h4>
+        <p>Email: <a [href]="'mailto:' + trainer.email">{{ trainer.email }}</a></p>
+        <p>Phone: {{ trainer.phone }}</p>
+        <div class="social-links">
+          <a *ngIf="trainer.linkedin" [href]="trainer.linkedin" target="_blank">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a *ngIf="trainer.website" [href]="trainer.website" target="_blank">
+            <i class="fas fa-globe"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Section: Webinars & Testimonials -->
+    <div class="profile-content">
+
+      <!-- Webinars -->
+      <h3>Upcoming Webinars</h3>
+      <!-- Card Grid -->
+      <div class="card-grid">
+        <div class="card" *ngFor="let course of courses">
+          <div class="card-banner">
+            <span class="badge">{{ course.badge }}</span>
+            <img [src]="course.image" [alt]="course.title" class="course-image" />
+          </div>
+          <div class="card-content">
+            <h3 class="course-title">{{ course.title }}</h3>
+            <a href="#" class="course-link">Build toward a degree</a>
+            <p class="course-type">{{ course.type }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Webinars -->
+      <h3>Past Webinars</h3>
+      <!-- Card Grid -->
+      <div class="card-grid">
+        <div class="card" *ngFor="let course of courses">
+          <div class="card-banner">
+            <span class="badge">{{ course.badge }}</span>
+            <img [src]="course.image" [alt]="course.title" class="course-image" />
+          </div>
+          <div class="card-content">
+            <h3 class="course-title">{{ course.title }}</h3>
+            <a href="#" class="course-link">Build toward a degree</a>
+            <p class="course-type">{{ course.type }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonials -->
+      <h3>Testimonials</h3>
+      <div class="testimonial-list">
+        <div *ngFor="let review of trainer.testimonials" class="testimonial-card">
+          <p>"{{ review.text }}"</p>
+          <span>- {{ review.author }}</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
