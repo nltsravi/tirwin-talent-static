@@ -8,11 +8,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class DefaultLayoutComponent {
   showSlider = true;
+  showAccount = false
 
   constructor(private router: Router, private route: ActivatedRoute) {
     this.router.events.subscribe(() => {
       const currentRoute = this.route.snapshot.firstChild;
       this.showSlider = currentRoute?.data['showSlider'] !== false;
+      this.showAccount = currentRoute?.data['account'] !== false;
     });
   }
 }

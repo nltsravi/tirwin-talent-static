@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-otp-validation',
@@ -6,6 +7,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
   styleUrls: ['./otp-validation.component.css']
 })
 export class OTPComponent implements OnInit, OnDestroy {
+  constructor(private router: Router) {}
     number: string = '';
 
   // Custom Carousel Images
@@ -43,6 +45,7 @@ export class OTPComponent implements OnInit, OnDestroy {
     }
     console.log('OTP sent to', this.number);
     // Call API to send OTP
+    this.router.navigate(['/profile/trainer'])
   }
 
   linkedInLogin() {

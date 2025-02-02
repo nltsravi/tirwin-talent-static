@@ -11,7 +11,7 @@ const routes: Routes = [
       { path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule), data: { showSlider: true }  }, // Lazy-loaded HomeModule
       { path: 'auth', loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule), data: { showSlider: false }  }, // 
       { path: 'profile', loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule), data: { showSlider: false }  }, // 
-      { path: 'webinar', loadChildren: () => import('./pages/webinar-list/webinar-list.module').then(m => m.WebinarListModule), data: { showSlider: true }  }, // 
+      { path: 'webinar', loadChildren: () => import('./pages/webinar-list/webinar-list.module').then(m => m.WebinarListModule), data: { showSlider: false, account: true }  }, // 
     ]
   },
   { path: '**', redirectTo: 'home' } // Catch-all route

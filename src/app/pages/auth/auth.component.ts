@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -6,11 +7,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit, OnDestroy {
+
+  constructor(private router: Router) {}
   email: string = '';
 
   // Custom Carousel Images
   images: string[] = [
-    'https://i.ytimg.com/vi/0kfPCjk4sdg/maxresdefault.jpg',
+    'https://i.fbcd.co/products/original/business-webinar-banner-template-016-89fc8245993d84c4a7a26785e067019fed05eb8887eddb0f7b8ca9603001a01d.jpg',
     'https://i.fbcd.co/products/original/business-webinar-banner-template-021-8265ba94e05234c977a44e21e96c0622d09a2e318183b9f572df8016f51440e7.jpg',
   ];
   currentImage: string = this.images[0];
@@ -41,7 +44,7 @@ export class AuthComponent implements OnInit, OnDestroy {
       alert('Please enter your email');
       return;
     }
-    console.log('OTP sent to', this.email);
+    this.router.navigate(['/auth/validate'])
     // Call API to send OTP
   }
 
