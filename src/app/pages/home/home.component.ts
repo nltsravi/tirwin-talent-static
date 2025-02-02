@@ -1,11 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit  {
+  currentIndex = 0;
+  testimonials = [
+    { text: 'John is an amazing instructor, his insights into logistics are truly valuable!', author: 'Alice Smith' },
+    { text: 'The webinar was well-structured and engaging. Highly recommend!', author: 'Mark Johnson' }
+  ]
+  ngOnInit(): void {
+    
+    // Auto-slide every 5 seconds
+    setInterval(() => {
+      this.nextSlide();
+    }, 5000);
+  }
+
+  prevSlide() {
+    this.currentIndex = this.currentIndex === 0 ? this.testimonials.length - 1 : this.currentIndex - 1;
+  }
+
+  nextSlide() {
+    this.currentIndex = (this.currentIndex + 1) % this.testimonials.length;
+  }
   courses = [
     {
       badge: 'Trending in Logistics',
