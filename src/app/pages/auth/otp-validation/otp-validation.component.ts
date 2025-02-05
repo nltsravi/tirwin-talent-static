@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
+import { DataService } from '../../../data.service';
 
 @Component({
   selector: 'app-otp-validation',
@@ -7,9 +9,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./otp-validation.component.css']
 })
 export class OTPComponent implements OnInit, OnDestroy {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService:AuthService, private dataService:DataService) {}
     number: string = '';
-
+    email:string='';
+    message:string='';
   // Custom Carousel Images
   images: string[] = [
     'https://i.ytimg.com/vi/0kfPCjk4sdg/maxresdefault.jpg',
@@ -19,6 +22,10 @@ export class OTPComponent implements OnInit, OnDestroy {
   private intervalId: any;
 
   ngOnInit() {
+   const user = this.dataService.getUserData();
+   if (user) {
+     this.email = user.email;
+   }
     // Start Custom Image Slider with Smooth Fade
     this.intervalId = setInterval(() => {
       this.nextImage();
@@ -38,14 +45,20 @@ export class OTPComponent implements OnInit, OnDestroy {
     }
   }
 
-  sendOtp() {
+  validateOtp() {
     if (!this.number) {
-      alert('Please enter your email');
+      alert('Please enter your otp code');
       return;
     }
-    console.log('OTP sent to', this.number);
-    // Call API to send OTP
-    this.router.navigate(['/profile/trainer'])
+       try {
+         this.authService.validateOtpCode({ email: this.email, otpCode: this.number.toString() }).subscribe({
+           next: (response) => {this.message = response.message,  this.router.navigate(["/profile/trainer"]);},
+           error: (error) => { alert("Invalid OTP");console.error("Error sending otp:", error);},
+         });
+       } catch (e) {
+         console.log(e);
+       }
+    //this.router.navigate(['/profile/trainer'])
   }
 
   linkedInLogin() {

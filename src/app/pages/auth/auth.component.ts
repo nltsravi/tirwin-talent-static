@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from './auth.service';
+import { DataService } from '../../data.service';
 
 @Component({
   selector: 'app-auth',
@@ -8,8 +10,10 @@ import { Router } from '@angular/router';
 })
 export class AuthComponent implements OnInit, OnDestroy {
 
-  constructor(private router: Router) {}
+
+  constructor(private router: Router, private authService:AuthService, private dataService:DataService ) {}
   email: string = '';
+  message: string='';
 
   // Custom Carousel Images
   images: string[] = [
@@ -39,13 +43,28 @@ export class AuthComponent implements OnInit, OnDestroy {
     }
   }
 
+
   sendOtp() {
     if (!this.email) {
-      alert('Please enter your email');
+      alert("Please enter your email");
       return;
     }
-    this.router.navigate(['/auth/validate'])
+    console.log("OTP sent to", this.email);
     // Call API to send OTP
+
+    if (!this.email.trim()) return;
+      try{
+        this.authService.sendOtp({ email: this.email }).subscribe({
+          next: (response) => (this.message = response.message),
+          error: (error) => console.error("Error sending otp:", error),
+        });
+      }
+      catch(e){
+        console.log(e);
+      }
+      let userData = {email : this.email}
+      this.dataService.setUserData(userData);
+      this.router.navigate(["/auth/validate"]);
   }
 
   linkedInLogin() {
