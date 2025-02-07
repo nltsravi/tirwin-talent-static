@@ -17,6 +17,7 @@ import { TrainerProfileComponent } from './pages/profile/trainer/trainer-profile
 import { ProfileModule } from './pages/profile/profile.module';
 import { WebinarListComponent } from './pages/webinar-list/webinar-list.component';
 import { WebinarListModule } from './pages/webinar-list/webinar-list.module';
+import { CourseDetailsModule } from './pages/webinar-details/course-details.module';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { WebinarListModule } from './pages/webinar-list/webinar-list.module';
     HomeModule,
     AuthModule,
     ProfileModule,
-    WebinarListModule
+    WebinarListModule,
+    CourseDetailsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

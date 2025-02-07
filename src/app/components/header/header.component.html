@@ -1,10 +1,10 @@
-  <!-- Header -->
-  <header id="header" data-fullwidth="true">
+<!-- Header -->
+<header id="header" data-fullwidth="true">
     <div class="header-inner">
         <div class="container">
             <!--Logo-->
             <div id="logo">
-                <a href="index.html">
+                <a href="/">
                     <img src="https://tirwin.in/images/pages/tirwin/tirwin-talent.jpg" alt="Tirwin Logo" class="logo-img"/>
                 </a>
             </div>
@@ -19,13 +19,23 @@
                 <div class="container">
                     <nav>
                         <ul>
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="index.html">Master Classes</a></li>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/master-classes">Master Classes</a></li>
                             <li><a href="/webinar">Events</a></li>
-                            <!-- <li><a href="index.html">Training</a></li>
-                            <li><a href="index.html">Blogs</a></li>
-                            <li><a href="index.html">Contact US</a></li> -->
-                            <li><a href="/auth/login">Login</a></li>
+
+                            <!-- Dynamic Authentication -->
+                            <li *ngIf="!isAuthenticated"><a href="/auth/login">Login</a></li>
+                            
+                            <li *ngIf="isAuthenticated" class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+                                    {{ userName }} <i class="fas fa-user"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/profile" class="dropdown-item">Profile</a></li>
+                                    <li><a href="#" (click)="logout()" class="dropdown-item text-danger">Logout</a></li>
+                                </ul>
+                            </li>
+
                          </ul>
                      </nav>
                  </div>

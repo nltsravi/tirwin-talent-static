@@ -4,9 +4,17 @@
   <div class="banner-content text-md-left">
     <h1 class="animate-title">{{ slide.title }}</h1>
     <p class="animate-description" [innerHTML]="slide.description"></p>
+
+    <!-- Show Different Content Based on Login Status -->
     <div class="button-group">
-      <a href="/auth/login" class="btn btn-primary">Login</a>
-      <a href="/auth/register" class="btn no-bg">Start your Journey with us</a>
+      <ng-container *ngIf="!isAuthenticated">
+        <a href="/auth/login" class="btn btn-primary">Login</a>
+        <a href="/auth/register" class="btn no-bg">Start your Journey with us</a>
+      </ng-container>
+
+      <ng-container *ngIf="isAuthenticated">
+        <a href="/webinar" class="btn btn-primary">Discover Webinars</a>
+      </ng-container>
     </div>
   </div>
 
@@ -14,5 +22,5 @@
   <div class="banner-image">
     <img [src]="slide.image" alt="Banner Image" class="img-fluid">
   </div>
-  
+
 </div>

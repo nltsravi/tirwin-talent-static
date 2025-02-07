@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-otp-validation',
@@ -7,10 +8,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./otp-validation.component.css']
 })
 export class OTPComponent implements OnInit, OnDestroy {
-  constructor(private router: Router) {}
-    number: string = '';
+  otpCode: string = '';
+  email: string = '';
+  alertMessage: string | null = null;
+  alertClass: string = '';
 
-  // Custom Carousel Images
   images: string[] = [
     'https://i.ytimg.com/vi/0kfPCjk4sdg/maxresdefault.jpg',
     'https://i.fbcd.co/products/original/business-webinar-banner-template-021-8265ba94e05234c977a44e21e96c0622d09a2e318183b9f572df8016f51440e7.jpg',
@@ -18,11 +20,19 @@ export class OTPComponent implements OnInit, OnDestroy {
   currentImage: string = this.images[0];
   private intervalId: any;
 
+  constructor(private router: Router, private authService: AuthService) {
+    // Retrieve email from router state
+    const navigation = this.router.getCurrentNavigation();
+    this.email = navigation?.extras.state?.['email'] || ''; 
+    if(this.email === '') {
+      this.router.navigate(['auth/login'])
+    }
+  }
+
   ngOnInit() {
-    // Start Custom Image Slider with Smooth Fade
     this.intervalId = setInterval(() => {
       this.nextImage();
-    }, 5000); // Change image every 5 seconds
+    }, 5000);
   }
 
   nextImage() {
@@ -32,24 +42,55 @@ export class OTPComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // Stop interval when component is destroyed
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
   }
 
-  sendOtp() {
-    if (!this.number) {
-      alert('Please enter your email');
+  validateOtp() {
+    if (!this.otpCode) {
+      this.showAlert('Please enter the OTP', 'alert-danger');
       return;
     }
-    console.log('OTP sent to', this.number);
-    // Call API to send OTP
-    this.router.navigate(['/profile/trainer'])
+  
+    this.authService.validateOtp(this.email, this.otpCode.toString()).subscribe({
+      next: (response) => {
+        localStorage.setItem('authToken', response.token);
+  
+        // Fetch profile data
+        this.authService.getProfile().subscribe({
+          next: (userData) => {
+            localStorage.setItem('user', JSON.stringify(userData));
+            this.authService.setAuthState(true); // Update auth state
+            this.showAlert('Login successful', 'alert-success');
+  
+            setTimeout(() => {
+              this.router.navigate(['/webinar']).then(() => {
+                window.location.reload(); // **Force page reload**
+              });
+            }, 2000);
+          },
+          error: (error) => {
+            console.error('Profile fetch error:', error);
+            this.showAlert('Failed to fetch user profile.', 'alert-danger');
+          }
+        });
+      },
+      error: (error) => {
+        console.error('OTP validation failed:', error);
+        this.showAlert('Invalid OTP. Please try again.', 'alert-danger');
+      }
+    });
   }
 
-  linkedInLogin() {
-    console.log('LinkedIn login triggered!');
-    // Implement LinkedIn OAuth API logic
+  showAlert(message: string, type: string) {
+    this.alertMessage = message;
+    this.alertClass = type;
+    setTimeout(() => this.clearAlert(), 5000);
+  }
+
+  clearAlert() {
+    this.alertMessage = null;
+    this.alertClass = '';
   }
 }
