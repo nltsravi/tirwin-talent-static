@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { WebinarService } from './webinar-list.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-webinar-list',
@@ -8,56 +10,47 @@ import { Component, OnInit } from '@angular/core';
 export class WebinarListComponent implements OnInit {
   searchQuery = '';
   selectedCategory = '';
-  categories = ['Logistics', 'Supply Chain', 'Freight Management', 'Warehousing'];
+  categories: string[] = [];
+  webinars: any[] = [];
+  filteredWebinars: any[] = [];
+  isLoading = true;
+  errorMessage = '';
 
-  webinars = [
-    {
-      title: 'Introduction to Supply Chain Management',
-      description: 'Learn the fundamentals of supply chain logistics and its importance.',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyO2XaEMc4sgXZa1fqNe3GrV45TFB_n_dolg&s',
-      author: 'John Doe',
-      date: 'March 10, 2025',
-      time: '3:00 PM EST',
-      category: 'Supply Chain',
-      isNew: true
-    },
-    {
-      title: 'Introduction to Supply Chain Management – Fundamentals of SCM & key principles',
-      description: 'Best practices for warehouse management and efficiency.',
-      image: 'https://cdn.prod.website-files.com/647888ca92d03e3fca3f1ea0/647888ca92d03e3fca3f21e6_shutterstock_1024749010.png',
-      author: 'Jane Smith',
-      date: 'March 15, 2025',
-      time: '2:00 PM EST',
-      category: 'Warehousing',
-      isNew: false
-    },
-    {
-      title: 'Freight Management Strategies',
-      description: 'Understanding the Logistics Lifecycle – From procurement to last-mile delivery',
-      image: 'https://imageio.forbes.com/specials-images/imageserve/61014981d2dd2061a156bba9/0x0.jpg?format=jpg&height=900&width=1600&fit=bounds',
-      author: 'Michael Johnson',
-      date: 'March 20, 2025',
-      time: '4:00 PM EST',
-      category: 'Freight Management',
-      isNew: true
-    },
-    {
-      title: 'Top Logistics Skills',
-      description: 'Warehouse Operations 101 – Best practices for inventory storage & handling',
-      image: 'https://blog.imec.org/hubfs/63bbca2d280184a6813575fa_Inventory-Management.jpg',
-      author: 'Michael Johnson',
-      date: 'March 20, 2025',
-      time: '4:00 PM EST',
-      category: 'Top Logistics Skills',
-      isNew: false
-    }
-  ];
+  constructor(private webinarService: WebinarService, private route: Router) {}
 
-  filteredWebinars = [...this.webinars];
+  ngOnInit(): void {
+    this.fetchWebinars();
+  }
 
-  constructor() {}
+  fetchWebinars() {
+    this.isLoading = true;
+    this.webinarService.getWebinars().subscribe({
+      next: (data) => {
+        this.webinars = data.map(webinar => ({
+          id: webinar.id,
+          title: webinar.title,
+          description: webinar.description,
+          image: webinar.media.find((m:any) => m.media_type === 'banner')?.media_url || 'https://via.placeholder.com/300',
+          author: `${webinar.trainer.organization}`,
+          date: new Date(webinar.start_time).toLocaleDateString(),
+          time: new Date(webinar.start_time).toLocaleTimeString(),
+          category: webinar.category.name,
+          isNew: new Date(webinar.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Mark as new if created within the last 7 days
+        }));
 
-  ngOnInit(): void {}
+        // Extract unique categories
+        this.categories = [...new Set(this.webinars.map(w => w.category))];
+
+        this.filteredWebinars = [...this.webinars];
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error fetching webinars:', error);
+        this.errorMessage = 'Failed to load webinars. Please try again later.';
+        this.isLoading = false;
+      }
+    });
+  }
 
   filterWebinars() {
     this.filteredWebinars = this.webinars.filter(webinar => {
@@ -65,5 +58,10 @@ export class WebinarListComponent implements OnInit {
       const matchesCategory = this.selectedCategory ? webinar.category === this.selectedCategory : true;
       return matchesSearch && matchesCategory;
     });
+  }
+
+  viewDetails(webinar:any) {
+    console.log("webinar",webinar)
+    this.route.navigate([`webinar-details/${webinar?.id}`])
   }
 }

@@ -12,7 +12,7 @@ const routes: Routes = [
       { path: 'auth', loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule), data: { showSlider: false }  }, // 
       { path: 'profile', loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule), data: { showSlider: false }  }, // 
       { path: 'webinar', loadChildren: () => import('./pages/webinar-list/webinar-list.module').then(m => m.WebinarListModule), data: { showSlider: false, account: true }  }, // 
-      { path: 'webinar-details', loadChildren: () => import('./pages/webinar-details/course-details.module').then(m => m.CourseDetailsModule), data: { showSlider: false, account: true }  }, // 
+      { path: 'webinar-details/:id', loadChildren: () => import('./pages/webinar-details/webinar-details.module').then(m => m.CourseDetailsModule), data: { showSlider: false, account: true }  }, // 
     ]
   },
   { path: '**', redirectTo: 'home' } // Catch-all route
