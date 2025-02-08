@@ -14,6 +14,7 @@ export class TrainerRegisterComponent {
   isSubmitting = false;
   successMessage = '';
   errorMessage = '';
+  isFormSubmitted = false; // ✅ Hide form after submission
 
   trainer = {
     first_name: '',
@@ -28,7 +29,8 @@ export class TrainerRegisterComponent {
     bio: '',
     profile_image: 'https://example.com/profile.jpg', // Default image
     subscription_id: '06fff7d5-00b6-4679-afd8-d3dd4ae3beda',
-    public_profile: false  // ✅ Added this
+    public_profile: false,
+    training_modes: { online: false, offline: false, hybrid: false }
   };
 
   experienceOptions = ['0-2 years', '3-5 years', '6-10 years', '10+ years'];
@@ -54,32 +56,24 @@ export class TrainerRegisterComponent {
   validateStep(): boolean {
     this.errorMessage = '';
 
-    if (this.step === 1) {
-      if (!this.trainer.first_name || !this.trainer.last_name || !this.trainer.email || !this.trainer.phone) {
-        this.errorMessage = 'All fields in Personal Info are required!';
-        return false;
-      }
+    if (this.step === 1 && (!this.trainer.first_name || !this.trainer.last_name || !this.trainer.email || !this.trainer.phone)) {
+      this.errorMessage = 'All fields in Personal Info are required!';
+      return false;
     }
 
-    if (this.step === 2) {
-      if (!this.trainer.job_title || !this.trainer.organization || !this.trainer.experience) {
-        this.errorMessage = 'All fields in Professional Details are required!';
-        return false;
-      }
+    if (this.step === 2 && (!this.trainer.job_title || !this.trainer.organization || !this.trainer.experience)) {
+      this.errorMessage = 'All fields in Professional Details are required!';
+      return false;
     }
 
-    if (this.step === 3) {
-      if (this.trainer.specialties.length === 0) {
-        this.errorMessage = 'Please select at least one specialty!';
-        return false;
-      }
+    if (this.step === 3 && this.trainer.specialties.length === 0) {
+      this.errorMessage = 'Please select at least one specialty!';
+      return false;
     }
 
-    if (this.step === 4) {
-      if (!this.trainer.bio || !this.trainer.linkedin_profile) {
-        this.errorMessage = 'Bio and LinkedIn profile are required!';
-        return false;
-      }
+    if (this.step === 4 && (!this.trainer.bio || !this.trainer.linkedin_profile)) {
+      this.errorMessage = 'Bio and LinkedIn profile are required!';
+      return false;
     }
 
     return true;
@@ -94,10 +88,11 @@ export class TrainerRegisterComponent {
 
     this.trainerService.registerTrainer(this.trainer).subscribe({
       next: (response) => {
-        this.successMessage = response.message;
+        this.successMessage = 'Your profile has been submitted for verification!';
+        this.isFormSubmitted = true; // ✅ Hide form
         setTimeout(() => {
           this.router.navigate(['/auth/validate-otp'], { queryParams: { email: this.trainer.email } });
-        }, 1000);
+        }, 2000);
       },
       error: (error) => {
         console.error('Error registering trainer:', error);
