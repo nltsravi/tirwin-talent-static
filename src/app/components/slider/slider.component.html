@@ -8,8 +8,7 @@
     <!-- Show Different Content Based on Login Status -->
     <div class="button-group">
       <ng-container *ngIf="!isAuthenticated">
-        <a href="/auth/login" class="btn btn-primary">Login</a>
-        <a href="/auth/register" class="btn no-bg">Start your Journey with us</a>
+        <a href="/auth/register" class="btn btn-primary">Start your Journey with us</a>
       </ng-container>
 
       <ng-container *ngIf="isAuthenticated">
