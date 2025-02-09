@@ -85,7 +85,7 @@ export class CheckoutComponent implements OnInit {
 
             // Redirect after showing success message
             setTimeout(() => {
-              this.router.navigate(['/webinars']);
+              this.router.navigate(['/webinar']);
             }, 2000);
           }
         },
