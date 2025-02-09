@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 export class WebinarService {
   private apiUrl = 'http://localhost:3000/webinars';
   private subscribeUrl = 'http://localhost:3000/webinar-subscriptions/subscribe';
+  private baseUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
 
@@ -37,5 +38,9 @@ export class WebinarService {
     };
 
     return this.http.post<any>(this.subscribeUrl, payload, { headers });
+  }
+
+  addToCart(data: { webinarId: string, userId: string }) {
+    return this.http.post(`${this.baseUrl}/cart/add`, data);
   }
 }

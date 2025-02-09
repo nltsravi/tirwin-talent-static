@@ -10,14 +10,18 @@ import { WebinarService } from './webinar-details.service';
 export class WebinarDetailsComponent implements OnInit {
   webinar: any = null;
   isLoading = true;
-  isRegistering = false;
-  successMessage = '';
   errorMessage = '';
-  showModal = false; // State to show/hide modal
+  showModal = false;
+  userId: any = ''; // Assume this comes from localStorage/session
 
-  constructor(private route: ActivatedRoute, private router: Router, private webinarService: WebinarService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private webinarService: WebinarService
+  ) {}
 
   ngOnInit(): void {
+    this.userId = JSON.parse(localStorage.getItem('user') ?? '{}'); // Use '{}' if null
     const webinarId = this.route.snapshot.paramMap.get('id');
     if (webinarId) {
       this.fetchWebinarDetails(webinarId);
@@ -34,8 +38,7 @@ export class WebinarDetailsComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error fetching webinar:', error);
-        this.errorMessage = 'Failed to load webinar details. Please try again later.';
+        this.errorMessage = 'Failed to load webinar details.';
         this.isLoading = false;
       }
     });
@@ -51,32 +54,22 @@ export class WebinarDetailsComponent implements OnInit {
     this.showModal = false;
   }
 
-  /** Confirms registration after clicking "Yes, Register" */
-  confirmRegistration() {
-    this.showModal = false; // Hide modal
-    this.registerForWebinar();
-  }
+  /** Adds webinar to cart */
+  addToCart() {
+    this.showModal = false;
+    if (!this.webinar || !this.userId) return;
 
-  /** Registers for the webinar and refreshes page on success */
-  registerForWebinar() {
-    if (!this.webinar) return;
-    this.isRegistering = true;
-    this.successMessage = '';
+    const requestBody = {
+      webinarId: this.webinar?.id,
+      userId: this.userId?.id
+    };
 
-    this.webinarService.registerForWebinar(this.webinar.id, this.webinar.is_paid ? this.webinar.price : 0).subscribe({
-      next: (response) => {
-        this.successMessage = response.message;
-        this.isRegistering = false;
-
-        // ✅ Refresh the webinar details after successful registration
-        setTimeout(() => {
-          window.location.reload(); // Refresh the page
-        }, 1000);
+    this.webinarService.addToCart(requestBody).subscribe({
+      next: () => {
+        this.router.navigate(['/checkout']); // Redirect to checkout page
       },
-      error: (error) => {
-        console.error('Error registering for webinar:', error);
-        this.errorMessage = 'Failed to register. Please try again later.';
-        this.isRegistering = false;
+      error: () => {
+        this.errorMessage = 'Failed to add to cart. Try again.';
       }
     });
   }

@@ -17,10 +17,14 @@
                     <p class="text-muted">{{ webinar?.description }}</p>
 
                     <div class="row text-center mt-4">
-                        <div class="col-6 col-md-3"><i class="fas fa-clock text-primary"></i> {{ webinar?.start_time | date:'longDate' }}</div>
-                        <div class="col-6 col-md-3"><i class="fas fa-calendar-alt text-primary"></i> {{ webinar?.start_time | date:'shortTime' }} - {{ webinar?.end_time | date:'shortTime' }}</div>
-                        <div class="col-6 col-md-3"><i class="fas fa-user text-primary"></i> {{ webinar?.trainer?.organization }}</div>
-                        <div class="col-6 col-md-3"><i class="fas fa-tags text-primary"></i> {{ webinar?.tags?.join(', ') }}</div>
+                        <div class="col-6 col-md-3"><i class="fas fa-clock text-primary"></i> {{ webinar?.start_time |
+                            date:'longDate' }}</div>
+                        <div class="col-6 col-md-3"><i class="fas fa-calendar-alt text-primary"></i> {{
+                            webinar?.start_time | date:'shortTime' }} - {{ webinar?.end_time | date:'shortTime' }}</div>
+                        <div class="col-6 col-md-3"><i class="fas fa-user text-primary"></i> {{
+                            webinar?.trainer?.organization }}</div>
+                        <div class="col-6 col-md-3"><i class="fas fa-tags text-primary"></i> {{ webinar?.tags?.join(',
+                            ') }}</div>
                     </div>
                 </div>
             </div>
@@ -34,38 +38,43 @@
                         </h2>
 
                         <!-- Register Now Button -->
-                        <button *ngIf="!webinar?.isUserRegistered" class="btn btn-primary btn-lg w-100 mt-3" 
-                        (click)="openConfirmationModal()">
-                        Register Now
-                        </button>
+                        <!-- <button *ngIf="!webinar?.isUserRegistered" class="btn btn-primary btn-lg w-100 mt-3"
+                            (click)="openConfirmationModal()">
+                            Register Now
+                        </button> -->
 
                         <!-- Enrolled Button (If Already Registered) -->
                         <button *ngIf="webinar?.isUserRegistered" class="btn btn-success btn-lg w-100 mt-3" disabled>
-                        Enrolled
+                            Enrolled
                         </button>
 
 
-                        <p class="mt-2 text-success" *ngIf="successMessage">{{ successMessage }}</p>
-                        <p class="mt-2 text-danger" *ngIf="errorMessage">{{ errorMessage }}</p>
+                        <!-- Add to Cart Button -->
+                        <button *ngIf="!webinar?.isUserRegistered" class="btn btn-primary btn-lg w-100 mt-3"
+                            (click)="openConfirmationModal()">
+                            Add to Cart
+                        </button>
 
                         <!-- Confirmation Modal -->
                         <div class="modal fade show d-block" *ngIf="showModal" tabindex="-1">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Confirm Registration</h5>
+                                        <h5 class="modal-title">Confirm Add to Cart</h5>
                                         <button type="button" class="close" (click)="closeModal()">&times;</button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Are you sure you want to register for "{{ webinar?.title }}"?</p>
+                                        <p>Are you sure you want to add "{{ webinar?.title }}" to your cart?</p>
                                     </div>
                                     <div class="modal-footer">
                                         <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
-                                        <button class="btn btn-primary" (click)="confirmRegistration()">Yes, Register</button>
+                                        <button class="btn btn-primary" (click)="addToCart()">Yes, Add to Cart</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- Modal Overlay -->
+                        <div class="modal-backdrop fade show" *ngIf="showModal"></div>
                         <!-- Modal Overlay -->
                         <div class="modal-backdrop fade show" *ngIf="showModal"></div>
                     </div>

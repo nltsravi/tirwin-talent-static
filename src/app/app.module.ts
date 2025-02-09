@@ -18,6 +18,7 @@ import { ProfileModule } from './pages/profile/profile.module';
 import { WebinarListComponent } from './pages/webinar-list/webinar-list.component';
 import { WebinarListModule } from './pages/webinar-list/webinar-list.module';
 import { CourseDetailsModule } from './pages/webinar-details/webinar-details.module';
+import { CheckoutModule } from './pages/checkout/checkout.module';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { CourseDetailsModule } from './pages/webinar-details/webinar-details.mod
     AuthModule,
     ProfileModule,
     WebinarListModule,
-    CourseDetailsModule
+    CourseDetailsModule,
+    CheckoutModule
   ],
   providers: [],
   bootstrap: [AppComponent],
