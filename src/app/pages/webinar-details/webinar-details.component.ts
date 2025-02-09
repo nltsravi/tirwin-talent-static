@@ -18,7 +18,7 @@ export class WebinarDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private webinarService: WebinarService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.userId = JSON.parse(localStorage.getItem('user') ?? '{}'); // Use '{}' if null
@@ -57,6 +57,18 @@ export class WebinarDetailsComponent implements OnInit {
   /** Adds webinar to cart */
   addToCart() {
     this.showModal = false;
+
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      // Get the return URL correctly
+      const returnUrl = this.router.url;
+
+      // Redirect user to login and save return URL
+      this.router.navigate(['/auth/login'], { state: { returnUrl } });
+      return;
+    }
+
     if (!this.webinar || !this.userId) return;
 
     const requestBody = {

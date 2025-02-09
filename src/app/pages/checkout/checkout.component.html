@@ -6,8 +6,8 @@
     <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
   
     <!-- Show message when cart is empty -->
-    <div *ngIf="cartItems.length === 0" class="alert alert-warning">
-      Your cart is empty. <a routerLink="/webinars">Browse Webinars</a>
+    <div *ngIf="cartItems.length === 0" class="alert alert-info custom-alert">
+      Your cart is empty. <a routerLink="/webinar">Browse Webinars</a>
     </div>
   
     <!-- Responsive Cart Table -->

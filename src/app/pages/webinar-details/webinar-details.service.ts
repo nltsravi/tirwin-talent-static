@@ -7,19 +7,23 @@ import { Observable } from 'rxjs';
 })
 export class WebinarService {
   private apiUrl = 'http://localhost:3000/webinars';
+  private publicApiUrl = 'http://localhost:3000/webinars';
   private subscribeUrl = 'http://localhost:3000/webinar-subscriptions/subscribe';
   private baseUrl = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getWebinarById(id: string): Observable<any> {
     const token = localStorage.getItem('authToken');
-    if (!token) {
-      return new Observable(observer => observer.error('No token found'));
-    }
 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<any>(`${this.apiUrl}/${id}`, { headers });
+    let headers = new HttpHeaders();
+
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+      return this.http.get<any>(`${this.apiUrl}/${id}`, { headers });
+    } else {
+      return this.http.get<any>(`${this.publicApiUrl}/get-webinar-public/${id}`);
+    }
   }
 
   registerForWebinar(webinarId: string, amount: any): Observable<any> {

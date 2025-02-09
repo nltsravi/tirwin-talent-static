@@ -11,12 +11,12 @@ export class WebinarService {
   constructor(private http: HttpClient) {}
 
   getWebinars(): Observable<any[]> {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      return new Observable(observer => observer.error('No token found'));
-    }
+    // const token = localStorage.getItem('authToken');
+    // if (!token) {
+    //   return new Observable(observer => observer.error('No token found'));
+    // }
 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<any[]>(this.apiUrl, { headers });
+    // const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any[]>(this.apiUrl);
   }
 }

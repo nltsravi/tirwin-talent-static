@@ -48,9 +48,13 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.authService.sendOtp(this.email).subscribe({
       next: (response) => {
         this.showAlert(response.message, 'alert-success');
+        const navigation = this.router.getCurrentNavigation();
+        console.log(navigation)
+        // Safely get return URL from state or default to webinars
+        const returnUrl = this.router.getCurrentNavigation()?.extras.state?.['returnUrl'] || '/webinar';
   
         setTimeout(() => {
-          this.router.navigate(['/auth/validate'], { state: { email: this.email } }); // Pass email to OTP page
+          this.router.navigate(['/auth/validate'], { state: { email: this.email, returnUrl } });
         }, 2000);
       },
       error: (error) => {

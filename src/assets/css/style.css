@@ -6246,7 +6246,7 @@ a[data-toggle] { color: #3c4043; }
 
 .modal-title { display: block; font-size: 28px; line-height: 28px; font-weight: 400; margin-bottom: 20px; }
 
-.modal p { font-size: 15px; line-height: 26px; margin-top: 0; margin-bottom: 13px; font-weight: 300; }
+.modal p { font-size: 15px; line-height: 26px; margin-top: 0; margin-bottom: 13px; }
 
 /*Strip*/
 .modal-strip { background-color: #000000; bottom: 0; color: #fff; left: 0; padding: 20px; position: fixed; width: 100%; display: inline-block; -webkit-transform: translate3d(0px, 200px, 0px); transform: translate3d(0px, 200px, 0px); -webkit-transition: all 0.7s ease 0s; transition: all 0.7s ease 0s; z-index: 999 !important; }
