@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TrainerRegisterService {
-  private registerUrl = 'http://localhost:3000/users/trainer-onbaording';
+  private registerUrl = 'https://dev.api.tirwintalent.com/api/users/trainer-onbaording';
 
   constructor(private http: HttpClient) {}
 

@@ -11,6 +11,7 @@
     <!-- Webinar Details -->
     <section class="container py-5" *ngIf="!isLoading && webinar">
         <div class="row">
+            <!-- Main Webinar Info -->
             <div class="col-lg-8">
                 <div class="card shadow-sm p-4">
                     <h2 class="h3 font-weight-bold">About This Webinar</h2>
@@ -27,27 +28,68 @@
                             ') }}</div>
                     </div>
                 </div>
+
+                <!-- Collapsible Sections for Terms & Details -->
+                <div class="accordion mt-4" id="webinarAccordion">
+                    <!-- Webinar Details -->
+                    <div class="card">
+                        <div class="card-header" id="headingDetails">
+                            <h2 class="mb-0">
+                                <span data-bs-toggle="collapse" data-bs-target="#collapseDetails" aria-expanded="true">
+                                    Webinar Details
+                                </span>
+                            </h2>
+                        </div>
+                        <div id="collapseDetails" class="collapse show" aria-labelledby="headingDetails">
+                            <div class="card-body">
+                                <p>{{ webinar?.description }}</p>
+                                <ul>
+                                    <li><strong>Start Time:</strong> {{ webinar?.start_time | date:'medium' }}</li>
+                                    <li><strong>End Time:</strong> {{ webinar?.end_time | date:'medium' }}</li>
+                                    <li><strong>Category:</strong> {{ webinar?.category?.name }}</li>
+                                    <li><strong>Subcategory:</strong> {{ webinar?.subcategory?.name }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terms & Conditions -->
+                    <div class="card">
+                        <div class="card-header" id="headingTerms">
+                            <h2 class="mb-0">
+                                <span class="custom-link" data-bs-toggle="collapse" data-bs-target="#collapseTerms">
+                                    Terms & Conditions
+                                </span>
+                            </h2>
+                        </div>
+                        <div id="collapseTerms" class="collapse in" aria-labelledby="headingTerms">
+                            <div class="card-body">
+                                <p>By registering for this webinar, you agree to the following terms:</p>
+                                <ul>
+                                    <li>All sessions will be recorded and made available to attendees.</li>
+                                    <li>Webinar content is for educational purposes only.</li>
+                                    <li>No refunds are available for paid webinars.</li>
+                                    <li>Participation certificates will be issued post-webinar completion.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- Sidebar -->
+            <!-- Sidebar with Add to Cart & Enrollment -->
             <div class="col-lg-4">
                 <div class="card shadow-sm p-4 sticky-top">
                     <div class="text-center">
                         <h2 class="h3 font-weight-bold text-dark">
-                            {{ webinar?.is_paid ? ('$' + webinar?.price) : 'FREE' }}
+                            {{ webinar?.is_paid ? ('INR ' + webinar?.price) : '0.00 INR' }}
                         </h2>
 
-                        <!-- Register Now Button -->
-                        <!-- <button *ngIf="!webinar?.isUserRegistered" class="btn btn-primary btn-lg w-100 mt-3"
-                            (click)="openConfirmationModal()">
-                            Register Now
-                        </button> -->
-
-                        <!-- Enrolled Button (If Already Registered) -->
+                        <!-- Enrolled Button -->
                         <button *ngIf="webinar?.isUserRegistered" class="btn btn-success btn-lg w-100 mt-3" disabled>
                             Enrolled
                         </button>
-
 
                         <!-- Add to Cart Button -->
                         <button *ngIf="!webinar?.isUserRegistered" class="btn btn-primary btn-lg w-100 mt-3"
@@ -73,18 +115,53 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Modal Overlay -->
-                        <div class="modal-backdrop fade show" *ngIf="showModal"></div>
-                        <!-- Modal Overlay -->
                         <div class="modal-backdrop fade show" *ngIf="showModal"></div>
                     </div>
-
-                    <ul class="list-unstyled mt-4">
-                        <li><i class="fas fa-check-circle text-success"></i> Live Q&A Session</li>
-                        <li><i class="fas fa-check-circle text-success"></i> Certificate of Completion</li>
-                        <li><i class="fas fa-check-circle text-success"></i> Lifetime Access</li>
-                    </ul>
                 </div>
+
+                <!-- Trainer Profile Section -->
+                <!-- Trainer Profile Section -->
+                <!-- Trainer Profile Section -->
+                <div class="card trainer-profile-card shadow-sm p-4 mt-4 text-center">
+                    <h2 class="h4 font-weight-bold text-left">Trainer Profile</h2>
+
+                    <!-- Profile Image (Centered) -->
+                    <div class="d-flex justify-content-center">
+                        <img [src]="webinar?.trainer?.profile_image || 'https://via.placeholder.com/100'"
+                            class="trainer-profile-img rounded-circle border" alt="Trainer Image">
+                    </div>
+
+                    <!-- Trainer Details -->
+                    <div class="trainer-info mt-3">
+                        <h5 class="mb-1 fw-bold text-dark">{{ webinar?.trainer?.name || 'Ramesh Gupta' }}</h5>
+                        <p class="text-muted mb-1 small">{{ webinar?.trainer?.organization || 'FedEx Logistics' }}</p>
+
+                        <!-- Trainer Stats -->
+                        <div class="trainer-stats d-flex justify-content-center">
+                            <span class="badge bg-light text-dark me-2"><i
+                                    class="fas fa-chalkboard-teacher text-primary"></i> {{ webinar?.trainer?.experience
+                                || '5' }}+ years</span>
+                            <span class="badge bg-light text-dark me-2"><i class="fas fa-video text-danger"></i> {{
+                                webinar?.trainer?.total_webinars || '10' }} Webinars</span>
+                            <span class="badge bg-light text-dark"><i class="fas fa-users text-success"></i> {{
+                                webinar?.trainer?.followers || '200' }} Followers</span>
+                        </div>
+
+                        <!-- Short Trainer Bio -->
+                        <p class="text-muted mt-3 trainer-bio">
+                            {{ webinar?.trainer?.bio }}
+                        </p>
+
+                        <!-- LinkedIn Profile -->
+                        <div class="mt-2">
+                            <a *ngIf="webinar?.trainer?.linkedin_profile" [href]="webinar?.trainer?.linkedin_profile"
+                                target="_blank" class="btn btn-primary btn-sm">
+                                <i class="fab fa-linkedin"></i> LinkedIn Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>

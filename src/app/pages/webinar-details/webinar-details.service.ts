@@ -6,10 +6,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class WebinarService {
-  private apiUrl = 'http://localhost:3000/webinars';
-  private publicApiUrl = 'http://localhost:3000/webinars';
-  private subscribeUrl = 'http://localhost:3000/webinar-subscriptions/subscribe';
-  private baseUrl = 'http://localhost:3000';
+  private apiUrl = 'https://dev.api.tirwintalent.com/api/webinars';
+  private publicApiUrl = 'https://dev.api.tirwintalent.com/api/webinars';
+  private subscribeUrl = 'https://dev.api.tirwintalent.com/api/webinar-subscriptions/subscribe';
+  private baseUrl = 'https://dev.api.tirwintalent.com/api';
 
   constructor(private http: HttpClient) { }
 

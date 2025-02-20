@@ -3,3 +3,81 @@
   border-radius: 5px;
   padding: 5px;
 }
+
+.custom-link {
+  cursor: pointer;
+}
+
+.trainer-profile-card {
+    border-radius: 10px;
+    background: #ffffff;
+    transition: all 0.3s ease-in-out;
+}
+
+.trainer-profile-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #e3e6ea;
+}
+
+.trainer-info h5 {
+    color: #2c3e50;
+}
+
+.trainer-stats .badge {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    font-weight: 600;
+    border-radius: 5px;
+}
+
+.trainer-stats .fa {
+    margin-right: 5px;
+}
+
+.btn-outline-primary {
+    font-size: 0.9rem;
+    padding: 5px 12px;
+}
+
+.trainer-profile-card {
+  border-radius: 10px;
+  background: #ffffff;
+  transition: all 0.3s ease-in-out;
+  padding: 20px;
+}
+
+.trainer-profile-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #e3e6ea;
+}
+
+.trainer-info h5 {
+  color: #2c3e50;
+}
+
+.trainer-stats .badge {
+  font-size: 0.85rem;
+  padding: 8px 12px;
+  font-weight: 600;
+  border-radius: 5px;
+}
+
+.trainer-bio {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #555;
+  max-width: 80%;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.btn-outline-primary {
+  font-size: 0.9rem;
+  padding: 5px 12px;
+}

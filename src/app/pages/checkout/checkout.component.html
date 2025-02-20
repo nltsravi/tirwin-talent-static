@@ -7,7 +7,7 @@
   
     <!-- Show message when cart is empty -->
     <div *ngIf="cartItems.length === 0" class="alert alert-info custom-alert">
-      Your cart is empty. <a routerLink="/webinar">Browse Webinars</a>
+      Your cart is empty. <a routerLink="/webinar">Browse Events</a>
     </div>
   
     <!-- Responsive Cart Table -->
@@ -15,7 +15,7 @@
       <table class="table table-striped table-bordered">
         <thead class="bg-primary text-white">
           <tr>
-            <th>Webinar Title</th>
+            <th>Event Title</th>
             <th>Coupon Code</th>
             <th>Amount</th>
             <th>Start Date</th>
@@ -28,7 +28,7 @@
           <tr *ngFor="let item of cartItems">
             <td>{{ item.webinar.title }}</td>
             <td>{{ item.coupon_code || 'N/A' }}</td>
-            <td>{{ item.amount === '0.00' ? 'FREE' : '$' + item.amount }}</td>
+            <td>{{ item.amount === '0.00' ? 'FREE' : 'INR' + item.amount }}</td>
             <td>{{ item.webinar.start_time | date: 'short' }}</td>
             <td>{{ item.webinar.end_time | date: 'short' }}</td>
             <td>

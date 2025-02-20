@@ -6,9 +6,9 @@ import { Observable, BehaviorSubject} from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/auth/login';
-  private otpValidationUrl = 'http://localhost:3000/auth/validate-otp';
-  private profileUrl = 'http://localhost:3000/profile/me';
+  private apiUrl = 'https://dev.api.tirwintalent.com/api/auth/login';
+  private otpValidationUrl = 'https://dev.api.tirwintalent.com/api/auth/validate-otp';
+  private profileUrl = 'https://dev.api.tirwintalent.com/api/profile/me';
 
   private authState = new BehaviorSubject<boolean>(this.isUserLoggedIn());
 

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TraineeProfileService {
-  private profileUrl = 'http://localhost:3000/profile/me'; // Profile API
+  private profileUrl = 'https://dev.api.tirwintalent.com/api/profile/me'; // Profile API
 
   constructor(private http: HttpClient) {}
 

@@ -74,7 +74,7 @@ export class TraineeProfileComponent implements OnInit {
   // Get the pre-signed URL from the backend
   getUploadUrl(fileType: string) {
     const userId = this.trainer.userId;
-    const url = `http://localhost:3000/users/profile-image/upload-url`;
+    const url = `https://dev.api.tirwintalent.com/api/users/profile-image/upload-url`;
   
     const body = { userId, fileType };
   
@@ -112,11 +112,12 @@ export class TraineeProfileComponent implements OnInit {
   // Update user profile image URL in the database
   updateUserProfile(imageUrl: string) {
     const userId = this.trainer.userId;
-    const url = `http://localhost:3000/users/${userId}`;
+    const url = `https://dev.api.tirwintalent.com/api/users/${userId}`;
     
     this.http.patch(url, { profile_image: imageUrl }).subscribe({
       next: () => {
         this.trainer.image = imageUrl;
+        window.location.reload()
       },
       error: (error) => {
         console.error('Error updating profile image:', error);

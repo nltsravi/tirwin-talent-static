@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CartService {
-  private baseUrl = 'http://localhost:3000';
-  private subscribeUrl = 'http://localhost:3000/webinar-subscriptions/subscribe';
+  private baseUrl = 'https://dev.api.tirwintalent.com/api';
+  private subscribeUrl = 'https://dev.api.tirwintalent.com/api/webinar-subscriptions/subscribe';
 
   constructor(private http: HttpClient) {}
 

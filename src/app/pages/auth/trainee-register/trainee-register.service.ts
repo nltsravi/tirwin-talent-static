@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TraineeRegisterService {
-  private userApiUrl = 'http://localhost:3000/users'; // User Registration API
-  private otpApiUrl = 'http://localhost:3000/auth/login'; // OTP Trigger API
-  private validateOtpApiUrl = 'http://localhost:3000/auth/validate-otp'; // OTP Validation API
+  private userApiUrl = 'https://dev.api.tirwintalent.com/api/users'; // User Registration API
+  private otpApiUrl = 'https://dev.api.tirwintalent.com/api/auth/login'; // OTP Trigger API
+  private validateOtpApiUrl = 'https://dev.api.tirwintalent.com/api/auth/validate-otp'; // OTP Validation API
 
   constructor(private http: HttpClient) {}
 
