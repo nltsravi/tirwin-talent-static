@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { TraineeRegisterComponent } from './trainee-register/trainee-register.component';
 import { OTPComponent } from './otp-validation/otp-validation.component';
 import { TrainerRegisterComponent } from './trainer-registration/trainer-register.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 
 const routes: Routes = [
@@ -17,10 +17,7 @@ const routes: Routes = [
   { path: 'trainer-registration', component: TrainerRegisterComponent }
 ];
 
-@NgModule({
-  declarations: [AuthComponent,TraineeRegisterComponent,OTPComponent,TrainerRegisterComponent],  // ✅ Ensure this is declared
-  imports: [CommonModule, RouterModule.forChild(routes),FormsModule,HttpClientModule],  // ✅ Use RouterModule.forChild()
-  exports: [RouterModule],
-  providers: [AuthService]  // ✅ Export RouterModule
-})
+@NgModule({ declarations: [AuthComponent, TraineeRegisterComponent, OTPComponent, TrainerRegisterComponent], // ✅ Use RouterModule.forChild()
+    exports: [RouterModule], imports: [CommonModule, RouterModule.forChild(routes), FormsModule], providers: [AuthService, provideHttpClient(withInterceptorsFromDi())] // ✅ Export RouterModule
+ })
 export class AuthModule { }

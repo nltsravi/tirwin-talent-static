@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,27 +20,20 @@ import { WebinarListModule } from './pages/webinar-list/webinar-list.module';
 import { CourseDetailsModule } from './pages/webinar-details/webinar-details.module';
 import { CheckoutModule } from './pages/checkout/checkout.module';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    DefaultLayoutComponent,
-    SliderComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule,
-    HeaderModule,
-    FooterModule,
-    HomeModule,
-    AuthModule,
-    ProfileModule,
-    WebinarListModule,
-    CourseDetailsModule,
-    CheckoutModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent],
-})
+@NgModule({ declarations: [
+        AppComponent,
+        DefaultLayoutComponent,
+        SliderComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        HeaderModule,
+        FooterModule,
+        HomeModule,
+        AuthModule,
+        ProfileModule,
+        WebinarListModule,
+        CourseDetailsModule,
+        CheckoutModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }

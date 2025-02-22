@@ -22,8 +22,12 @@
                             date:'longDate' }}</div>
                         <div class="col-6 col-md-3"><i class="fas fa-calendar-alt text-primary"></i> {{
                             webinar?.start_time | date:'shortTime' }} - {{ webinar?.end_time | date:'shortTime' }}</div>
-                        <div class="col-6 col-md-3"><i class="fas fa-user text-primary"></i> {{
-                            webinar?.trainer?.organization }}</div>
+                        <div class="col-6 col-md-3"><i class="fas fa-user text-primary"></i> @if(webinar?.trainers){
+                            {{ webinar?.trainers[0].organization}}
+                        }
+                    @else {
+                        {{ webinar?.trainer.organization}}
+                }</div>
                         <div class="col-6 col-md-3"><i class="fas fa-tags text-primary"></i> {{ webinar?.tags?.join(',
                             ') }}</div>
                     </div>
@@ -120,47 +124,101 @@
                 </div>
 
                 <!-- Trainer Profile Section -->
-                <!-- Trainer Profile Section -->
-                <!-- Trainer Profile Section -->
-                <div class="card trainer-profile-card shadow-sm p-4 mt-4 text-center">
-                    <h2 class="h4 font-weight-bold text-left">Trainer Profile</h2>
+                 @if(webinar?.trainers){
 
-                    <!-- Profile Image (Centered) -->
-                    <div class="d-flex justify-content-center">
-                        <img [src]="webinar?.trainer?.profile_image || 'https://via.placeholder.com/100'"
-                            class="trainer-profile-img rounded-circle border" alt="Trainer Image">
-                    </div>
-
-                    <!-- Trainer Details -->
-                    <div class="trainer-info mt-3">
-                        <h5 class="mb-1 fw-bold text-dark">{{ webinar?.trainer?.name || 'Ramesh Gupta' }}</h5>
-                        <p class="text-muted mb-1 small">{{ webinar?.trainer?.organization || 'FedEx Logistics' }}</p>
-
-                        <!-- Trainer Stats -->
-                        <div class="trainer-stats d-flex justify-content-center">
-                            <span class="badge bg-light text-dark me-2"><i
-                                    class="fas fa-chalkboard-teacher text-primary"></i> {{ webinar?.trainer?.experience
-                                || '5' }}+ years</span>
-                            <span class="badge bg-light text-dark me-2"><i class="fas fa-video text-danger"></i> {{
-                                webinar?.trainer?.total_webinars || '10' }} Webinars</span>
-                            <span class="badge bg-light text-dark"><i class="fas fa-users text-success"></i> {{
-                                webinar?.trainer?.followers || '200' }} Followers</span>
+                    
+                        <h2 class="h4 font-weight-bold text-left">Trainer Profiles</h2>
+                       
+                        <div class="trainer-carousel">
+                        <button class="prev-btn" (click)="prevSlide()">❮</button>
+                        <div class="trainer-slider">
+                            <div *ngFor="let trainer of webinar.trainers; let i = index" class="trainer-card"
+                                [class.active]="i === currentIndex">
+                                <div class="card trainer-profile-card shadow-sm p-3 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <!-- Profile Image (Circular) -->
+                                        <div class="flex-shrink-0">
+                                            <img [src]="trainer?.profile_image || 'https://via.placeholder.com/60'"
+                                                class="trainer-profile-img rounded-circle border" alt="Trainer Image" width="60" height="60">
+                                        </div>
+                                
+                                        <!-- Trainer Details (Compressed) -->
+                                        <div class="flex-grow-1 ms-3">
+                                            <h5 class="mb-1 fw-bold text-dark">{{ trainer?.name || 'Ramesh Gupta' }}</h5>
+                                            <p class="text-muted mb-1 small">{{ trainer?.organization || 'FedEx Logistics' }}</p>
+                                
+                                            <!-- Trainer Stats (Inline) -->
+                                            <div class="trainer-stats">
+                                                <span class="badge bg-light text-dark me-2">
+                                                    <i class="fas fa-chalkboard-teacher text-primary"></i> {{ trainer?.experience || '5' }}+ years
+                                                </span>
+                                                <span class="badge bg-light text-dark me-2">
+                                                    <i class="fas fa-video text-danger"></i> {{ trainer?.total_webinars || '10' }} Webinars
+                                                </span>
+                                                <span class="badge bg-light text-dark">
+                                                    <i class="fas fa-users text-success"></i> {{ trainer?.followers || '200' }} Followers
+                                                </span>
+                                            </div>
+                                        </div>
+                                
+                                        <!-- LinkedIn Profile (Optional) -->
+                                        <div class="mt-2">
+                                            <a *ngIf="trainer?.linkedin_profile" [href]="trainer?.linkedin_profile" target="_blank"
+                                                class="btn btn-primary btn-sm">
+                                                <i class="fab fa-linkedin"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
-                        <!-- Short Trainer Bio -->
-                        <p class="text-muted mt-3 trainer-bio">
-                            {{ webinar?.trainer?.bio }}
-                        </p>
-
-                        <!-- LinkedIn Profile -->
-                        <div class="mt-2">
-                            <a *ngIf="webinar?.trainer?.linkedin_profile" [href]="webinar?.trainer?.linkedin_profile"
-                                target="_blank" class="btn btn-primary btn-sm">
-                                <i class="fab fa-linkedin"></i> LinkedIn Profile
-                            </a>
+                        <button class="next-btn" (click)="nextSlide()">❯</button>
+                    </div>
+                    
+                    
+                }
+                @else{
+                    <div class="card trainer-profile-card shadow-sm p-4 mt-4 text-center">
+                        <h2 class="h4 font-weight-bold text-left">Trainer Profile</h2>
+                    
+                        <!-- Profile Image (Centered) -->
+                        <div class="d-flex justify-content-center">
+                            <img [src]="webinar?.trainer?.profile_image || 'https://via.placeholder.com/100'"
+                                class="trainer-profile-img rounded-circle border" alt="Trainer Image">
+                        </div>
+                    
+                        <!-- Trainer Details -->
+                        <div class="trainer-info mt-3">
+                            <h5 class="mb-1 fw-bold text-dark">{{ webinar?.trainer?.name || 'Ramesh Gupta' }}</h5>
+                            <p class="text-muted mb-1 small">{{ webinar?.trainer?.organization || 'FedEx Logistics' }}</p>
+                    
+                            <!-- Trainer Stats -->
+                            <div class="trainer-stats d-flex justify-content-center">
+                                <span class="badge bg-light text-dark me-2"><i class="fas fa-chalkboard-teacher text-primary"></i> {{
+                                    webinar?.trainer?.experience
+                                    || '5' }}+ years</span>
+                                <span class="badge bg-light text-dark me-2"><i class="fas fa-video text-danger"></i> {{
+                                    webinar?.trainer?.total_webinars || '10' }} Webinars</span>
+                                <span class="badge bg-light text-dark"><i class="fas fa-users text-success"></i> {{
+                                    webinar?.trainer?.followers || '200' }} Followers</span>
+                            </div>
+                    
+                            <!-- Short Trainer Bio -->
+                            <p class="text-muted mt-3 trainer-bio">
+                                {{ webinar?.trainer?.bio }}
+                            </p>
+                    
+                            <!-- LinkedIn Profile -->
+                            <div class="mt-2">
+                                <a *ngIf="webinar?.trainer?.linkedin_profile" [href]="webinar?.trainer?.linkedin_profile" target="_blank"
+                                    class="btn btn-primary btn-sm">
+                                    <i class="fab fa-linkedin"></i> LinkedIn Profile
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+                
 
             </div>
         </div>
