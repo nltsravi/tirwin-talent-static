@@ -3,15 +3,24 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../pages/auth/auth.service';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  selector: "app-header",
+  templateUrl: "./header.component.html",
+  styleUrls: ["./header.component.css"],
 })
 export class HeaderComponent implements OnInit {
   isAuthenticated: boolean = false;
-  userName: string = '';
+  userName: string = "";
+  activeLink: string = "";
 
-  constructor(private router: Router, private authService: AuthService, private cdr: ChangeDetectorRef) {}
+  setActive(link: string) {
+    this.activeLink = link;
+  }
+
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     // Listen for auth state changes
@@ -23,7 +32,7 @@ export class HeaderComponent implements OnInit {
   }
 
   loadUserData() {
-    const userData = localStorage.getItem('user');
+    const userData = localStorage.getItem("user");
     if (userData) {
       const user = JSON.parse(userData);
       this.userName = `${user.first_name} ${user.last_name}`;
@@ -32,8 +41,11 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/auth/login']).then(() => {
+    this.router.navigate(["/auth/login"]).then(() => {
       window.location.reload(); // **Force page reload**
     });
+  }
+  mClick() {
+    alert("clicked");
   }
 }

@@ -1,6 +1,6 @@
 <div class="home-course-content">
-    <h2 class="section-title">Explore Our Webinar Categories</h2>
-    <p class="section-subtitle">Find webinars that match your interests and career goals.</p>
+    <h2 class="section-title">Explore Our Categories</h2>
+    <p class="section-subtitle">Find Sessions that match your interests and career goals.</p>
 
     <!-- Card Grid -->
     <div class="card-grid">
@@ -28,10 +28,9 @@
           <div
             *ngFor="let review of testimonials; let i = index"
             class="testimonial-card"
-            [class.active]="i === currentIndex"
-          >
+            [class.active]="i === currentIndex">
             <p>"{{ review.text }}"</p>
-            <strong>- {{ review.author }}</strong>
+            <strong>{{ review.author }}</strong>
           </div>
         </div>
       

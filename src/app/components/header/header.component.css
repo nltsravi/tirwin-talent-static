@@ -2,7 +2,10 @@
     display: block !important;
 }
 .header-inner {
-    box-shadow: 1px 1px 1px #ccc;
+    box-shadow: 1px 1px 1px #fff;
+    margin-left:4%;
+    margin-right:4%;
+    font-family: Inter,sans-serif;
 }
 
 .dropdown-menu {
@@ -21,3 +24,8 @@
   .dropdown-menu li a:hover {
     background: #f8f9fa;
   }
+
+    .active {
+      background-color: blue;
+      font-weight: bold;
+    }

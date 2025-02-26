@@ -2,6 +2,8 @@
 .login-section {
     position: relative;
     top: -26px;
+    margin-left:5%;
+    margin-right:5%;
 }
 
 .custom-carousel {

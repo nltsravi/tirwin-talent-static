@@ -46,7 +46,7 @@ export class WebinarDetailsComponent implements OnInit {
           this.webinar = {
             id: "fbde0931-bf80-4687-afa3-83d9a1694e26",
             title: "Emotional Intelligence | Influence in Teamwork & Collaboration",
-            description: "Emotional Intelligence | Influence in Teamwork & Collaboration",
+            description: "FFFAI - FEDERATION OF FREIGHT FORWARDERS' ASSOCIATIONS IN INDIA’s Exclusive hashtag#Webinar on hashtag#EmotionalIntelligence – Part II !",
             type: "Online",
             tags: ["EI"],
             start_time: "2025-02-21T10:00:00.000Z",

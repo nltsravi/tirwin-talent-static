@@ -14,7 +14,13 @@
             <!-- Main Webinar Info -->
             <div class="col-lg-8">
                 <div class="card shadow-sm p-4">
-                    <h2 class="h3 font-weight-bold">About This Webinar</h2>
+                    <h2 class="h3 font-weight-bold">
+                        @if(webinar?.trainers){
+                            About this Panel Discussion
+                        }
+                        @else {
+                            About This Webinar
+                        }</h2>
                     <p class="text-muted">{{ webinar?.description }}</p>
 
                     <div class="row text-center mt-4">
@@ -22,12 +28,14 @@
                             date:'longDate' }}</div>
                         <div class="col-6 col-md-3"><i class="fas fa-calendar-alt text-primary"></i> {{
                             webinar?.start_time | date:'shortTime' }} - {{ webinar?.end_time | date:'shortTime' }}</div>
-                        <div class="col-6 col-md-3"><i class="fas fa-user text-primary"></i> @if(webinar?.trainers){
-                            {{ webinar?.trainers[0].organization}}
-                        }
-                    @else {
-                        {{ webinar?.trainer.organization}}
-                }</div>
+                        <div class="col-6 col-md-3"><i class="fas fa-user text-primary"></i> 
+                            @if(webinar?.trainers){
+                                {{ webinar?.trainers[0].organization}}
+                            }
+                            @else {
+                                {{ webinar?.trainer.organization}}
+                            }
+                        </div>
                         <div class="col-6 col-md-3"><i class="fas fa-tags text-primary"></i> {{ webinar?.tags?.join(',
                             ') }}</div>
                     </div>
@@ -40,7 +48,12 @@
                         <div class="card-header" id="headingDetails">
                             <h2 class="mb-0">
                                 <span data-bs-toggle="collapse" data-bs-target="#collapseDetails" aria-expanded="true">
-                                    Webinar Details
+                                    @if(webinar?.trainers){
+                                        Panel Discussion Details
+                                    }
+                                    @else {
+                                        Webinar Details
+                                    }
                                 </span>
                             </h2>
                         </div>
@@ -127,7 +140,7 @@
                  @if(webinar?.trainers){
 
                     
-                        <h2 class="h4 font-weight-bold text-left">Trainer Profiles</h2>
+                        <h2 class="h4 font-weight-bold text-left">Panel Members ({{webinar.trainers.length}})</h2>
                        
                         <div class="trainer-carousel">
                         <button class="prev-btn" (click)="prevSlide()">❮</button>
