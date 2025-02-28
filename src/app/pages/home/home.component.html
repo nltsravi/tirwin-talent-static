@@ -5,15 +5,18 @@
     <!-- Card Grid -->
     <div class="card-grid">
         <div class="card" *ngFor="let course of courses">
+          <a href="/webinar">
             <div class="card-banner">
                 <span class="badge">{{ course.badge }}</span>
                 <img [src]="course.image" [alt]="course.title" class="course-image" />
             </div>
             <div class="card-content">
                 <h3 class="course-title">{{ course.title }}</h3>
-                <a href="#" class="course-link">Build toward a degree</a>
-                <p class="course-type">{{ course.type }}</p>
+                <hr/>
+                <!--<a href="#" class="course-link">Build toward a degree</a>-->
+                <p class="course-type">{{ course.description }}</p>
             </div>
+          </a>
         </div>
     </div>
 

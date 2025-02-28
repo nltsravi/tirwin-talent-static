@@ -45,7 +45,4 @@ export class HeaderComponent implements OnInit {
       window.location.reload(); // **Force page reload**
     });
   }
-  mClick() {
-    alert("clicked");
-  }
 }

@@ -24,8 +24,3 @@
   .dropdown-menu li a:hover {
     background: #f8f9fa;
   }
-
-    .active {
-      background-color: blue;
-      font-weight: bold;
-    }
