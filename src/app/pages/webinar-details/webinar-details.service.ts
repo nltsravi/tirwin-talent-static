@@ -6,17 +6,17 @@ import { Observable } from 'rxjs';
   providedIn: "root",
 })
 export class WebinarService {
-  /* private apiUrl = "https://dev.api.tirwintalent.com/api/webinars";
+  private apiUrl = "https://dev.api.tirwintalent.com/api/webinars";
   private publicApiUrl = "https://dev.api.tirwintalent.com/api/webinars";
   private subscribeUrl =
     "https://dev.api.tirwintalent.com/api/webinar-subscriptions/subscribe";
-  private baseUrl = "https://dev.api.tirwintalent.com/api";*/
+  private baseUrl = "https://dev.api.tirwintalent.com/api";
 
-  private apiUrl = "http://localhost:3000/api/webinars";
+  /*private apiUrl = "http://localhost:3000/api/webinars";
   private publicApiUrl = "http://localhost:3000/api/webinars";
   private subscribeUrl =
     "http://localhost:3000/api/webinar-subscriptions/subscribe";
-  private baseUrl = "http://localhost:3000/api";
+  private baseUrl = "http://localhost:3000/api";*/
 
   constructor(private http: HttpClient) {}
 
