@@ -35,5 +35,6 @@ import { CheckoutModule } from './pages/checkout/checkout.module';
         ProfileModule,
         WebinarListModule,
         CourseDetailsModule,
-        CheckoutModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
+        CheckoutModule
+    ], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }

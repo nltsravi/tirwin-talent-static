@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WebinarService } from './webinar-list.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-webinar-list',
@@ -16,20 +16,30 @@ export class WebinarListComponent implements OnInit {
   isLoading = true;
   errorMessage = '';
 
-  constructor(private webinarService: WebinarService, private route: Router) {}
+  constructor(private webinarService: WebinarService, private route: Router,private router: ActivatedRoute,) {}
 
   ngOnInit(): void {
-    this.fetchWebinars();
+    const stype = this.router.snapshot.paramMap.get("stype");
+    if(stype){
+      this.fetchWebinars(stype);
+    }else{
+      this.fetchWebinars("masterclass");
+    }
+   
   }
 
-  fetchWebinars() {
+  fetchWebinars(stype:string) {
     this.isLoading = true;
-    this.webinarService.getWebinars().subscribe({
+    this.webinarService.getWebinars(stype).subscribe({
       next: (data) => {
+        console.log(data);
         this.webinars = data.map(webinar => ({
           id: webinar.id,
           title: webinar.title,
           description: webinar.description,
+          session_type:webinar.session_type,
+          session_description:webinar.session_description,
+          trainer_ids:webinar.trainer_ids,
           image: webinar.media.find((m:any) => m.media_type === 'banner')?.media_url || 'https://via.placeholder.com/300',
           author: `${webinar.trainer.organization}`,
           date: new Date(webinar.start_time).toLocaleDateString(),
