@@ -19,13 +19,18 @@ import { WebinarListComponent } from './pages/webinar-list/webinar-list.componen
 import { WebinarListModule } from './pages/webinar-list/webinar-list.module';
 import { CourseDetailsModule } from './pages/webinar-details/webinar-details.module';
 import { CheckoutModule } from './pages/checkout/checkout.module';
+import { RouterModule } from '@angular/router';
 
-@NgModule({ declarations: [
+@NgModule({
+    declarations: [
         AppComponent,
         DefaultLayoutComponent,
         SliderComponent
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    bootstrap: [AppComponent], 
+    imports: [
+        RouterModule.forRoot([]),
+        BrowserModule,
         AppRoutingModule,
         FormsModule,
         HeaderModule,

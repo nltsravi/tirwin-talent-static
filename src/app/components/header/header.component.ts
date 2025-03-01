@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../pages/auth/auth.service';
 
 @Component({
@@ -10,24 +10,24 @@ import { AuthService } from '../../pages/auth/auth.service';
 export class HeaderComponent implements OnInit {
   isAuthenticated: boolean = false;
   userName: string = "";
-  activeLink: string = "";
+  currentUrl: string = "";
 
-  setActive(link: string) {
-    this.activeLink = link;
+  constructor(private router: Router, private authService: AuthService) { 
+    this.isActive('/home')
   }
 
-  constructor(
-    private router: Router,
-    private authService: AuthService,
-    private cdr: ChangeDetectorRef
-  ) {}
-
   ngOnInit() {
-    // Listen for auth state changes
+    // Listen for authentication changes
     this.authService.getAuthState().subscribe((authStatus) => {
       this.isAuthenticated = authStatus;
       this.loadUserData();
-      this.cdr.detectChanges(); // **Force UI update**
+    });
+
+    // Track active route
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.currentUrl = event.urlAfterRedirects;
+      }
     });
   }
 
@@ -42,7 +42,12 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(["/auth/login"]).then(() => {
-      window.location.reload(); // **Force page reload**
+      window.location.reload(); // Force page reload
     });
+  }
+
+  isActive(path: string): boolean {
+    console.log(`Checking active class for: ${path}, Current URL: ${this.currentUrl}`);
+    return this.currentUrl === path;
   }
 }

@@ -1,49 +1,62 @@
-<!-- Header -->
 <header id="header" data-fullwidth="true">
     <div class="header-inner">
         <div class="container">
-            <!--Logo-->
+            <!-- Logo -->
             <div id="logo">
-                <a href="/">
+                <a routerLink="/">
                     <img src="https://tirwin.in/images/pages/tirwin/tirwin-talent.jpg" alt="Tirwin Logo" class="logo-img"/>
                 </a>
             </div>
-            <!--End: Logo-->
-            <!--Navigation Resposnive Trigger-->
+            <!-- End: Logo -->
+            <!-- Navigation Responsive Trigger -->
             <div id="mainMenu-trigger">
                 <a class="lines-button x"><span class="lines"></span></a>
             </div>
-            <!--end: Navigation Resposnive Trigger-->
-            <!--Navigation-->
+            <!-- End: Navigation Responsive Trigger -->
+            <!-- Navigation -->
             <div id="mainMenu">
                 <div class="container">
                     <nav>
                         <ul>
-                            <li><a href="/">Home</a></li>
-                            <li><a href="/webinar/masterclass">Master Classes</a></li>
-                            <li><a href="/webinar/events">Events</a></li>
-                            <li><a href="/webinar/training">Training</a></li>
-
+                            <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                <a routerLink="/home">Home</a>
+                            </li>
+                            <li routerLinkActive="active">
+                                <a routerLink="/webinar/masterclass">Master Classes</a>
+                            </li>
+                            <li routerLinkActive="active">
+                                <a routerLink="/webinar/events">Events</a>
+                            </li>
+                            <li routerLinkActive="active">
+                                <a routerLink="/webinar/training">Training</a>
+                            </li>
+                    
                             <!-- Dynamic Authentication -->
-                            <li *ngIf="!isAuthenticated"><a href="/auth/login">Login</a></li>
-                            
+                            <li *ngIf="!isAuthenticated" routerLinkActive="active">
+                                <a routerLink="/auth/login">Login</a>
+                            </li>
+                    
                             <li *ngIf="isAuthenticated" class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
                                     {{ userName }} <i class="fas fa-user"></i>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="/profile/user" class="dropdown-item">Profile</a></li>
-                                    <li><a href="#" (click)="logout()" class="dropdown-item">Become a Trainer</a></li>
-                                    <li><a href="#" (click)="logout()" class="dropdown-item text-danger">Logout</a></li>
+                                    <li routerLinkActive="active">
+                                        <a routerLink="/profile/user" class="dropdown-item">Profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" (click)="logout()" class="dropdown-item">Become a Trainer</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" (click)="logout()" class="dropdown-item text-danger">Logout</a>
+                                    </li>
                                 </ul>
                             </li>
-
-                         </ul>
-                     </nav>
-                 </div>
-             </div>
-             <!--END: NAVIGATION-->
-         </div>
-     </div>
- </header>
- <!-- end: Header -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- END: NAVIGATION -->
+        </div>
+    </div>
+</header>
