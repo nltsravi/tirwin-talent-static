@@ -15,16 +15,15 @@ export class WebinarListComponent implements OnInit {
   filteredWebinars: any[] = [];
   isLoading = true;
   errorMessage = '';
+  currentPageType: string = ''
 
   constructor(private webinarService: WebinarService, private route: Router,private router: ActivatedRoute,) {}
 
   ngOnInit(): void {
-    const stype = this.router.snapshot.paramMap.get("stype");
-    if(stype){
-      this.fetchWebinars(stype);
-    }else{
-      this.fetchWebinars("masterclass");
-    }
+    this.router.params.subscribe((params:any) => {
+      this.currentPageType = params?.stype
+      this.fetchWebinars(params?.stype);
+    });
    
   }
 
@@ -72,6 +71,6 @@ export class WebinarListComponent implements OnInit {
 
   viewDetails(webinar:any) {
     console.log("webinar",webinar)
-    this.route.navigate([`webinar-details/${webinar?.id}`])
+    this.route.navigate([`webinar/${this.currentPageType}/${webinar?.id}`])
   }
 }

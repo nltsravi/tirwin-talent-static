@@ -15,6 +15,7 @@ export class WebinarDetailsComponent implements OnInit {
   userId: any = ""; // Assume this comes from localStorage/session
   trainers: any = [];
   currentIndex = 0;
+  currentPageType: any = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -25,6 +26,14 @@ export class WebinarDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.userId = JSON.parse(localStorage.getItem("user") ?? "{}"); // Use '{}' if null
     const webinarId = this.route.snapshot.paramMap.get("id");
+    const pageType = this.route.snapshot.paramMap.get('style');
+    if(pageType == 'masterclass') {
+      this.currentPageType = 'Master Class'
+    } else if(pageType == 'events') {
+      this.currentPageType = 'Event'
+    } else {
+      this.currentPageType = 'Training'
+    }
     if (webinarId) {
       this.fetchWebinarDetails(webinarId);
     } else {
