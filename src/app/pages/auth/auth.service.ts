@@ -11,9 +11,9 @@ export class AuthService {
     "https://dev.api.tirwintalent.com/api/auth/validate-otp";
   private profileUrl = "https://dev.api.tirwintalent.com/api/profile/me";
 
-  /*private apiUrl = "http://localhost:3000/api/auth/login";
-  private otpValidationUrl = "http://localhost:3000/api/auth/validate-otp";
-  private profileUrl = "http://localhost:3000/api/profile/me";*/
+  /*private apiUrl = "https://dev.api.tirwintalent.com/api/auth/login";
+  private otpValidationUrl = "https://dev.api.tirwintalent.com/api/auth/validate-otp";
+  private profileUrl = "https://dev.api.tirwintalent.com/api/profile/me";*/
 
   private authState = new BehaviorSubject<boolean>(this.isUserLoggedIn());
 

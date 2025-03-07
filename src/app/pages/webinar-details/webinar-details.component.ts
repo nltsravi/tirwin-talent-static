@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WebinarService } from './webinar-details.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: "app-webinar-details",
@@ -16,20 +17,26 @@ export class WebinarDetailsComponent implements OnInit {
   trainers: any = [];
   currentIndex = 0;
   currentPageType: any = '';
+  isLoggedIn = false; // ✅ Track login state
+  email: string = '';
+  alertMessage: string | null = null;
+  alertClass: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private webinarService: WebinarService
-  ) {}
+    private webinarService: WebinarService,
+    private authServices: AuthService
+  ) { }
 
   ngOnInit(): void {
     this.userId = JSON.parse(localStorage.getItem("user") ?? "{}"); // Use '{}' if null
+    this.isLoggedIn = !!localStorage.getItem('authToken'); // ✅ Check login status
     const webinarId = this.route.snapshot.paramMap.get("id");
     const pageType = this.route.snapshot.paramMap.get('style');
-    if(pageType == 'masterclass') {
+    if (pageType == 'masterclass') {
       this.currentPageType = 'Master Class'
-    } else if(pageType == 'events') {
+    } else if (pageType == 'events') {
       this.currentPageType = 'Event'
     } else {
       this.currentPageType = 'Training'
@@ -40,48 +47,36 @@ export class WebinarDetailsComponent implements OnInit {
       this.errorMessage = "Webinar ID is missing";
       this.isLoading = false;
     }
-     setInterval(() => {
-       this.nextSlide();
-     }, 5000);
+
+    localStorage.removeItem('successreturnUrl');
+    localStorage.removeItem('successreturnUrl');
+    setInterval(() => {
+      this.nextSlide();
+    }, 5000);
   }
 
   fetchWebinarDetails(id: string) {
     this.webinarService.getWebinarById(id).subscribe({
       next: (data) => {
         this.webinar = data;
-
+        console.log("this.webinar",this.webinar)
         //Below if condition is only for demo.
-        if (data.id == "fbde0931-bf80-4687-afa3-83d9a1694e26"){
+        if (data.id == "fbde0931-bf80-4687-afa3-83d9a1694e26") {
           this.webinar = {
-            id: "fbde0931-bf80-4687-afa3-83d9a1694e26",
-            title: "BRIDGING THE SKILL GAP & ENHANCING RECRUITMENT STRATEGIES IN THE LOGISTICS & SUPPLY CHAIN INDUSTRY",
-            description: "In today's volatile economic scenario, the real worth of people's education doesn’t result in productive employment. There is an evident gap on skills between industry demand and candidate availability. There is a growing relevance to make people job ready through continuous updating of skills",
-            type: "Online",
-            tags: ["EI"],
-            start_time: "2025-03-21T10:00:00.000Z",
-            end_time: "2025-03-21T12:00:00.000Z",
-            is_paid: false,
-            price: "0.00",
-            is_active: true,
-            created_at: "2025-02-22T12:41:39.714Z",
-            updated_at: "2025-02-22T12:41:39.714Z",
-            category: {
-              id: "cadad5fc-3dc0-4ec7-85dc-07325147025b",
-              name: "Supply Chain Management",
-              description:
-                "Webinars covering strategies and innovations in supply chain logistics",
-              is_active: true,
-              created_at: "2025-02-04T19:15:38.724Z",
-              updated_at: "2025-02-04T19:15:38.724Z",
-            },
-            subcategory: {
-              id: "ed4d6955-18eb-440b-808a-ccac9bf37a56",
-              name: "Inventory Management",
-              description: "Optimizing inventory flow in logistics",
-              is_active: true,
-              created_at: "2025-02-04T19:15:38.724Z",
-              updated_at: "2025-02-04T19:15:38.724Z",
-            },
+            id: this.webinar?.id,
+            title: this.webinar?.title,
+            description: this.webinar?.description,
+            type: this.webinar?.type,
+            tags: this.webinar?.tags,
+            start_time: this.webinar?.start_time,
+            end_time: this.webinar?.end_time,
+            is_paid: this.webinar?.is_paid,
+            price: this.webinar?.price,
+            is_active: this.webinar?.is_active,
+            created_at: this.webinar?.created_at,
+            updated_at: this.webinar?.updated_at,
+            category: this.webinar?.category,
+            subcategory: this.webinar?.subcategory,
             trainers: [
               {
                 id: "2a8a8ca9-c7bd-44e9-b6cc-7c6e4dec4746",
@@ -171,9 +166,9 @@ export class WebinarDetailsComponent implements OnInit {
             attendees: [],
             subscriptions: [],
             subscribedUserIds: [],
-            isUserRegistered: false,
+            isUserRegistered: this.webinar?.isUserRegistered,
           };
-        }else{
+        } else {
           this.webinar = data;
         }
         this.isLoading = false;
@@ -195,8 +190,9 @@ export class WebinarDetailsComponent implements OnInit {
     this.showModal = false;
   }
 
+
   /** Adds webinar to cart */
-  addToCart() {
+  subscribeToWebinar() {
     this.showModal = false;
 
     const token = localStorage.getItem("authToken");
@@ -215,11 +211,27 @@ export class WebinarDetailsComponent implements OnInit {
     const requestBody = {
       webinarId: this.webinar?.id,
       userId: this.userId?.id,
+      transactionId: `TXN${Date.now()}`,
+      amount: parseFloat(this.webinar?.price)
     };
-
-    this.webinarService.addToCart(requestBody).subscribe({
+    const successreturnUrl = this.router.url;
+    localStorage.setItem('successreturnUrl', successreturnUrl);// ✅ Store it in localStorage
+    this.webinarService.registerForWebinarFlow(requestBody).subscribe({
       next: () => {
-        this.router.navigate(["/checkout"]); // Redirect to checkout page
+        setTimeout(() => {
+          const returnUrl = localStorage.getItem('successreturnUrl')
+          if(returnUrl) {
+            localStorage.removeItem('successreturnUrl'); // ✅ Clear the stored returnUrl
+            this.router.navigateByUrl(returnUrl);
+            this.router.navigate([returnUrl]).then(() => {
+              window.location.reload(); // **Force page reload**
+            });
+          } else {
+            this.router.navigate(['/webinar']).then(() => {
+              window.location.reload(); // **Force page reload**
+            });
+          }
+        }, 1000);    
       },
       error: () => {
         this.errorMessage = "Failed to add to cart. Try again.";
@@ -237,4 +249,60 @@ export class WebinarDetailsComponent implements OnInit {
     this.currentIndex =
       (this.currentIndex + 1) % this.webinar.trainers.length;
   }
+
+
+  sendOtp() {
+    if (!this.email) {
+      this.showAlert('Please enter your email', 'alert-danger');
+      return;
+    }
+
+    this.authServices.sendOtp(this.email).subscribe({
+      next: (response) => {
+        this.showAlert(response.message, 'alert-success');
+
+        // ✅ Get the return URL from router state or default to '/'
+        const returnUrl = this.router.url;
+        localStorage.setItem('returnUrl', returnUrl);// ✅ Store it in localStorage
+  
+        setTimeout(() => {
+          this.router.navigate(['/auth/validate'], { state: { email: this.email, returnUrl } });
+        }, 2000);
+      },
+      error: () => {
+        this.showAlert('Failed to send OTP. Please try again.', 'alert-danger');
+      }
+    });
+  }
+
+  showAlert(message: string, type: string) {
+    this.alertMessage = message;
+    this.alertClass = type;
+    setTimeout(() => this.clearAlert(), 5000);
+  }
+
+  clearAlert() {
+    this.alertMessage = null;
+    this.alertClass = '';
+  }
+
+  socialLogin(provider: string) {
+    if (provider === 'google') {
+      const returnUrl = this.router.url;
+      localStorage.setItem('returnUrl', returnUrl);// ✅ Store it in localStorage
+      window.location.href = 'https://dev.api.tirwintalent.com/api/auth/google';
+    }
+  }
+
+  redirectToLogin() {
+    const returnUrl = this.router.url; // Get the current URL
+    localStorage.setItem('returnUrl', returnUrl); // ✅ Store it in localStorage
+    this.router.navigate(['/auth/login']);
+}
+
+userRegistration() {
+  const returnUrl = this.router.url;
+  localStorage.setItem('returnUrl', returnUrl);// ✅ Store it in localStorage
+  this.router.navigate(['/auth/register']);
+}
 }

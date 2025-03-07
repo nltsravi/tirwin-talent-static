@@ -94,4 +94,12 @@ export class TraineeRegisterComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+
+  // ✅ Social Login Function for Google
+  socialLogin(social: string) {
+    if (social === "google") {
+      window.location.href = 'https://dev.api.tirwintalent.com/api/auth/google';
+    }
+  }
 }

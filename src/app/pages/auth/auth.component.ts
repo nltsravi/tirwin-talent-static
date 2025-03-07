@@ -1,3 +1,4 @@
+// auth.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
@@ -22,6 +23,23 @@ export class AuthComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
+    // ✅ Get the token from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+
+    if (token) {
+      // ✅ Save the token to local storage
+      localStorage.setItem('authToken', token);
+
+      // ✅ Update authentication state
+      this.authService.setAuthState(true);
+
+      // ✅ Clear the token from the URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+
+      // ✅ Redirect to the home page or desired page
+      this.getProfile()
+    }
     this.intervalId = setInterval(() => {
       this.nextImage();
     }, 5000);
@@ -48,12 +66,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.authService.sendOtp(this.email).subscribe({
       next: (response) => {
         this.showAlert(response.message, "alert-success");
-        const navigation = this.router.getCurrentNavigation();
-        console.log(navigation);
-        // Safely get return URL from state or default to webinars
-        const returnUrl =
-          this.router.getCurrentNavigation()?.extras.state?.["returnUrl"] ||
-          "/webinar";
+        const returnUrl = this.router.getCurrentNavigation()?.extras.state?.["returnUrl"] || "/webinar";
 
         setTimeout(() => {
           this.router.navigate(["/auth/validate"], {
@@ -68,11 +81,6 @@ export class AuthComponent implements OnInit, OnDestroy {
     });
   }
 
-  linkedInLogin() {
-    console.log("LinkedIn login triggered!");
-    // Implement LinkedIn OAuth API logic
-  }
-
   showAlert(message: string, type: string) {
     this.alertMessage = message;
     this.alertClass = type;
@@ -84,9 +92,40 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.alertClass = "";
   }
 
-  socialLogin(social:string){
-    if(social && social == "google"){
-      
+  // ✅ Social Login Function for Google
+  socialLogin(social: string) {
+    if (social === "google") {
+      window.location.href = 'https://dev.api.tirwintalent.com/api/auth/google';
     }
+  }
+
+  getProfile() {
+    // Fetch profile data
+    this.authService.getProfile().subscribe({
+      next: (userData) => {
+        localStorage.setItem('user', JSON.stringify(userData));
+        this.authService.setAuthState(true); // Update auth state
+        this.showAlert('Login successful', 'alert-success');
+
+        setTimeout(() => {
+          const returnUrl = localStorage.getItem('returnUrl')
+          if(returnUrl) {
+            localStorage.removeItem('returnUrl'); // ✅ Clear the stored returnUrl
+            this.router.navigateByUrl(returnUrl);
+            this.router.navigate([returnUrl]).then(() => {
+              window.location.reload(); // **Force page reload**
+            });
+          } else {
+            this.router.navigate(['/webinar']).then(() => {
+              window.location.reload(); // **Force page reload**
+            });
+          }
+        }, 2000);
+      },
+      error: (error) => {
+        console.error('Profile fetch error:', error);
+        this.showAlert('Failed to fetch user profile.', 'alert-danger');
+      }
+    });
   }
 }

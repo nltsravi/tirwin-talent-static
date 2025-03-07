@@ -65,10 +65,19 @@ export class OTPComponent implements OnInit, OnDestroy {
             this.showAlert('Login successful', 'alert-success');
   
             setTimeout(() => {
-              this.router.navigate(['/webinar']).then(() => {
-                window.location.reload(); // **Force page reload**
-              });
-            }, 2000);
+              const returnUrl = localStorage.getItem('returnUrl')
+              if(returnUrl) {
+                localStorage.removeItem('returnUrl'); // ✅ Clear the stored returnUrl
+                this.router.navigateByUrl(returnUrl);
+                this.router.navigate([returnUrl]).then(() => {
+                  window.location.reload(); // **Force page reload**
+                });
+              } else {
+                this.router.navigate(['/webinar']).then(() => {
+                  window.location.reload(); // **Force page reload**
+                });
+              }
+            }, 2000);            
           },
           error: (error) => {
             console.error('Profile fetch error:', error);

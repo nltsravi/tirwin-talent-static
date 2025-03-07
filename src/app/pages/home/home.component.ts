@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
     setInterval(() => {
       this.nextSlide();
     }, 5000);
+    console.log("testset")
   }
 
   prevSlide() {

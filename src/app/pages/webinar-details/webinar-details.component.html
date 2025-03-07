@@ -23,7 +23,7 @@
                         } -->
                         About this {{currentPageType}}
                     </h2>
-                    <p class="text-muted">{{ webinar?.description }}</p>
+                    <!-- <p class="text-muted">{{ webinar?.description }}</p> -->
 
                     <div class="row text-center mt-4">
                         <div class="col-6 col-md-3">
@@ -203,35 +203,70 @@
             <div class="col-lg-4">
                 <div class="card shadow-sm p-4 sticky-top">
                     <div class="text-center">
-                        <h2 class="h3 font-weight-bold text-dark">
+                        <h2 class="h3 font-weight-bold text-dark" *ngIf="!webinar?.isUserRegistered && isLoggedIn" >
                             {{ webinar?.is_paid ? ('INR ' + webinar?.price) : '0.00 INR' }}
                         </h2>
-
+            
                         <!-- Enrolled Button -->
-                        <button *ngIf="webinar?.isUserRegistered" class="btn btn-success btn-lg w-100 mt-3" disabled>
+                        <button *ngIf="webinar?.isUserRegistered" 
+                                class="btn btn-success btn-lg w-100 mt-3" disabled>
                             Enrolled
                         </button>
-
-                        <!-- Add to Cart Button -->
-                        <button *ngIf="!webinar?.isUserRegistered" class="btn btn-primary btn-lg w-100 mt-3"
-                            (click)="openConfirmationModal()">
-                            Add to Cart
+            
+                        <!-- Show Register Now if logged in -->
+                        <button *ngIf="!webinar?.isUserRegistered && isLoggedIn" 
+                                class="btn btn-primary btn-lg w-100 mt-3"
+                                (click)="openConfirmationModal()">
+                            Register Now
                         </button>
+            
+                        <!-- Show Login Box if not logged in -->
+                        <div *ngIf="!isLoggedIn" class="login-box mt-4">
+                            <h4 class="text-center mb-2">Sign in to Complete Registration</h4> 
+            
+                            <button class="btn btn-light w-100 d-flex align-items-center justify-content-center" 
+                                    (click)="socialLogin('google')">
+                                <img src="https://developers.google.com/identity/images/g-logo.png" 
+                                    alt="Google Logo" class="me-2" style="width: 20px;" />
+                                <span class="fw-bold">Sign in with Google</span>
+                            </button>     
 
+                            <p class="text-center mb-2">or</p>   
+
+                            <form (ngSubmit)="sendOtp()" class="mb-4">
+                                <div class="form-group mb-3">
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        [(ngModel)]="email"
+                                        name="email"
+                                        class="form-control"
+                                        placeholder="Enter your email"
+                                        required
+                                    />
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Send OTP</button>
+                            </form>           
+            
+                            <p class="text-center mt-4">
+                                <small>Not registered? <a href="javascript:;" (click)="userRegistration()" class="text-primary fw-bold">Create account</a></small>
+                            </p>
+                        </div>
+            
                         <!-- Confirmation Modal -->
                         <div class="modal fade show d-block" *ngIf="showModal" tabindex="-1">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Confirm Add to Cart</h5>
+                                        <h5 class="modal-title">Confirm Registration</h5>
                                         <button type="button" class="close" (click)="closeModal()">&times;</button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Are you sure you want to add "{{ webinar?.title }}" to your cart?</p>
+                                        <p>Are you sure you want to register for "{{ webinar?.title }}"?</p>
                                     </div>
                                     <div class="modal-footer">
                                         <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
-                                        <button class="btn btn-primary" (click)="addToCart()">Yes, Add to Cart</button>
+                                        <button class="btn btn-primary" (click)="subscribeToWebinar()">Yes, Register</button>
                                     </div>
                                 </div>
                             </div>
