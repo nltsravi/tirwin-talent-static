@@ -5,7 +5,7 @@
     <!-- Card Grid -->
     <div class="card-grid">
         <div class="card" *ngFor="let course of courses">
-          <a href="/webinar">
+          <a (click)="navigateToLogistics(course)" href="javascript:;">
             <div class="card-banner">
                 <span class="badge">{{ course.badge }}</span>
                 <img [src]="course.image" [alt]="course.title" class="course-image" />
