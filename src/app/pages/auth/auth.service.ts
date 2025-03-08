@@ -1,19 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject} from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  private apiUrl = "https://dev.api.tirwintalent.com/api/auth/login";
-  private otpValidationUrl =
-    "https://dev.api.tirwintalent.com/api/auth/validate-otp";
-  private profileUrl = "https://dev.api.tirwintalent.com/api/profile/me";
-
-  /*private apiUrl = "https://dev.api.tirwintalent.com/api/auth/login";
-  private otpValidationUrl = "https://dev.api.tirwintalent.com/api/auth/validate-otp";
-  private profileUrl = "https://dev.api.tirwintalent.com/api/profile/me";*/
+  private apiUrl = `${environment.api}/auth/login`;
+  private otpValidationUrl = `${environment.api}/auth/validate-otp`;
+  private profileUrl = `${environment.api}/profile/me`;
 
   private authState = new BehaviorSubject<boolean>(this.isUserLoggedIn());
 

@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TraineeRegisterService {
-  private userApiUrl = 'https://dev.api.tirwintalent.com/api/users'; // User Registration API
-  private otpApiUrl = 'https://dev.api.tirwintalent.com/api/auth/login'; // OTP Trigger API
-  private validateOtpApiUrl = 'https://dev.api.tirwintalent.com/api/auth/validate-otp'; // OTP Validation API
+  private userApiUrl = `${environment.api}/users`; // User Registration API
+  private otpApiUrl = `${environment.api}/auth/login`; // OTP Trigger API
+  private validateOtpApiUrl = `${environment.api}/auth/validate-otp`; // OTP Validation API
 
   constructor(private http: HttpClient) {}
 

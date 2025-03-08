@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private baseUrl = 'https://dev.api.tirwintalent.com/api';
-  private subscribeUrl = 'https://dev.api.tirwintalent.com/api/webinar-subscriptions/subscribe';
+  private baseUrl = environment.api;
 
   constructor(private http: HttpClient) {}
 
@@ -31,6 +31,6 @@ export class CartService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.post(this.subscribeUrl, payload, { headers });
+    return this.http.post(`${this.baseUrl}/webinar-subscriptions/subscribe`, payload, { headers });
   }
 }

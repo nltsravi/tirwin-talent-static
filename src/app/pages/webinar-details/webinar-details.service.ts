@@ -1,22 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: "root",
 })
 export class WebinarService {
-  private apiUrl = "https://dev.api.tirwintalent.com/api/webinars";
-  private publicApiUrl = "https://dev.api.tirwintalent.com/api/webinars";
-  private subscribeUrl =
-    "https://dev.api.tirwintalent.com/api/webinar-subscriptions/subscribe";
-  private baseUrl = "https://dev.api.tirwintalent.com/api";
-
-  /*private apiUrl = "https://dev.api.tirwintalent.com/api/webinars";
-  private publicApiUrl = "https://dev.api.tirwintalent.com/api/webinars";
-  private subscribeUrl =
-    "https://dev.api.tirwintalent.com/api/webinar-subscriptions/subscribe";
-  private baseUrl = "https://dev.api.tirwintalent.com/api";*/
+  private subscribeUrl = `${environment.api}/webinar-subscriptions/subscribe`;
+  private baseUrl = `${environment.api}`;
 
   constructor(private http: HttpClient) {}
 
@@ -28,10 +20,10 @@ export class WebinarService {
 
     if (token) {
       headers = headers.set("Authorization", `Bearer ${token}`);
-      return this.http.get<any>(`${this.apiUrl}/${id}/${currentUser?.id}`, { headers });
+      return this.http.get<any>(`${this.baseUrl}/webinars/${id}/${currentUser?.id}`, { headers });
     } else {
       return this.http.get<any>(
-        `${this.publicApiUrl}/get-webinar-public/${id}`
+        `${this.baseUrl}/webinars/get-webinar-public/${id}`
       );
     }
   }
@@ -51,7 +43,7 @@ export class WebinarService {
       amount: parseFloat(amount),
     };
 
-    return this.http.post<any>(this.subscribeUrl, payload, { headers });
+    return this.http.post<any>(`${this.baseUrl}/webinar-subscriptions/subscribe`, payload, { headers });
   }
 
   addToCart(data: { webinarId: string; userId: string }) {
@@ -71,7 +63,7 @@ export class WebinarService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.post(this.subscribeUrl, payload, { headers });
+    return this.http.post(`${this.baseUrl}/webinar-subscriptions/subscribe`, payload, { headers });
   }
   
 }

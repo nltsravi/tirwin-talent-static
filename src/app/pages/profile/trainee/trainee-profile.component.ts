@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TraineeProfileService } from './trainee-profile.service';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-trainee-profile',
@@ -74,7 +75,7 @@ export class TraineeProfileComponent implements OnInit {
   // Get the pre-signed URL from the backend
   getUploadUrl(fileType: string) {
     const userId = this.trainer.userId;
-    const url = `https://dev.api.tirwintalent.com/api/users/profile-image/upload-url`;
+    const url = `${environment.api}/users/profile-image/upload-url`;
   
     const body = { userId, fileType };
   
@@ -112,7 +113,7 @@ export class TraineeProfileComponent implements OnInit {
   // Update user profile image URL in the database
   updateUserProfile(imageUrl: string) {
     const userId = this.trainer.userId;
-    const url = `https://dev.api.tirwintalent.com/api/users/${userId}`;
+    const url = `${environment.api}/users/${userId}`;
     
     this.http.patch(url, { profile_image: imageUrl }).subscribe({
       next: () => {

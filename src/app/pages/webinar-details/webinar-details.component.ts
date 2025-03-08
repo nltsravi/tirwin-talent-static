@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WebinarService } from './webinar-details.service';
 import { AuthService } from '../auth/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: "app-webinar-details",
@@ -290,7 +291,7 @@ export class WebinarDetailsComponent implements OnInit {
     if (provider === 'google') {
       const returnUrl = this.router.url;
       localStorage.setItem('returnUrl', returnUrl);// ✅ Store it in localStorage
-      window.location.href = 'https://dev.api.tirwintalent.com/api/auth/google';
+      window.location.href = `${environment.api}/auth/google`;
     }
   }
 

@@ -2,6 +2,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: "app-auth",
@@ -95,7 +96,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   // ✅ Social Login Function for Google
   socialLogin(social: string) {
     if (social === "google") {
-      window.location.href = 'https://dev.api.tirwintalent.com/api/auth/google';
+      window.location.href = `${environment.api}/auth/google`
     }
   }
 

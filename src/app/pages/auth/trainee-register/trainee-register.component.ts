@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TraineeRegisterService } from './trainee-register.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-trainee-register',
@@ -99,7 +100,7 @@ export class TraineeRegisterComponent implements OnInit, OnDestroy {
   // ✅ Social Login Function for Google
   socialLogin(social: string) {
     if (social === "google") {
-      window.location.href = 'https://dev.api.tirwintalent.com/api/auth/google';
+      window.location.href = `${environment.api}/api/auth/google`;
     }
   }
 }
