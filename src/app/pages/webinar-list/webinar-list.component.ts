@@ -17,10 +17,12 @@ export class WebinarListComponent implements OnInit {
   errorMessage = '';
   currentPageType: string = ''
   queryString: string = ''
+  isLoggedIn: boolean = false; 
 
   constructor(private webinarService: WebinarService, private route: Router,private router: ActivatedRoute,) {}
 
   ngOnInit(): void {
+    this.isLoggedIn = !!localStorage.getItem('authToken');
     this.router.params.subscribe((params:any) => {
       this.currentPageType = params?.stype
       this.fetchWebinars(params?.stype,'allCourses');

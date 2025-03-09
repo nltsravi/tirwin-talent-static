@@ -33,7 +33,7 @@
                 All Courses
             </button>
         </li>
-        <li class="nav-item" role="presentation">
+        <li class="nav-item" role="presentation" *ngIf="isLoggedIn">
             <button class="nav-link" id="my-courses-tab" data-bs-toggle="tab" data-bs-target="#my-courses" type="button"
                 role="tab" aria-controls="my-courses" aria-selected="false" (click)="setActiveTab('myCourses')">
                 My Courses
