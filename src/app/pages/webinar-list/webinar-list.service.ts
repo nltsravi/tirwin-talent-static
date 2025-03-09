@@ -7,12 +7,17 @@ import { environment } from '../../../environments/environment';
   providedIn: "root",
 })
 export class WebinarService {
-  private apiUrl = 'https://dev.api.tirwintalent.com/api/webinars';
-
   constructor(private http: HttpClient) {}
 
-  getWebinars(stype: string): Observable<any[]> {
-    const url=`${environment.api}/webinars/${stype}`;
-    return this.http.get<any[]>(url);
+  getWebinars(stype: string,tabType:string): Observable<any[]> {
+    if(tabType === 'allCourses') {
+      const url=`${environment.api}/webinars/${stype}`;
+      return this.http.get<any[]>(url);
+      }
+    else {
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const url=`${environment.api}/webinars/my-webinars/${stype}/${user?.id}`;
+      return this.http.get<any[]>(url);
+      }
   }
 }

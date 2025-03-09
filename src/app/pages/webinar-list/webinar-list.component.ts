@@ -23,7 +23,7 @@ export class WebinarListComponent implements OnInit {
   ngOnInit(): void {
     this.router.params.subscribe((params:any) => {
       this.currentPageType = params?.stype
-      this.fetchWebinars(params?.stype);
+      this.fetchWebinars(params?.stype,'allCourses');
     });
     this.router.queryParams.subscribe((params:any) => {
       const type = params['type'];
@@ -32,9 +32,10 @@ export class WebinarListComponent implements OnInit {
    
   }
 
-  fetchWebinars(stype:string) {
+  fetchWebinars(stype:string,tabType:string) {
+    console.log(this.queryString)
     this.isLoading = true;
-    this.webinarService.getWebinars(stype).subscribe({
+    this.webinarService.getWebinars(stype,tabType).subscribe({
       next: (data) => {
         console.log(data);
         this.webinars = data.map(webinar => ({
@@ -45,7 +46,7 @@ export class WebinarListComponent implements OnInit {
           session_description:webinar.session_description,
           trainer_ids:webinar.trainer_ids,
           image: webinar.media.find((m:any) => m.media_type === 'banner')?.media_url || 'https://via.placeholder.com/300',
-          author: `${webinar.trainer.organization}`,
+          author: (this.currentPageType === 'events')? 'Panelists':`${webinar.trainer.user.first_name} ${webinar.trainer.user.last_name}`,
           date: webinar.start_time?new Date(webinar.start_time).toLocaleDateString():null,
           time: webinar.end_time?new Date(webinar.end_time).toLocaleTimeString():null,
           category: webinar.category.name,
@@ -80,4 +81,10 @@ export class WebinarListComponent implements OnInit {
     console.log("webinar",webinar)
     this.route.navigate([`webinar/${this.currentPageType}/${webinar?.id}`])
   }
-}
+
+  setActiveTab(tabtype:string) {
+    this.searchQuery = '';
+    this.selectedCategory = '';
+    this.fetchWebinars(this.currentPageType,tabtype)
+  }
+ }
