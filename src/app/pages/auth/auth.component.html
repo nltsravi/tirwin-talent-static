@@ -27,7 +27,7 @@
               </div>
               <form (ngSubmit)="sendOtp()">
                 <div class="form-group">
-                  <label for="email">Email Address</label>
+                  <label for="email">Email Address<span class=req-astrix>*</span></label>
                   <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email"
                     placeholder="Enter your email" required />
                 </div>

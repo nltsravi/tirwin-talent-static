@@ -2,7 +2,7 @@
   <div class="register-section">
     <div class="container-fluid">
       <div class="row align-items-center min-vh-100">
-        
+
         <!-- Left: Full-Screen Banner Carousel -->
         <div class="col-md-4 d-none d-md-block p-0">
           <!-- <div class="custom-carousel">
@@ -19,10 +19,17 @@
                 <p class="text-muted">Fill in your details to register.</p>
               </div>
               <form (ngSubmit)="registerTrainee()">
-                
+
                 <div class="form-group">
-                  <label for="firstName" >Full Name<span class=req-astrix>*</span></label>
-                  <input type="text" class="form-control" id="firstName" [(ngModel)]="firstName" name="firstName" required />
+                  <label for="firstName">First Name<span class=req-astrix>*</span></label>
+                  <input type="text" class="form-control" id="firstName" [(ngModel)]="firstName" name="firstName"
+                    required />
+                </div>
+
+                <div class="form-group">
+                  <label for="lastName">Last Name<span class=req-astrix>*</span></label>
+                  <input type="text" class="form-control" id="lastName" [(ngModel)]="lastName" name="lastName"
+                    required />
                 </div>
 
                 <div class="form-group">
@@ -35,11 +42,22 @@
                   <input type="tel" class="form-control" id="phone" [(ngModel)]="phone" name="phone" required />
                 </div>
 
+                <div class="form-group">
+                  <label for="jobTitle">Job Title<span class=req-astrix>*</span></label>
+                  <input type="text" class="form-control" id="jobTitle" [(ngModel)]="jobTitle" name="jobTitle"
+                    required />
+                </div>
+
+                <div class="form-group">
+                  <label for="company">Company<span class=req-astrix>*</span></label>
+                  <input type="text" class="form-control" id="company" [(ngModel)]="company" name="company" required />
+                </div>
+
                 <div class="mt-3">
                   <button type="submit" class="btn btn-primary btn-block w-100">Register</button>
                 </div>
               </form>
-              
+
               <!-- Register as Trainer Button -->
               <div class="mt-3 text-center">
                 <p class="text-muted">Want to become a trainer?</p>
@@ -52,9 +70,9 @@
               </div>
             </div>
             <div class="mb-3 text-center">
-              <hr/>
+              <hr />
               <span>or</span>
-              
+
             </div>
             <div class="mt-3 text-center">
               <button (click)="socialLogin('google')"
