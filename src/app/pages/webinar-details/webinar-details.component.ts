@@ -288,10 +288,12 @@ export class WebinarDetailsComponent implements OnInit {
   }
 
   socialLogin(provider: string) {
-    if (provider === 'google') {
-      const returnUrl = this.router.url;
-      localStorage.setItem('returnUrl', returnUrl);// ✅ Store it in localStorage
+    const returnUrl = this.router.url;
+    localStorage.setItem('returnUrl', returnUrl);// ✅ Store it in localStorage
+  if (provider === 'google') {
       window.location.href = `${environment.api}/auth/google`;
+    } else {
+      this.router.navigate(['/auth/register'])
     }
   }
 
@@ -305,5 +307,11 @@ userRegistration() {
   const returnUrl = this.router.url;
   localStorage.setItem('returnUrl', returnUrl);// ✅ Store it in localStorage
   this.router.navigate(['/auth/register']);
+}
+
+login() {
+  const returnUrl = this.router.url;
+  localStorage.setItem('returnUrl', returnUrl);// ✅ Store it in localStorage
+  this.router.navigate(['/auth/login']);
 }
 }

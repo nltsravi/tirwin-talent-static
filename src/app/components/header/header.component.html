@@ -4,59 +4,103 @@
             <!-- Logo -->
             <div id="logo">
                 <a routerLink="/">
-                    <img src="https://tirwin.in/images/pages/tirwin/tirwin-talent.jpg" alt="Tirwin Logo" class="logo-img"/>
+                    <img
+                        src="https://tirwin.in/images/pages/tirwin/tirwin-talent.jpg"
+                        alt="Tirwin Logo"
+                        class="logo-img"
+                    />
                 </a>
             </div>
-            <!-- End: Logo -->
-            <!-- Navigation Responsive Trigger -->
-            <div id="mainMenu-trigger">
-                <a class="lines-button x"><span class="lines"></span></a>
+
+            <!-- Desktop Navigation -->
+            <div id="mainMenu" class="desktop-menu">
+                <nav>
+                    <ul>
+                        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                            <a routerLink="/home">Home</a>
+                        </li>
+                        <li routerLinkActive="active">
+                            <a routerLink="/webinar/masterclass">Master Classes</a>
+                        </li>
+                        <li routerLinkActive="active">
+                            <a routerLink="/webinar/events">Events</a>
+                        </li>
+                        <li routerLinkActive="active">
+                            <a routerLink="/webinar/training">Training</a>
+                        </li>
+                        <li *ngIf="!isAuthenticated" routerLinkActive="active">
+                            <a routerLink="/auth/login">Login</a>
+                        </li>
+                        <li *ngIf="isAuthenticated" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+                                {{ userName }} <i class="fas fa-user"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li routerLinkActive="active">
+                                    <a routerLink="/profile/user" class="dropdown-item">Profile</a>
+                                </li>
+                                <li>
+                                    <a href="#" (click)="logout()" class="dropdown-item">Become a Trainer</a>
+                                </li>
+                                <li>
+                                    <a href="#" (click)="logout()" class="dropdown-item text-danger">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-            <!-- End: Navigation Responsive Trigger -->
-            <!-- Navigation -->
-            <div id="mainMenu">
-                <div class="container">
-                    <nav>
-                        <ul>
-                            <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                                <a routerLink="/home">Home</a>
+
+            <!-- Mobile Menu Trigger -->
+            <div id="mainMenu-trigger" (click)="toggleMobileMenu()">
+                <a class="menu-icon">
+                    <span *ngIf="!isMobileMenuOpen">&#9776;</span> <!-- Hamburger Icon -->
+                    <span *ngIf="isMobileMenuOpen" class="close-icon">&times;</span> <!-- Close Icon -->
+                </a>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <div id="mobileMenu" class="mobile-menu" [class.open]="isMobileMenuOpen">
+                <ul>
+                    <li>
+                        <a routerLink="/home" (click)="toggleMobileMenu()">Home</a>
+                    </li>
+                    <li>
+                        <a routerLink="/webinar/masterclass" (click)="toggleMobileMenu()">Master Classes</a>
+                    </li>
+                    <li>
+                        <a routerLink="/webinar/events" (click)="toggleMobileMenu()">Events</a>
+                    </li>
+                    <li>
+                        <a routerLink="/webinar/training" (click)="toggleMobileMenu()">Training</a>
+                    </li>
+                    <li *ngIf="!isAuthenticated">
+                        <a routerLink="/auth/login" (click)="toggleMobileMenu()">Login</a>
+                    </li>
+                    <li *ngIf="isAuthenticated">
+                        <a routerLink="/profile/user" (click)="toggleMobileMenu()">Profile</a>
+                    </li>
+                    <li *ngIf="isAuthenticated">
+                        <a href="#" (click)="logout()">Logout</a>
+                    </li>
+                    <li *ngIf="isAuthenticated" class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+                            {{ userName }} <i class="fas fa-user"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li routerLinkActive="active">
+                                <a routerLink="/profile/user" class="dropdown-item">Profile</a>
                             </li>
-                            <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">
-                                <a routerLink="/webinar/masterclass">Master Classes</a>
+                            <li>
+                                <a href="#" (click)="logout()" class="dropdown-item">Become a Trainer</a>
                             </li>
-                            <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">
-                                <a routerLink="/webinar/events">Events</a>
-                            </li>
-                            <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">
-                                <a routerLink="/webinar/training">Training</a>
-                            </li>
-                    
-                            <!-- Dynamic Authentication -->
-                            <li *ngIf="!isAuthenticated" routerLinkActive="active">
-                                <a routerLink="/auth/login">Login</a>
-                            </li>
-                    
-                            <li *ngIf="isAuthenticated" class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
-                                    {{ userName }} <i class="fas fa-user"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li routerLinkActive="active">
-                                        <a routerLink="/profile/user" class="dropdown-item">Profile</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" (click)="logout()" class="dropdown-item">Become a Trainer</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" (click)="logout()" class="dropdown-item text-danger">Logout</a>
-                                    </li>
-                                </ul>
+                            <li>
+                                <a href="#" (click)="logout()" class="dropdown-item text-danger">Logout</a>
                             </li>
                         </ul>
-                    </nav>
-                </div>
+                    </li>
+                </ul>
             </div>
-            <!-- END: NAVIGATION -->
         </div>
     </div>
 </header>

@@ -48,9 +48,9 @@ export class WebinarListComponent implements OnInit {
           session_description:webinar.session_description,
           trainer_ids:webinar.trainer_ids,
           image: webinar.media.find((m:any) => m.media_type === 'banner')?.media_url || 'https://via.placeholder.com/300',
-          author: (this.currentPageType === 'events')? 'Panelists':`${webinar.trainer.user.first_name} ${webinar.trainer.user.last_name}`,
-          date: webinar.start_time?new Date(webinar.start_time).toLocaleDateString():null,
-          time: webinar.end_time?new Date(webinar.end_time).toLocaleTimeString():null,
+          author: (this.currentPageType === 'events')? 'Panel Members':`${webinar.trainer.user.first_name} ${webinar.trainer.user.last_name}`,
+          start_time: webinar.start_time?new Date(webinar.start_time).toLocaleDateString():null,
+          end_time: webinar.end_time?new Date(webinar.end_time).toLocaleTimeString():null,
           category: webinar.category.name,
           isNew: new Date(webinar.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Mark as new if created within the last 7 days
         }));

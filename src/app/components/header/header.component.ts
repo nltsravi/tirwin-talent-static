@@ -11,13 +11,13 @@ export class HeaderComponent implements OnInit {
   isAuthenticated: boolean = false;
   userName: string = "";
   currentUrl: string = "";
+  isMobileMenuOpen: boolean = false;
 
   constructor(private router: Router, private authService: AuthService) { 
     this.isActive('/home')
   }
 
   ngOnInit() {
-    // Listen for authentication changes
     this.authService.getAuthState().subscribe((authStatus) => {
       this.isAuthenticated = authStatus;
       this.loadUserData();
@@ -49,5 +49,9 @@ export class HeaderComponent implements OnInit {
   isActive(path: string): boolean {
     console.log(`Checking active class for: ${path}, Current URL: ${this.currentUrl}`);
     return this.currentUrl === path;
+  }
+  
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 }

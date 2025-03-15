@@ -4,7 +4,7 @@
         <div class="container text-left">
             <span class="badge badge-no-outline">{{ webinar?.category?.name }}</span>
             <h1 class="display-4 font-weight-bold">{{ webinar?.title }}</h1>
-            <p class="lead">{{ webinar?.description }}</p>
+            <!-- <p class="lead">{{ webinar?.description }}</p> -->
         </div>
     </section>
 
@@ -27,11 +27,11 @@
 
                     <div class="row text-center mt-4">
                         <div class="col-6 col-md-3">
-                            <i class="fas fa-clock text-primary"></i> 
+                            <i class="fas fa-calendar-alt text-primary"></i> 
                             {{ webinar?.start_time ? (webinar?.start_time | date:'longDate') : 'TBD' }}
                         </div>
                         <div class="col-6 col-md-3">
-                            <i class="fas fa-calendar-alt text-primary"></i> 
+                            <i class="fas fa-clock text-primary"></i> 
                             {{ webinar?.start_time && webinar?.end_time 
                                 ? (webinar?.start_time | date:'shortTime') + ' - ' + (webinar?.end_time | date:'shortTime') 
                                 : 'TBD' 
@@ -39,14 +39,14 @@
                         </div>
                         <div class="col-6 col-md-3"><i class="fas fa-user text-primary"></i> 
                             @if(webinar?.trainers){
-                                {{ webinar?.trainers[0].organization}}
+                                Panel Members
                             }
                             @else {
-                                {{ webinar?.trainer.organization}}
+                                TDB
                             }
                         </div>
-                        <div class="col-6 col-md-3"><i class="fas fa-tags text-primary"></i> {{ webinar?.tags?.join(',
-                            ') }}</div>
+                        <!-- <div class="col-6 col-md-3"><i class="fas fa-tags text-primary"></i> {{ webinar?.tags?.join(',
+                            ') }}</div> -->
                     </div>
                 </div>
 
@@ -79,7 +79,7 @@
                                         Panel Discussion Details
                                     }
                                     @else {
-                                        Webinar Details
+                                        {{currentPageType}} Details
                                     }
                                 </span>
                             </h2>
@@ -87,7 +87,7 @@
                         <div id="collapseDetails" class="collapse show" aria-labelledby="headingDetails" *ngIf="!webinar?.additional_info?.course_structure">
                             <div class="card-body">
                                 <p>{{ webinar?.description }}</p>
-                                <ul>
+                                <!-- <ul>
                                     <li>
                                         <strong>Start Time:</strong> 
                                         {{ webinar?.start_time ? (webinar?.start_time | date:'medium') : 'TBD' }}
@@ -104,7 +104,7 @@
                                         <strong>Subcategory:</strong> 
                                         {{ webinar?.subcategory?.name }}
                                     </li>
-                                </ul>
+                                </ul> -->
                             </div>
                         </div>
                         <div id="collapseDetails" class="collapse show" aria-labelledby="headingDetails" *ngIf="webinar?.additional_info?.course_structure">
@@ -175,7 +175,7 @@
                     </div>
 
                     <!-- Terms & Conditions -->
-                    <div class="card">
+                    <!-- <div class="card">
                         <div class="card-header" id="headingTerms">
                             <h2 class="mb-0">
                                 <span class="custom-link" data-bs-toggle="collapse" data-bs-target="#collapseTerms">
@@ -194,7 +194,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
             </div>
@@ -222,34 +222,21 @@
             
                         <!-- Show Login Box if not logged in -->
                         <div *ngIf="!isLoggedIn" class="login-box mt-4">
-                            <h4 class="text-center mb-2">Sign in to Complete Registration</h4> 
+                            <h4 class="text-center mb-2">Sign up to Complete Registration</h4> 
             
                             <button class="btn btn-light w-100 d-flex align-items-center justify-content-center" 
                                     (click)="socialLogin('google')">
                                 <img src="https://developers.google.com/identity/images/g-logo.png" 
                                     alt="Google Logo" class="me-2" style="width: 20px;" />
-                                <span class="fw-bold">Sign in with Google</span>
+                                <span class="fw-bold">Sign up with Google</span>
                             </button>     
 
                             <p class="text-center mb-2">or</p>   
 
-                            <form (ngSubmit)="sendOtp()" class="mb-4">
-                                <div class="form-group mb-3">
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        [(ngModel)]="email"
-                                        name="email"
-                                        class="form-control"
-                                        placeholder="Enter your email"
-                                        required
-                                    />
-                                </div>
-                                <button type="submit" class="btn btn-primary w-100">Send OTP</button>
-                            </form>           
+                            <button type="submit" class="btn btn-primary w-100" (click)="socialLogin('self')">Sign up with Email</button>        
             
                             <p class="text-center mt-4">
-                                <small>Not registered? <a href="javascript:;" (click)="userRegistration()" class="text-primary fw-bold">Create account</a></small>
+                                <small>Already signed up? <a href="javascript:;" (click)="login()" class="text-primary fw-bold">Click here to login</a></small>
                             </p>
                         </div>
             
