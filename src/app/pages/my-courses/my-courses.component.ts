@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { WebinarService } from './webinar-list.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MyWebinarService } from './my-courses.service';
 
 @Component({
-  selector: 'app-webinar-list',
-  templateUrl: './webinar-list.component.html',
-  styleUrls: ['./webinar-list.component.css']
+  selector: 'app-my-webinar-list',
+  templateUrl: './my-courses.component.html',
+  styleUrls: ['./my-courses.component.css']
 })
-export class WebinarListComponent implements OnInit {
+export class MyWebinarListComponent implements OnInit {
   searchQuery = '';
   selectedCategory = '';
   categories: any[] = [];
@@ -18,36 +18,19 @@ export class WebinarListComponent implements OnInit {
   currentPageType: string = ''
   queryString: string = ''
   isLoggedIn: boolean = false; 
-  activeTab: string = ''; // Default empty, set dynamically
-// ✅ Dynamic Tabs Configuration
-tabs: { id: string; label: string; show: boolean }[] = [];
-  constructor(private webinarService: WebinarService, private route: Router,private router: ActivatedRoute,) {}
+
+  constructor(private webinarService: MyWebinarService, private route: Router,private router: ActivatedRoute,) {}
 
   ngOnInit(): void {
     this.isLoggedIn = !!localStorage.getItem('authToken');
-     // ✅ Define Tabs Dynamically
-     this.tabs = [
-      { id: 'allCourses', label: 'All Courses', show: true },
-      { id: 'myCourses', label: 'My Courses', show: this.isLoggedIn }
-    ];
-    this.router.params.subscribe((params:any) => {
-      this.currentPageType = params?.stype || 'allCourses'; // Default to "allCourses"
-      this.activeTab = this.tabs.find(tab => tab.id === this.currentPageType)?.id || 'allCourses';
-      console.log(this.activeTab)
-      this.fetchWebinars(params?.stype,'allCourses');
-    });
-    this.router.queryParams.subscribe((params:any) => {
-      const type = params['type'];
-      this.queryString = type
-    });
-
-   
+    this.setActiveTab('masterclass')
+    // this.fetchWebinars('masterclass')
   }
 
-  fetchWebinars(stype:string,tabType:string) {
+  fetchWebinars(stype:string) {
     console.log(this.queryString)
     this.isLoading = true;
-    this.webinarService.getWebinars(stype,tabType).subscribe({
+    this.webinarService.getWebinars(stype).subscribe({
       next: (data) => {
         console.log(data);
         this.webinars = data.map(webinar => ({
@@ -97,6 +80,7 @@ tabs: { id: string; label: string; show: boolean }[] = [];
   setActiveTab(tabtype:string) {
     this.searchQuery = '';
     this.selectedCategory = '';
-    this.fetchWebinars(this.currentPageType,tabtype)
+    this.currentPageType=tabtype;
+    this.fetchWebinars(tabtype)
   }
  }

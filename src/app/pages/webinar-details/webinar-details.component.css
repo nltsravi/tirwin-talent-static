@@ -20,7 +20,7 @@
     object-fit: cover;
     border-radius: 50%;
     border: 3px solid #e3e6ea;
-}
+}disabled-btn
 
 .trainer-info h5 {
     color: #2c3e50;
@@ -173,4 +173,9 @@
       text-align: center;
       position: relative;
     }
+}
+/* You can add global styles to this file, and also import other style files */
+button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not([href]):not([tabindex]).btn-primary {
+  background-color: #2250fc;
+  border-color: #2250fc;
 }

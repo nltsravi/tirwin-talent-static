@@ -26,17 +26,17 @@
 
     <!-- Tabs Section -->
     <ul class="nav nav-tabs mb-4" id="courseTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="all-courses-tab" data-bs-toggle="tab" data-bs-target="#all-courses"
-                type="button" role="tab" aria-controls="all-courses" aria-selected="true"
-                (click)="setActiveTab('allCourses')">
-                All Courses
-            </button>
-        </li>
-        <li class="nav-item" role="presentation" *ngIf="isLoggedIn">
-            <button class="nav-link" id="my-courses-tab" data-bs-toggle="tab" data-bs-target="#my-courses" type="button"
-                role="tab" aria-controls="my-courses" aria-selected="false" (click)="setActiveTab('myCourses')">
-                My Courses
+        <li class="nav-item" role="presentation" *ngFor="let tab of tabs" [hidden]="!tab.show">
+            <button class="nav-link" 
+                    [id]="tab.id + '-tab'" 
+                    data-bs-toggle="tab" 
+                    [attr.data-bs-target]="'#' + tab.id"
+                    type="button" 
+                    role="tab" 
+                    [attr.aria-controls]="tab.id"
+                    [class.active]="activeTab === tab.id"
+                    (click)="setActiveTab(tab.id)">
+                {{ tab.label }}
             </button>
         </li>
     </ul>
@@ -63,7 +63,7 @@
                             <p class="text-muted">
                                 <i class="fas fa-calendar"></i>
                                 {{ webinar?.start_time && webinar?.end_time
-                                ? 'March 21, 2025 4:00 PM - 5:00 PM'
+                                ? 'April 10, 2025 4:00 PM - 5:00 PM'
                                 : 'TBD'
                                 }}
                             </p>
@@ -101,7 +101,7 @@
                                 {{ webinar?.start_time && webinar?.end_time
                                     ? webinar?.start_time + ' | ' + webinar?.end_time
                                     : 'TBD'
-                                    }}dfgdsf
+                                    }}
                             </p>
                             <button class="btn btn-primary w-100" (click)="viewDetails(webinar)">View Details</button>
                         </div>

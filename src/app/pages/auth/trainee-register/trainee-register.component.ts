@@ -48,16 +48,16 @@ export class TraineeRegisterComponent implements OnInit, OnDestroy {
     }
   }
 
-  registerTrainee() {
-    if (!this.firstName || !this.lastName || !this.email || !this.jobTitle || !this.phone || !this.company) {
-      this.errorMessage = 'Please fill all required fields.';
+  registerTrainee(registerForm: any) {
+    if (!registerForm.valid) {
+      this.errorMessage = 'Please fill all required fields correctly.';
       return;
     }
-
+  
     this.isSubmitting = true;
     this.successMessage = '';
     this.errorMessage = '';
-
+  
     const userData = {
       email: this.email,
       phone: this.phone,
@@ -69,28 +69,40 @@ export class TraineeRegisterComponent implements OnInit, OnDestroy {
       is_first_time_login: true,
       subscriptionId: this.subscriptionId
     };
-
+  
     this.registerService.registerUser(userData).subscribe({
       next: (response) => {
         this.successMessage = response.message;
-        
-        // ✅ After registration, trigger OTP
+  
+        // ✅ Send OTP after successful registration
         this.registerService.sendOtp(this.email).subscribe({
           next: () => {
             // ✅ Redirect to OTP validation page
-            this.router.navigate(['/auth/validate'], { state: { email: this.email } }); // Pass email to OTP page
+            this.router.navigate(['/auth/validate'], { state: { email: this.email } });
           },
           error: (otpError) => {
             console.error('Error sending OTP:', otpError);
-            this.errorMessage = 'Registration successful, but failed to send OTP.';
+            this.errorMessage = 'Registration successful, but OTP sending failed.';
           }
         });
-
+  
         this.isSubmitting = false;
       },
       error: (error) => {
         console.error('Error registering trainee:', error);
-        this.errorMessage = error.error.message || 'Failed to register. Please try again later.';
+  
+        if (error.error?.message) {
+          if (typeof error.error.message === 'string') {
+            // Case 1: Direct string message
+            this.errorMessage = error.error.message;
+          } else if (Array.isArray(error.error.message)) {
+            // Case 2: Array of validation errors
+            this.errorMessage = error.error.message.join(', ');
+          }
+        } else {
+          this.errorMessage = 'Failed to register. Please try again later.';
+        }
+  
         this.isSubmitting = false;
       }
     });

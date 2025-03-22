@@ -40,7 +40,10 @@
                                     <a routerLink="/profile/user" class="dropdown-item">Profile</a>
                                 </li>
                                 <li>
-                                    <a href="#" (click)="logout()" class="dropdown-item">Become a Trainer</a>
+                                    <a href="#" routerLink="/myregistration" class="dropdown-item">My Courses</a>
+                                </li>
+                                <li>
+                                    <a href="#"  class="dropdown-item">Become a Trainer</a>
                                 </li>
                                 <li>
                                     <a href="#" (click)="logout()" class="dropdown-item text-danger">Logout</a>
@@ -81,6 +84,9 @@
                         <a routerLink="/profile/user" (click)="toggleMobileMenu()">Profile</a>
                     </li>
                     <li *ngIf="isAuthenticated">
+                        <a  routerLink="/myregistration" class="dropdown-item" (click)="toggleMobileMenu()">My Courses</a>
+                    </li>
+                    <li *ngIf="isAuthenticated">
                         <a href="#" (click)="logout()">Logout</a>
                     </li>
                     <li *ngIf="isAuthenticated" class="dropdown">
@@ -92,7 +98,10 @@
                                 <a routerLink="/profile/user" class="dropdown-item">Profile</a>
                             </li>
                             <li>
-                                <a href="#" (click)="logout()" class="dropdown-item">Become a Trainer</a>
+                                <a href="#" routerLink="/myregistration" class="dropdown-item">My Courses</a>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-item">Become a Trainer</a>
                             </li>
                             <li>
                                 <a href="#" (click)="logout()" class="dropdown-item text-danger">Logout</a>
