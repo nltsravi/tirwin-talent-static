@@ -22,7 +22,7 @@ export class MyWebinarListComponent implements OnInit {
   constructor(private webinarService: MyWebinarService, private route: Router,private router: ActivatedRoute,) {}
 
   ngOnInit(): void {
-    this.isLoggedIn = !!localStorage.getItem('authToken');
+    this.isLoggedIn = !!sessionStorage.getItem('authToken');
     this.setActiveTab('masterclass')
     // this.fetchWebinars('masterclass')
   }

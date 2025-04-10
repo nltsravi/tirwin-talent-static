@@ -30,7 +30,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
     if (token) {
       // ✅ Save the token to local storage
-      localStorage.setItem('authToken', token);
+      sessionStorage.setItem('authToken', token);
 
       // ✅ Update authentication state
       this.authService.setAuthState(true);
@@ -104,14 +104,14 @@ export class AuthComponent implements OnInit, OnDestroy {
     // Fetch profile data
     this.authService.getProfile().subscribe({
       next: (userData) => {
-        localStorage.setItem('user', JSON.stringify(userData));
+        sessionStorage.setItem('user', JSON.stringify(userData));
         this.authService.setAuthState(true); // Update auth state
         this.showAlert('Login successful', 'alert-success');
 
         setTimeout(() => {
-          const returnUrl = localStorage.getItem('returnUrl')
+          const returnUrl = sessionStorage.getItem('returnUrl')
           if(returnUrl) {
-            localStorage.removeItem('returnUrl'); // ✅ Clear the stored returnUrl
+            sessionStorage.removeItem('returnUrl'); // ✅ Clear the stored returnUrl
             this.router.navigateByUrl(returnUrl);
             this.router.navigate([returnUrl]).then(() => {
               window.location.reload(); // **Force page reload**

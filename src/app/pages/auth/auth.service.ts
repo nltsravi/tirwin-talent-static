@@ -17,7 +17,7 @@ export class AuthService {
 
   // Check if user is logged in
   isUserLoggedIn(): boolean {
-    return !!localStorage.getItem("authToken");
+    return !!sessionStorage.getItem("authToken");
   }
 
   // Expose auth state as an observable
@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   getProfile(): Observable<any> {
-    const token = localStorage.getItem("authToken");
+    const token = sessionStorage.getItem("authToken");
     if (!token)
       return new Observable((observer) => observer.error("No token found"));
 
@@ -55,8 +55,8 @@ export class AuthService {
 
   // Logout
   logout() {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("authToken");
+    sessionStorage.removeItem("user");
     this.setAuthState(false);
   }
 }

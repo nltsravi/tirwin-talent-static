@@ -60,12 +60,16 @@
                             <h5 class="card-title">{{ webinar.title }}</h5>
                             <p class="card-text">{{ webinar.description }}</p>
                             <p class="text-muted"><i class="fas fa-user"></i> {{ webinar.author }}</p>
-                            <p class="text-muted">
+                            <p class="text-muted" *ngIf="webinar?.session_type === 'TRAINING'">
+                                <i class="fas fa-calendar"></i>
+                                April 21st, 2025 - April 26st, 2025
+                            </p>
+                            <p class="text-muted" *ngIf="webinar?.session_type != 'TRAINING'">
                                 <i class="fas fa-calendar"></i>
                                 {{ webinar?.start_time && webinar?.end_time
-                                ? 'April 10, 2025 4:00 PM - 5:00 PM'
-                                : 'TBD'
-                                }}
+                                    ? 'April 10, 2025 4:00 PM - 5:00 PM'
+                                    : 'TBD'
+                                    }}
                             </p>
                             <button class="btn btn-primary w-100" (click)="viewDetails(webinar)">View Details</button>
                         </div>
@@ -96,10 +100,14 @@
                             <h5 class="card-title">{{ webinar.title }}</h5>
                             <p class="card-text">{{ webinar.description }}</p>
                             <p class="text-muted"><i class="fas fa-user"></i> {{ webinar.author }}</p>
-                            <p class="text-muted">
+                            <p class="text-muted" *ngIf="webinar?.session_type === 'TRAINING'">
+                                <i class="fas fa-calendar"></i>
+                                April 21st, 2025 - April 26st, 2025
+                            </p>
+                            <p class="text-muted" *ngIf="webinar?.session_type != 'TRAINING'">
                                 <i class="fas fa-calendar"></i>
                                 {{ webinar?.start_time && webinar?.end_time
-                                    ? webinar?.start_time + ' | ' + webinar?.end_time
+                                    ? 'April 10, 2025 4:00 PM - 5:00 PM'
                                     : 'TBD'
                                     }}
                             </p>

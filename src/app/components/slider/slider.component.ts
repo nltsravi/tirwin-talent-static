@@ -18,7 +18,7 @@ export class SliderComponent implements OnInit {
     buttonText: "Try Now →",
     buttonLink: "#",
     image:
-      "https://media.istockphoto.com/id/1443305526/photo/young-smiling-man-in-headphones-typing-on-laptop-keyboard.jpg?s=612x612&w=0&k=20&c=-JzAS5fjTvxyNRkYoaIlpoLfmt5AEIOcwpt6lk0D4TA=",
+      "https://tirwin-media-storage.s3.us-east-1.amazonaws.com/static-images/banner-image-slider.png",
   };
 
   ngOnInit() {
@@ -26,6 +26,6 @@ export class SliderComponent implements OnInit {
   }
 
   checkAuthentication() {
-    this.isAuthenticated = !!localStorage.getItem("authToken"); // Check if user is logged in
+    this.isAuthenticated = !!sessionStorage.getItem("authToken"); // Check if user is logged in
   }
 }

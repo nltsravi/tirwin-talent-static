@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
       id: "cadad5fc-3dc0-4ec7-85dc-07325147025b",
       badge: "Trending in Logistics",
       image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyO2XaEMc4sgXZa1fqNe3GrV45TFB_n_dolg&s",
+        "https://tirwin-media-storage.s3.us-east-1.amazonaws.com/static-images/logistics.png",
       title: "Logistics",
       logo: "assets/images/logistics-logo.png",
       provider: "Global Logistics Academy",
@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
       id: "7ee7bc4b-c557-43b6-a3da-590abfed4142",
       badge: "Build Your Career",
       image:
-        "https://imageio.forbes.com/specials-images/imageserve/61014981d2dd2061a156bba9/0x0.jpg?format=jpg&height=900&width=1600&fit=bounds",
+        "https://tirwin-media-storage.s3.us-east-1.amazonaws.com/static-images/cargo.png",
       title: "Freight & Cargo Management",
       logo: "assets/images/logistics-logo.png",
       provider: "Global Logistics Academy",
@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit {
       id: "32e1f0b3-2268-496d-9e99-453ca2f179ee",
       badge: "New Logistics Skills",
       image:
-        "https://cdn.prod.website-files.com/647888ca92d03e3fca3f1ea0/647888ca92d03e3fca3f21e6_shutterstock_1024749010.png",
+        "https://tirwin-media-storage.s3.us-east-1.amazonaws.com/static-images/warehouse.png",
       title: "Warehouse Operations",
       logo: "assets/images/logistics-logo.png",
       provider: "Global Logistics Academy",
@@ -78,7 +78,7 @@ export class HomeComponent implements OnInit {
       id: "0a64c164-d333-49a0-bbe5-ff5ce30d5b0c",
       badge: "Top Logistics Skills",
       image:
-        "https://blog.imec.org/hubfs/63bbca2d280184a6813575fa_Inventory-Management.jpg",
+        "https://tirwin-media-storage.s3.us-east-1.amazonaws.com/static-images/green-logistics.png",
       title: "Sustainability & Green Logistics",
       logo: "assets/images/logistics-logo.png",
       provider: "Global Logistics Academy",
@@ -91,7 +91,7 @@ export class HomeComponent implements OnInit {
       id: "61477099-485f-4072-83a8-f4b7508ce086",
       badge: "Trending in Logistics",
       image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyO2XaEMc4sgXZa1fqNe3GrV45TFB_n_dolg&s",
+        "https://tirwin-media-storage.s3.us-east-1.amazonaws.com/static-images/logistics.png",
       title: "Logistics Technology & Innovation",
       logo: "assets/images/logistics-logo.png",
       provider: "Global Logistics Academy",

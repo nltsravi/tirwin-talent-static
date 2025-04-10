@@ -21,7 +21,7 @@ export class CartService {
 
   /** Register user for a webinar */
   registerForWebinar(payload: any): Observable<any> {
-    const token = localStorage.getItem('authToken'); // Get token from local storage
+    const token = sessionStorage.getItem('authToken'); // Get token from local storage
     if (!token) {
       throw new Error('Authentication token is missing.');
     }

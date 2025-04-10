@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
   }
 
   loadUserData() {
-    const userData = localStorage.getItem("user");
+    const userData = sessionStorage.getItem("user");
     if (userData) {
       const user = JSON.parse(userData);
       this.userName = `${user.first_name} ${user.last_name}`;

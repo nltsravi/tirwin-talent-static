@@ -21,7 +21,7 @@ export class TraineeProfileComponent implements OnInit {
   constructor(private profileService: TraineeProfileService, private http: HttpClient) {}
 
   ngOnInit() {
-    const token = localStorage.getItem('authToken');
+    const token = sessionStorage.getItem('authToken');
 
     if (token) {
       this.profileService.getProfile(token).subscribe({

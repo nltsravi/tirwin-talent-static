@@ -14,7 +14,7 @@ export class WebinarDetailsComponent implements OnInit {
   isLoading = true;
   errorMessage = "";
   showModal = false;
-  userId: any = ""; // Assume this comes from localStorage/session
+  userId: any = ""; // Assume this comes from sessionStorage/session
   trainers: any = [];
   currentIndex = 0;
   currentPageType: any = '';
@@ -31,8 +31,8 @@ export class WebinarDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userId = JSON.parse(localStorage.getItem("user") ?? "{}"); // Use '{}' if null
-    this.isLoggedIn = !!localStorage.getItem('authToken'); // ✅ Check login status
+    this.userId = JSON.parse(sessionStorage.getItem("user") ?? "{}"); // Use '{}' if null
+    this.isLoggedIn = !!sessionStorage.getItem('authToken'); // ✅ Check login status
     const webinarId = this.route.snapshot.paramMap.get("id");
     const pageType = this.route.snapshot.paramMap.get('style');
     if (pageType == 'masterclass') {
@@ -49,8 +49,8 @@ export class WebinarDetailsComponent implements OnInit {
       this.isLoading = false;
     }
 
-    localStorage.removeItem('successreturnUrl');
-    localStorage.removeItem('successreturnUrl');
+    sessionStorage.removeItem('successreturnUrl');
+    sessionStorage.removeItem('successreturnUrl');
     setInterval(() => {
       this.nextSlide();
     }, 5000);
@@ -196,7 +196,7 @@ export class WebinarDetailsComponent implements OnInit {
   subscribeToWebinar() {
     this.showModal = false;
 
-    const token = localStorage.getItem("authToken");
+    const token = sessionStorage.getItem("authToken");
 
     if (!token) {
       // Get the return URL correctly
@@ -216,13 +216,13 @@ export class WebinarDetailsComponent implements OnInit {
       amount: parseFloat(this.webinar?.price)
     };
     const successreturnUrl = this.router.url;
-    localStorage.setItem('successreturnUrl', successreturnUrl);// ✅ Store it in localStorage
+    sessionStorage.setItem('successreturnUrl', successreturnUrl);// ✅ Store it in sessionStorage
     this.webinarService.registerForWebinarFlow(requestBody).subscribe({
       next: () => {
         setTimeout(() => {
-          const returnUrl = localStorage.getItem('successreturnUrl')
+          const returnUrl = sessionStorage.getItem('successreturnUrl')
           if(returnUrl) {
-            localStorage.removeItem('successreturnUrl'); // ✅ Clear the stored returnUrl
+            sessionStorage.removeItem('successreturnUrl'); // ✅ Clear the stored returnUrl
             this.router.navigateByUrl(returnUrl);
             this.router.navigate([returnUrl]).then(() => {
               window.location.reload(); // **Force page reload**
@@ -264,7 +264,7 @@ export class WebinarDetailsComponent implements OnInit {
 
         // ✅ Get the return URL from router state or default to '/'
         const returnUrl = this.router.url;
-        localStorage.setItem('returnUrl', returnUrl);// ✅ Store it in localStorage
+        sessionStorage.setItem('returnUrl', returnUrl);// ✅ Store it in sessionStorage
   
         setTimeout(() => {
           this.router.navigate(['/auth/validate'], { state: { email: this.email, returnUrl } });
@@ -289,7 +289,7 @@ export class WebinarDetailsComponent implements OnInit {
 
   socialLogin(provider: string) {
     const returnUrl = this.router.url;
-    localStorage.setItem('returnUrl', returnUrl);// ✅ Store it in localStorage
+    sessionStorage.setItem('returnUrl', returnUrl);// ✅ Store it in sessionStorage
   if (provider === 'google') {
       window.location.href = `${environment.api}/auth/google`;
     } else {
@@ -299,19 +299,19 @@ export class WebinarDetailsComponent implements OnInit {
 
   redirectToLogin() {
     const returnUrl = this.router.url; // Get the current URL
-    localStorage.setItem('returnUrl', returnUrl); // ✅ Store it in localStorage
+    sessionStorage.setItem('returnUrl', returnUrl); // ✅ Store it in sessionStorage
     this.router.navigate(['/auth/login']);
 }
 
 userRegistration() {
   const returnUrl = this.router.url;
-  localStorage.setItem('returnUrl', returnUrl);// ✅ Store it in localStorage
+  sessionStorage.setItem('returnUrl', returnUrl);// ✅ Store it in sessionStorage
   this.router.navigate(['/auth/register']);
 }
 
 login() {
   const returnUrl = this.router.url;
-  localStorage.setItem('returnUrl', returnUrl);// ✅ Store it in localStorage
+  sessionStorage.setItem('returnUrl', returnUrl);// ✅ Store it in sessionStorage
   this.router.navigate(['/auth/login']);
 }
 }

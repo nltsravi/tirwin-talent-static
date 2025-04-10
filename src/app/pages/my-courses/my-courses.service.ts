@@ -10,7 +10,7 @@ export class MyWebinarService {
   constructor(private http: HttpClient) {}
 
   getWebinars(stype: string): Observable<any[]> {
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const user = JSON.parse(sessionStorage.getItem("user") || "{}");
       const url=`${environment.api}/webinars/my-webinars/${stype}/${user?.id}`;
       return this.http.get<any[]>(url);      
   }

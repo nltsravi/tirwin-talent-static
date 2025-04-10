@@ -25,7 +25,7 @@
                     </h2>
                     <!-- <p class="text-muted">{{ webinar?.description }}</p> -->
 
-                    <div class="row text-center mt-4">
+                    <div class="row text-center mt-4" *ngIf="currentPageType != 'Training'">
                         <div class="col-6 col-md-3">
                             <i class="fas fa-calendar-alt text-primary"></i> 
                             {{ webinar?.start_time ? (webinar?.start_time | date:'longDate') : 'TBD' }}
@@ -44,6 +44,23 @@
                             @else {
                                 TDB
                             }
+                        </div>
+                        <!-- <div class="col-6 col-md-3"><i class="fas fa-tags text-primary"></i> {{ webinar?.tags?.join(',
+                            ') }}</div> -->
+                    </div>
+
+                    <div class="row text-center mt-4" *ngIf="currentPageType === 'Training'">
+                        <div class="col-6 col-md-3">
+                            <i class="fas fa-calendar-alt text-primary"></i> 
+                            {{webinar?.additional_info?.aboutTraining?.start_date}} - 
+                            {{webinar?.additional_info?.aboutTraining?.end_date}}
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <i class="fas fa-map-marker-alt text-primary"></i> 
+                            {{webinar?.additional_info?.aboutTraining?.location}}
+                        </div>
+                        <div class="col-6 col-md-3"><i class="fas fa-user text-primary"></i> 
+                            {{webinar?.additional_info?.aboutTraining?.training_type}}
                         </div>
                         <!-- <div class="col-6 col-md-3"><i class="fas fa-tags text-primary"></i> {{ webinar?.tags?.join(',
                             ') }}</div> -->
@@ -203,9 +220,10 @@
             <div class="col-lg-4">
                 <div class="card shadow-sm p-4 sticky-top">
                     <div class="text-center">
-                        <h2 class="h3 font-weight-bold text-dark" *ngIf="!webinar?.isUserRegistered && isLoggedIn" >
-                            {{ webinar?.is_paid ? ('INR ' + webinar?.price) : '0.00 INR' }}
-                        </h2>
+                        <h2 class="h3 font-weight-bold text-dark" *ngIf="!webinar?.isUserRegistered">
+                            {{ webinar?.is_paid ? (webinar?.price | currency:'INR ':'code':'1.2-2') : 'INR 0.00' }}
+                          </h2>
+                          <span *ngIf="currentPageType === 'Training' && webinar?.is_paid && !webinar?.isUserRegistered">&nbsp;(excluding GST)</span>
             
                         <!-- Enrolled Button -->
                         <button *ngIf="webinar?.isUserRegistered" 

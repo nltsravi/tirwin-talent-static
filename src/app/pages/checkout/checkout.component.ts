@@ -17,7 +17,7 @@ export class CheckoutComponent implements OnInit {
   constructor(private cartService: CartService, private router: Router) { }
 
   ngOnInit() {
-    this.userId = JSON.parse(localStorage.getItem('user') ?? '{}'); // Use '{}' if null
+    this.userId = JSON.parse(sessionStorage.getItem('user') ?? '{}'); // Use '{}' if null
 
     if (this.userId) {
       this.getCartItems();

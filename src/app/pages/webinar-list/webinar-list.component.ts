@@ -24,7 +24,7 @@ tabs: { id: string; label: string; show: boolean }[] = [];
   constructor(private webinarService: WebinarService, private route: Router,private router: ActivatedRoute,) {}
 
   ngOnInit(): void {
-    this.isLoggedIn = !!localStorage.getItem('authToken');
+    this.isLoggedIn = !!sessionStorage.getItem('authToken');
      // ✅ Define Tabs Dynamically
      this.tabs = [
       { id: 'allCourses', label: 'All Courses', show: true },

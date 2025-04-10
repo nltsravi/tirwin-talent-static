@@ -55,19 +55,19 @@ export class OTPComponent implements OnInit, OnDestroy {
   
     this.authService.validateOtp(this.email, this.otpCode.toString()).subscribe({
       next: (response) => {
-        localStorage.setItem('authToken', response.token);
+        sessionStorage.setItem('authToken', response.token);
   
         // Fetch profile data
         this.authService.getProfile().subscribe({
           next: (userData) => {
-            localStorage.setItem('user', JSON.stringify(userData));
+            sessionStorage.setItem('user', JSON.stringify(userData));
             this.authService.setAuthState(true); // Update auth state
             this.showAlert('Login successful', 'alert-success');
   
             setTimeout(() => {
-              const returnUrl = localStorage.getItem('returnUrl')
+              const returnUrl = sessionStorage.getItem('returnUrl')
               if(returnUrl) {
-                localStorage.removeItem('returnUrl'); // ✅ Clear the stored returnUrl
+                sessionStorage.removeItem('returnUrl'); // ✅ Clear the stored returnUrl
                 this.router.navigateByUrl(returnUrl);
                 this.router.navigate([returnUrl]).then(() => {
                   window.location.reload(); // **Force page reload**

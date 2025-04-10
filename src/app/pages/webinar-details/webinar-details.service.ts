@@ -13,8 +13,8 @@ export class WebinarService {
   constructor(private http: HttpClient) {}
 
   getWebinarById(id: string): Observable<any> {
-    const token = localStorage.getItem("authToken");
-    const currentUser: any = JSON.parse(localStorage.getItem('user') || '{}');
+    const token = sessionStorage.getItem("authToken");
+    const currentUser: any = JSON.parse(sessionStorage.getItem('user') || '{}');
     console.log("currentUser",currentUser)    
     let headers = new HttpHeaders();
 
@@ -29,8 +29,8 @@ export class WebinarService {
   }
 
   registerForWebinar(webinarId: string, amount: any): Observable<any> {
-    const token = localStorage.getItem("authToken");
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const token = sessionStorage.getItem("authToken");
+    const user = JSON.parse(sessionStorage.getItem("user") || "{}");
     if (!token || !user.id) {
       return new Observable((observer) => observer.error("User not logged in"));
     }
@@ -53,7 +53,7 @@ export class WebinarService {
 
   /** Register user for a webinar */
   registerForWebinarFlow(payload: any): Observable<any> {
-    const token = localStorage.getItem('authToken'); // Get token from local storage
+    const token = sessionStorage.getItem('authToken'); // Get token from local storage
     if (!token) {
       throw new Error('Authentication token is missing.');
     }
