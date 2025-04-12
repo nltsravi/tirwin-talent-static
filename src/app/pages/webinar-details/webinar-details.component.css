@@ -179,3 +179,7 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
   background-color: #2250fc;
   border-color: #2250fc;
 }
+
+.font-btn {
+  font-size: 15px !important;
+}

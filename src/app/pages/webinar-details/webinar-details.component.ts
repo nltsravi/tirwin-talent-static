@@ -4,7 +4,7 @@ import { WebinarService } from './webinar-details.service';
 import { AuthService } from '../auth/auth.service';
 import { environment } from '../../../environments/environment';
 
-@Component({ 
+@Component({
   selector: "app-webinar-details",
   templateUrl: "./webinar-details.component.html",
   styleUrls: ["./webinar-details.component.css"],
@@ -22,6 +22,9 @@ export class WebinarDetailsComponent implements OnInit {
   email: string = '';
   alertMessage: string | null = null;
   alertClass: string = '';
+  joinNow: boolean = false;
+  timeLeft: string = '';
+  private countdownInterval: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,13 +57,16 @@ export class WebinarDetailsComponent implements OnInit {
     setInterval(() => {
       this.nextSlide();
     }, 5000);
+    if (this.currentPageType === 'Event') {
+      this.setupCountdown();
+    }
   }
 
   fetchWebinarDetails(id: string) {
     this.webinarService.getWebinarById(id).subscribe({
       next: (data) => {
         this.webinar = data;
-        console.log("this.webinar",this.webinar)
+        console.log("this.webinar", this.webinar)
         //Below if condition is only for demo.
         if (data.id == "fbde0931-bf80-4687-afa3-83d9a1694e26") {
           this.webinar = {
@@ -168,6 +174,7 @@ export class WebinarDetailsComponent implements OnInit {
             subscriptions: [],
             subscribedUserIds: [],
             isUserRegistered: this.webinar?.isUserRegistered,
+            registrationClosed: true
           };
         } else {
           this.webinar = data;
@@ -221,7 +228,7 @@ export class WebinarDetailsComponent implements OnInit {
       next: () => {
         setTimeout(() => {
           const returnUrl = sessionStorage.getItem('successreturnUrl')
-          if(returnUrl) {
+          if (returnUrl) {
             sessionStorage.removeItem('successreturnUrl'); // ✅ Clear the stored returnUrl
             this.router.navigateByUrl(returnUrl);
             this.router.navigate([returnUrl]).then(() => {
@@ -232,7 +239,7 @@ export class WebinarDetailsComponent implements OnInit {
               window.location.reload(); // **Force page reload**
             });
           }
-        }, 1000);    
+        }, 1000);
       },
       error: () => {
         this.errorMessage = "Failed to add to cart. Try again.";
@@ -265,7 +272,7 @@ export class WebinarDetailsComponent implements OnInit {
         // ✅ Get the return URL from router state or default to '/'
         const returnUrl = this.router.url;
         sessionStorage.setItem('returnUrl', returnUrl);// ✅ Store it in sessionStorage
-  
+
         setTimeout(() => {
           this.router.navigate(['/auth/validate'], { state: { email: this.email, returnUrl } });
         }, 2000);
@@ -290,7 +297,7 @@ export class WebinarDetailsComponent implements OnInit {
   socialLogin(provider: string) {
     const returnUrl = this.router.url;
     sessionStorage.setItem('returnUrl', returnUrl);// ✅ Store it in sessionStorage
-  if (provider === 'google') {
+    if (provider === 'google') {
       window.location.href = `${environment.api}/auth/google`;
     } else {
       this.router.navigate(['/auth/register'])
@@ -301,17 +308,52 @@ export class WebinarDetailsComponent implements OnInit {
     const returnUrl = this.router.url; // Get the current URL
     sessionStorage.setItem('returnUrl', returnUrl); // ✅ Store it in sessionStorage
     this.router.navigate(['/auth/login']);
-}
+  }
 
-userRegistration() {
-  const returnUrl = this.router.url;
-  sessionStorage.setItem('returnUrl', returnUrl);// ✅ Store it in sessionStorage
-  this.router.navigate(['/auth/register']);
-}
+  userRegistration() {
+    const returnUrl = this.router.url;
+    sessionStorage.setItem('returnUrl', returnUrl);// ✅ Store it in sessionStorage
+    this.router.navigate(['/auth/register']);
+  }
 
-login() {
-  const returnUrl = this.router.url;
-  sessionStorage.setItem('returnUrl', returnUrl);// ✅ Store it in sessionStorage
-  this.router.navigate(['/auth/login']);
-}
+  login() {
+    const returnUrl = this.router.url;
+    sessionStorage.setItem('returnUrl', returnUrl);// ✅ Store it in sessionStorage
+    this.router.navigate(['/auth/login']);
+  }
+  setupCountdown() {
+    const checkJoinTime = () => {
+      if (!this.webinar?.start_time) return;
+  
+      const eventIST = new Date(this.webinar.start_time).getTime(); // Already in IST
+      const joinIST = eventIST - 10 * 60 * 1000; // 10 mins before
+  
+      const now = new Date().getTime(); // Browser local time (assumed to match IST for you)
+  
+      if (now >= joinIST) {
+        this.joinNow = true;
+        this.timeLeft = '';
+        clearInterval(this.countdownInterval);
+      } else {
+        const diff = joinIST - now;
+        const hrs = Math.floor((diff / 1000 / 60 / 60) % 24);
+        const mins = Math.floor((diff / 1000 / 60) % 60);
+        const secs = Math.floor((diff / 1000) % 60);
+        this.timeLeft = `${this.pad(hrs)}h ${this.pad(mins)}m ${this.pad(secs)}s`;
+      }
+    };
+  
+    checkJoinTime();
+    this.countdownInterval = setInterval(checkJoinTime, 1000);
+  }
+
+  pad(n: number): string {
+    return n < 10 ? '0' + n : '' + n;
+  }
+
+  ngOnDestroy(): void {
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+    }
+  }
 }

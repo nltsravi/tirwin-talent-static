@@ -219,17 +219,29 @@
             <!-- Sidebar with Add to Cart & Enrollment -->
             <div class="col-lg-4">
                 <div class="card shadow-sm p-4 sticky-top">
-                    <div class="text-center">
+                    <div class="text-center" *ngIf="!webinar?.registrationClosed">
                         <h2 class="h3 font-weight-bold text-dark" *ngIf="!webinar?.isUserRegistered">
                             {{ webinar?.is_paid ? (webinar?.price | currency:'INR ':'code':'1.2-2') : 'INR 0.00' }}
                           </h2>
                           <span *ngIf="currentPageType === 'Training' && webinar?.is_paid && !webinar?.isUserRegistered">&nbsp;(excluding GST)</span>
             
                         <!-- Enrolled Button -->
-                        <button *ngIf="webinar?.isUserRegistered" 
+                        <button *ngIf="webinar?.isUserRegistered && currentPageType != 'Event'" 
                                 class="btn btn-success btn-lg w-100 mt-3" disabled>
                             Enrolled
                         </button>
+                        <!-- Enrolled or Join Now or Timer -->
+                        <div *ngIf="webinar?.isUserRegistered && currentPageType === 'Event'">
+                            <button *ngIf="!joinNow" class="btn btn-success btn-lg w-100 mt-3 font-btn" disabled>
+                            Starts in {{ timeLeft }}
+                            </button>
+                            <a *ngIf="joinNow" 
+                            class="btn btn-success btn-lg w-100 mt-3" 
+                            href="https://zoom.us/j/2024140404?pwd=3GmvlEVQ8myG0L87peGTc1KCepLb2T.1&omn=95727757611" 
+                            target="_blank">
+                            Join Now
+                            </a>
+                        </div>
             
                         <!-- Show Register Now if logged in -->
                         <button *ngIf="!webinar?.isUserRegistered && isLoggedIn" 
@@ -237,7 +249,7 @@
                                 (click)="openConfirmationModal()" [disabled]="!webinar?.start_time">
                             Register Now
                         </button>
-            
+                        <span *ngIf="!webinar?.isUserRegistered && isLoggedIn && !joinNow && currentPageType === 'Event'">Starts in {{ timeLeft }}</span>
                         <!-- Show Login Box if not logged in -->
                         <div *ngIf="!isLoggedIn" class="login-box mt-4">
                             <h4 class="text-center mb-2">Sign up to Complete Registration</h4> 
@@ -278,6 +290,14 @@
                         </div>
                         <div class="modal-backdrop fade show" *ngIf="showModal"></div>
                     </div>
+
+            
+                    <!-- Show Register Now if logged in -->
+                    <button  *ngIf="webinar?.registrationClosed"
+                            class="btn btn-primary btn-lg w-100 mt-3" [ngStyle]="!webinar?.start_time ? {'opacity': '0.6', 'cursor': 'not-allowed','background-color': '#d6d6d6', 'border-color': '#b0b0b0', 'color': '#000'} : {}"
+                            >
+                        Registration Closed
+                    </button>
                 </div>
 
                 <!-- Trainer Profile Section -->
