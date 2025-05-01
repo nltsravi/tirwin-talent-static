@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/angular-17-crud",
+            "outputPath": "dist",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -40,7 +40,7 @@
               "src/assets/css/style.css",
               "src/assets/css/plugins.css",
               "src/assets/css/theme.css",
-              "node_modules/flickity/css/flickity.css"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
 
             ],
             "scripts": [
@@ -48,7 +48,7 @@
               "src/assets/js/plugins.js",
               "src/assets/js/functions.js",
               "node_modules/popper.js/dist/umd/popper.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "node_modules/flickity/dist/flickity.pkgd.min.js"
 
             ]
@@ -58,8 +58,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",

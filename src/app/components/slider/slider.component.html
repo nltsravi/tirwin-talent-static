@@ -1,10 +1,31 @@
-<div class="banner d-flex align-items-center">
-  <div class="banner-content">
+<div class="banner d-flex flex-column flex-md-row align-items-center">
+  
+  <!-- Left: Banner Content -->
+  <div class="banner-content text-md-left">
     <h1 class="animate-title">{{ slide.title }}</h1>
     <p class="animate-description" [innerHTML]="slide.description"></p>
-    <a [href]="slide.buttonLink" class="btn btn-primary">{{ slide.buttonText }}</a>
+
+    <!-- Show Different Content Based on Login Status -->
+    <div class="button-group">
+      <ng-container *ngIf="!isAuthenticated">
+        <a href="/auth/register" class="btn btn-primary">Start your Journey with us</a>
+      </ng-container>
+
+      <ng-container *ngIf="isAuthenticated">
+        <a href="/webinar/masterclass" class="btn btn-primary">Master Classes</a>
+      </ng-container>
+      <ng-container *ngIf="isAuthenticated">
+        <a href="/webinar/events" class="btn btn-primary">Events</a>
+      </ng-container>
+      <ng-container *ngIf="isAuthenticated">
+        <a href="/webinar/training" class="btn btn-primary">Training</a>
+      </ng-container>
+    </div>
   </div>
+
+  <!-- Right: Banner Image -->
   <div class="banner-image">
     <img [src]="slide.image" alt="Banner Image" class="img-fluid">
   </div>
+
 </div>

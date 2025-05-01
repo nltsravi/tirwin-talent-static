@@ -1,0 +1,185 @@
+.badge-no-outline {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.custom-link {
+  cursor: pointer;
+}
+
+.trainer-profile-card {
+    border-radius: 10px;
+    background: #ffffff;
+    transition: all 0.3s ease-in-out;
+}
+
+.trainer-profile-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #e3e6ea;
+}disabled-btn
+
+.trainer-info h5 {
+    color: #2c3e50;
+}
+
+.trainer-stats .badge {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    font-weight: 600;
+    border-radius: 5px;
+}
+
+.trainer-stats .fa {
+    margin-right: 5px;
+}
+
+.btn-outline-primary {
+    font-size: 0.9rem;
+    padding: 5px 12px;
+}
+
+.trainer-profile-card {
+  border-radius: 10px;
+  background: #ffffff;
+  transition: all 0.3s ease-in-out;
+  padding: 20px;
+}
+
+.trainer-profile-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #e3e6ea;
+}
+
+.trainer-info h5 {
+  color: #2c3e50;
+}
+
+.trainer-stats .badge {
+  font-size: 0.85rem;
+  padding: 8px 12px;
+  font-weight: 600;
+  border-radius: 5px;
+}
+
+.trainer-bio {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #555;
+  max-width: 80%;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.btn-outline-primary {
+  font-size: 0.9rem;
+  padding: 5px 12px;
+}
+
+.trainer-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.trainer-slider {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  height: 200px;
+  text-align: center;
+  position: relative;
+}
+
+.trainer-card {
+  flex: 0 0 100%;
+  transition: transform 0.5s ease-in-out;
+  opacity: 0;
+  transform: translateX(100%);
+  position: absolute;
+  width: 100%;
+}
+
+.trainer-card.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.trainer-card p {
+  font-size: 16px;
+  font-style: italic;
+  margin-bottom: 5px;
+}
+
+.trainer-card strong {
+  color: #007bff;
+}
+
+/* Navigation Buttons */
+.prev-btn,
+.next-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #007bff;
+  position: absolute;
+}
+
+.prev-btn {
+  left: -15px;
+}
+
+.next-btn {
+  right: -15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+  .prev-btn,
+  .next-btn {
+    font-size: 20px;
+    left: 20px;
+    right: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .prev-btn{
+      font-size: 20px;
+      left: -10px;
+      right: 390px;
+    }
+  .next-btn {
+      font-size: 20px;
+      left: 430px;
+      right: 430px;
+    }
+    .trainer-slider {
+      display: flex;
+      overflow: hidden;
+      width: 80%;
+      height: 200px;
+      text-align: center;
+      position: relative;
+    }
+}
+/* You can add global styles to this file, and also import other style files */
+button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not([href]):not([tabindex]).btn-primary {
+  background-color: #2250fc;
+  border-color: #2250fc;
+}
+
+.font-btn {
+  font-size: 15px !important;
+}

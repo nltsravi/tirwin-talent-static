@@ -1,1 +1,42 @@
-<p>home works!</p>
+<div class="home-course-content">
+    <h2 class="section-title">Explore Our Categories</h2>
+    <p class="section-subtitle">Find Sessions that match your interests and career goals.</p>
+
+    <!-- Card Grid -->
+    <div class="card-grid">
+        <div class="card" *ngFor="let course of courses">
+          <a (click)="navigateToLogistics(course)" href="javascript:;">
+            <div class="card-banner">
+                <span class="badge">{{ course.badge }}</span>
+                <img [src]="course.image" [alt]="course.title" class="course-image" />
+            </div>
+            <div class="card-content">
+                <h3 class="course-title">{{ course.title }}</h3>
+                <hr/>
+                <!--<a href="#" class="course-link">Build toward a degree</a>-->
+                <p class="course-type">{{ course.description }}</p>
+            </div>
+          </a>
+        </div>
+    </div>
+
+
+      <!-- Testimonials Slider -->
+      <h2 class="section-title">Testimonials</h2>
+      <p class="section-subtitle">Hear what professionals say about our training!</p>
+      <div class="testimonial-carousel">
+        <button class="prev-btn" (click)="prevSlide()">❮</button>
+      
+        <div class="testimonial-slider">
+          <div
+            *ngFor="let review of testimonials; let i = index"
+            class="testimonial-card"
+            [class.active]="i === currentIndex">
+            <p>"{{ review.text }}"</p>
+            <strong>{{ review.author }}</strong>
+          </div>
+        </div>
+      
+        <button class="next-btn" (click)="nextSlide()">❯</button>
+      </div>
+</div>

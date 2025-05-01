@@ -1,0 +1,162 @@
+<div class="container-fluid mt-4">
+  <!-- Filter Section -->
+  <!-- <div class="row mb-4">
+      <div class="col-md-6">
+          <input type="text" class="form-control" placeholder="Search Events..." [(ngModel)]="searchQuery"
+              (input)="filterWebinars()" />
+      </div>
+      <div class="col-md-4">
+          <select class="form-select" [(ngModel)]="selectedCategory" (change)="filterWebinars()">
+              <option value="">All Categories</option>
+              <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+          </select>
+      </div>
+  </div> -->
+
+  <!-- Loading Indicator -->
+  <div *ngIf="isLoading" class="text-center">
+      <i class="fas fa-spinner fa-spin fa-2x"></i>
+      <p>Loading webinars...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger text-center">
+      {{ errorMessage }}
+  </div>
+
+  <!-- Tabs Section -->
+  <ul class="nav nav-tabs mb-4" id="courseTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="masterclasses-courses-tab" data-bs-toggle="tab" data-bs-target="#masterclass-courses"
+              type="button" role="tab" aria-controls="all-courses" aria-selected="true"
+              (click)="setActiveTab('masterclass')">
+              Master Classes
+          </button>
+      </li>
+      <li class="nav-item" role="presentation" *ngIf="isLoggedIn">
+          <button class="nav-link" id="events-courses-tab" data-bs-toggle="tab" data-bs-target="#events-courses" type="button"
+              role="tab" aria-controls="my-courses" aria-selected="false" (click)="setActiveTab('events')">
+              Events
+          </button>
+      </li>
+      <li class="nav-item" role="presentation" *ngIf="isLoggedIn">
+          <button class="nav-link" id="training-courses-tab" data-bs-toggle="tab" data-bs-target="#training-courses" type="button"
+              role="tab" aria-controls="my-courses" aria-selected="false" (click)="setActiveTab('training')">
+              Training
+          </button>
+      </li>
+  </ul>
+  <!-- Webinar Cards -->
+  <!-- Tab Content -->
+  <!-- Tab Content -->
+  <div class="tab-content" id="courseTabsContent">
+      <!-- Master Classes -->
+      <div class="tab-pane fade show active" id="masterclass-courses" role="tabpanel" aria-labelledby="masterclasses-courses-tab">
+          <div class="row" *ngIf="filteredWebinars && filteredWebinars.length > 0; else noMasterClasses">
+              <div *ngFor="let webinar of filteredWebinars" class="col-lg-4 col-md-6 mb-4">
+                  <div class="card webinar-card">
+                      <!-- Banner Section -->
+                      <div class="card-banner">
+                          <img [src]="webinar.image" class="card-img-top" alt="{{ webinar.title }}">
+                          <span *ngIf="webinar.isNew" class="badge bg-danger webinar-badge">New</span>
+                      </div>
+
+                      <!-- Card Body -->
+                      <div class="card-body">
+                          <h5 class="card-title">{{ webinar.title }}</h5>
+                          <p class="card-text">{{ webinar.description }}</p>
+                          <p class="text-muted"><i class="fas fa-user"></i> {{ webinar.author }}</p>
+                          <p class="text-muted">
+                              <i class="fas fa-calendar"></i>
+                              {{ webinar?.start_time && webinar?.end_time
+                              ? 'April 10, 2025 4:00 PM - 5:00 PM'
+                              : 'TBD'
+                              }}
+                          </p>
+                          <button class="btn btn-primary w-100" (click)="viewDetails(webinar)">View Details</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <!-- No Courses Available Message -->
+          <ng-template #noMasterClasses>
+            <div class="text-center p-5">
+              <h4>No events you have registered. Please register for a master class to get started!</h4>
+            </div>
+        </ng-template>
+      </div>
+
+      <!-- Events -->
+      <div class="tab-pane fade" id="events-courses" role="tabpanel" aria-labelledby="events-courses-tab">
+          <div class="row" *ngIf="filteredWebinars && filteredWebinars.length > 0; else noEvents">
+              <div *ngFor="let webinar of filteredWebinars" class="col-lg-4 col-md-6 mb-4">
+                  <div class="card webinar-card">
+                      <!-- Banner Section -->
+                      <div class="card-banner">
+                          <img [src]="webinar.image" class="card-img-top" alt="{{ webinar.title }}">
+                          <span *ngIf="webinar.isNew" class="badge bg-danger webinar-badge">New</span>
+                      </div>
+
+                      <!-- Card Body -->
+                      <div class="card-body">
+                          <h5 class="card-title">{{ webinar.title }}</h5>
+                          <p class="card-text">{{ webinar.description }}</p>
+                          <p class="text-muted"><i class="fas fa-user"></i> {{ webinar.author }}</p>
+                          <p class="text-muted">
+                              <i class="fas fa-calendar"></i>
+                              {{ webinar?.start_time && webinar?.end_time
+                                  ? webinar?.start_time + ' | ' + webinar?.end_time
+                                  : 'TBD'
+                                  }}
+                          </p>
+                          <button class="btn btn-primary w-100" (click)="viewDetails(webinar)">View Details</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- No Courses Available Message -->
+          <ng-template #noEvents>
+              <div class="text-center p-5">
+                  <h4>No events you have registered. Please register for an event to get started!</h4>
+              </div>
+          </ng-template>
+      </div>
+
+      <!-- Training -->
+      <div class="tab-pane fade" id="training-courses" role="tabpanel" aria-labelledby="training-courses-tab">
+        <div class="row" *ngIf="filteredWebinars && filteredWebinars.length > 0; else noTraining">
+            <div *ngFor="let webinar of filteredWebinars" class="col-lg-4 col-md-6 mb-4">
+                <div class="card webinar-card">
+                    <!-- Banner Section -->
+                    <div class="card-banner">
+                        <img [src]="webinar.image" class="card-img-top" alt="{{ webinar.title }}">
+                        <span *ngIf="webinar.isNew" class="badge bg-danger webinar-badge">New</span>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <h5 class="card-title">{{ webinar.title }}</h5>
+                        <p class="card-text">{{ webinar.description }}</p>
+                        <p class="text-muted"><i class="fas fa-user"></i> {{ webinar.author }}</p>
+                        <p class="text-muted">
+                            <i class="fas fa-calendar"></i>
+                            {{ webinar?.start_time && webinar?.end_time
+                                ? webinar?.start_time + ' | ' + webinar?.end_time
+                                : 'TBD'
+                                }}
+                        </p>
+                        <button class="btn btn-primary w-100" (click)="viewDetails(webinar)">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- No Courses Available Message -->
+        <ng-template #noTraining>
+            <div class="text-center p-5">
+                <h4>No training you have registered. Please register for a training to get started!</h4>
+            </div>
+        </ng-template>
+    </div>
+  </div>
+</div>

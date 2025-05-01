@@ -1,0 +1,90 @@
+<div class="container mt-5">
+  <div class="row">
+    
+    <!-- Left Sidebar -->
+    <div class="col-md-4">
+      <div class="profile-sidebar p-3 bg-light rounded text-center">
+        <img [src]="trainer.image" class="img-fluid mb-3" alt="Trainer Image">
+        <h3>{{ trainer.name }}</h3>
+        <p class="text-muted"><i class="fas fa-users"></i> {{ trainer.followers }} Followers</p>
+        <p class="text-muted"><i class="fas fa-video"></i> {{ trainer.totalWebinars }} Webinars</p>
+
+        <!-- Rating Stars -->
+        <div class="rating mb-3">
+          <i *ngFor="let star of starsArray" class="fas fa-star text-warning" [class.filled]="star <= trainer.rating"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side Content -->
+    <div class="col-md-8">
+      
+      <!-- Trainer Info -->
+      <div class="card p-4 mb-4">
+        <h2>{{ trainer.name }}</h2>
+        <p class="text-muted">{{ trainer.jobTitle }} at {{ trainer.company }}</p>
+        <p class="bio">{{ trainer.bio }}</p>
+
+        <h5>Contact Information</h5>
+        <p>Email: <a [href]="'mailto:' + trainer.email">{{ trainer.email }}</a></p>
+        <p>Phone: {{ trainer.phone }}</p>
+        
+        <!-- Social Links -->
+        <div class="social-links mt-3">
+          <a *ngIf="trainer.linkedin" [href]="trainer.linkedin" target="_blank" class="btn btn-outline-primary me-2">
+            <i class="fab fa-linkedin"></i> LinkedIn
+          </a>
+          <a *ngIf="trainer.website" [href]="trainer.website" target="_blank" class="btn btn-outline-secondary">
+            <i class="fas fa-globe"></i> Website
+          </a>
+        </div>
+      </div>
+
+      <!-- Webinars Section -->
+      <h3>Upcoming Webinars</h3>
+      <div class="row">
+        <div *ngFor="let webinar of trainer.webinars" class="col-md-6 mb-3">
+          <div class="card shadow-sm p-2">
+            <img [src]="webinar.image" class="img-fluid rounded webinar-protfolo" alt="Webinar Image">
+            <div class="p-2">
+              <h5>{{ webinar.title }}</h5>
+              <p class="text-muted">{{ webinar.date }} | {{ webinar.time }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h3>Past Webinars</h3>
+      <div class="row">
+        <div *ngFor="let webinar of trainer.pastWebinars" class="col-md-6 mb-3">
+          <div class="card shadow-sm p-2">
+            <img [src]="webinar.image" class="img-fluid rounded webinar-protfolo" alt="Webinar Image">
+            <div class="p-2">
+              <h5>{{ webinar.title }}</h5>
+              <p class="text-muted">{{ webinar.date }} | {{ webinar.time }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonials Slider -->
+      <h3>Testimonials</h3>
+      <div class="testimonial-carousel">
+        <button class="prev-btn" (click)="prevSlide()">❮</button>
+      
+        <div class="testimonial-slider">
+          <div
+            *ngFor="let review of trainer.testimonials; let i = index"
+            class="testimonial-card"
+            [class.active]="i === currentIndex"
+          >
+            <p>"{{ review.text }}"</p>
+            <strong>- {{ review.author }}</strong>
+          </div>
+        </div>
+      
+        <button class="next-btn" (click)="nextSlide()">❯</button>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,127 @@
+<div class="container-fluid mt-4">
+    <!-- Filter Section -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <input type="text" class="form-control" placeholder="Search Events..." [(ngModel)]="searchQuery"
+                (input)="filterWebinars()" />
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" [(ngModel)]="selectedCategory" (change)="filterWebinars()">
+                <option value="">All Categories</option>
+                <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div *ngIf="isLoading" class="text-center">
+        <i class="fas fa-spinner fa-spin fa-2x"></i>
+        <p>Loading webinars...</p>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="alert alert-danger text-center">
+        {{ errorMessage }}
+    </div>
+
+    <!-- Tabs Section -->
+    <ul class="nav nav-tabs mb-4" id="courseTabs" role="tablist">
+        <li class="nav-item" role="presentation" *ngFor="let tab of tabs" [hidden]="!tab.show">
+            <button class="nav-link" 
+                    [id]="tab.id + '-tab'" 
+                    data-bs-toggle="tab" 
+                    [attr.data-bs-target]="'#' + tab.id"
+                    type="button" 
+                    role="tab" 
+                    [attr.aria-controls]="tab.id"
+                    [class.active]="activeTab === tab.id"
+                    (click)="setActiveTab(tab.id)">
+                {{ tab.label }}
+            </button>
+        </li>
+    </ul>
+    <!-- Webinar Cards -->
+    <!-- Tab Content -->
+    <!-- Tab Content -->
+    <div class="tab-content" id="courseTabsContent">
+        <!-- All Courses Tab -->
+        <div class="tab-pane fade show active" id="all-courses" role="tabpanel" aria-labelledby="all-courses-tab">
+            <div class="row" *ngIf="filteredWebinars && filteredWebinars.length > 0; else noCoursesAll">
+                <div *ngFor="let webinar of filteredWebinars" class="col-lg-4 col-md-6 mb-4">
+                    <div class="card webinar-card">
+                        <!-- Banner Section -->
+                        <div class="card-banner">
+                            <img [src]="webinar.image" class="card-img-top" alt="{{ webinar.title }}">
+                            <span *ngIf="webinar.isNew" class="badge bg-danger webinar-badge">New</span>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <h5 class="card-title">{{ webinar.title }}</h5>
+                            <p class="card-text">{{ webinar.description }}</p>
+                            <p class="text-muted"><i class="fas fa-user"></i> {{ webinar.author }}</p>
+                            <p class="text-muted" *ngIf="webinar?.session_type === 'TRAINING'">
+                                <i class="fas fa-calendar"></i>
+                                April 21st, 2025 - April 26st, 2025
+                            </p>
+                            <p class="text-muted" *ngIf="webinar?.session_type != 'TRAINING'">
+                                <i class="fas fa-calendar"></i>
+                                {{ webinar?.start_time && webinar?.end_time
+                                    ? 'April 10, 2025 4:00 PM - 5:00 PM'
+                                    : 'TBD'
+                                    }}
+                            </p>
+                            <button class="btn btn-primary w-100" (click)="viewDetails(webinar)">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- No Courses Available Message -->
+            <ng-template #noCoursesAll>
+                <div class="text-center p-5">
+                    <h4>No courses available under All Courses</h4>
+                </div>
+            </ng-template>
+        </div>
+
+        <!-- My Courses Tab -->
+        <div class="tab-pane fade" id="my-courses" role="tabpanel" aria-labelledby="my-courses-tab">
+            <div class="row" *ngIf="filteredWebinars && filteredWebinars.length > 0; else noCoursesMy">
+                <div *ngFor="let webinar of filteredWebinars" class="col-lg-4 col-md-6 mb-4">
+                    <div class="card webinar-card">
+                        <!-- Banner Section -->
+                        <div class="card-banner">
+                            <img [src]="webinar.image" class="card-img-top" alt="{{ webinar.title }}">
+                            <span *ngIf="webinar.isNew" class="badge bg-danger webinar-badge">New</span>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <h5 class="card-title">{{ webinar.title }}</h5>
+                            <p class="card-text">{{ webinar.description }}</p>
+                            <p class="text-muted"><i class="fas fa-user"></i> {{ webinar.author }}</p>
+                            <p class="text-muted" *ngIf="webinar?.session_type === 'TRAINING'">
+                                <i class="fas fa-calendar"></i>
+                                April 21st, 2025 - April 26st, 2025
+                            </p>
+                            <p class="text-muted" *ngIf="webinar?.session_type != 'TRAINING'">
+                                <i class="fas fa-calendar"></i>
+                                {{ webinar?.start_time && webinar?.end_time
+                                    ? 'April 10, 2025 4:00 PM - 5:00 PM'
+                                    : 'TBD'
+                                    }}
+                            </p>
+                            <button class="btn btn-primary w-100" (click)="viewDetails(webinar)">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- No Courses Available Message -->
+            <ng-template #noCoursesMy>
+                <div class="text-center p-5">
+                    <h4>No events you have registered. Please register for an event to get started!</h4>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>

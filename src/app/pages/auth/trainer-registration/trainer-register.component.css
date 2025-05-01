@@ -1,0 +1,67 @@
+.register-section {
+    position: relative;
+    top: -20px;
+}
+
+/* Stepper */
+.stepper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .step {
+    text-align: center;
+    flex: 1;
+    position: relative;
+  }
+  
+  .step-circle {
+    width: 35px;
+    height: 35px;
+    background-color: #ddd;
+    border-radius: 50%;
+    line-height: 35px;
+    display: inline-block;
+    font-weight: bold;
+  }
+  
+  .step.active .step-circle {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .step-title {
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .progress {
+    height: 5px;
+    background: #ddd;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .progress-bar {
+    height: 5px;
+    background: #007bff;
+    transition: width 0.3s ease-in-out;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .step-title {
+      font-size: 12px;
+    }
+  }
+
+.alert {
+  color: #fff !important;
+}
+
+/* You can add global styles to this file, and also import other style files */
+button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not([href]):not([tabindex]).btn-primary {
+  background-color: #2250fc;
+  border-color: #2250fc;
+}
