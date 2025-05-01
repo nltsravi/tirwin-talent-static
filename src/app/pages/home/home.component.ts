@@ -112,4 +112,8 @@ export class HomeComponent implements OnInit {
         }
       }
   }
+
+  navigateToTrainerRegistration() {
+    this.router.navigate(['/auth/trainer-registration']);
+  }
 }
