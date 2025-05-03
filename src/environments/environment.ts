@@ -4,7 +4,7 @@
 
 export const environment = {
     production: false,
-    api:'https://api.tirwintalent.com/api',
+    api:'http://localhost:3000/api',
   };
   
   /*

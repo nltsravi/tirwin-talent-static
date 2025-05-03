@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
     { text: 'The webinar was well-structured and engaging. Highly recommend!', author: 'Mark Johnson' }
   ]*/
   testimonials = [{ text: "Coming soon", author: "" }];
+
   ngOnInit(): void {
     // Auto-slide every 5 seconds
     setInterval(() => {
