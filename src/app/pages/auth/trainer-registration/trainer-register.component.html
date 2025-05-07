@@ -97,7 +97,7 @@
                     [items]="specialtiesOptions"
                     [(ngModel)]="trainer.specialties"
                     [multiple]="true"
-                    placeholder=""
+                    [placeholder]="trainer.specialties.length > 0 ? '' : 'Select your training specialities'"
                     [closeOnSelect]="false"
                     [searchable]="false"
                     [hideSelected]="true"
@@ -107,13 +107,18 @@
                     class="form-control specialties-ng-select"
                   >
                     <ng-template ng-option-tmp let-item="item" let-index="index">
-                      <input type="checkbox" [checked]="(trainer.specialties || []).indexOf(item) > -1" style="margin-right:8px;" />
-                      {{ item }}
+                      <div class="specialty-option">
+                        <input type="checkbox" [checked]="(trainer.specialties || []).indexOf(item) > -1" />
+                        <span>{{ item }}</span>
+                      </div>
                     </ng-template>
                     <ng-template ng-multi-label-tmp let-items="items">
-                      <span *ngFor="let item of items" class="ng-value-custom">
-                        {{ item }}
-                      </span>
+                      <div class="selected-specialties">
+                        <span *ngFor="let item of items" class="specialty-tag">
+                          {{ item }}
+                          <i class="fas fa-times" (click)="removeSpecialty(item, $event)"></i>
+                        </span>
+                      </div>
                     </ng-template>
                   </ng-select>
                 </div>

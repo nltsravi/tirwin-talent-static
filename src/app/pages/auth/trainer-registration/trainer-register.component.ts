@@ -178,4 +178,9 @@ export class TrainerRegisterComponent implements OnInit {
     this.photoFile = null;
     this.photoPreview = null;
   }
+
+  removeSpecialty(specialty: string, event: Event) {
+    event.stopPropagation(); // Prevent dropdown from opening
+    this.trainer.specialties = this.trainer.specialties.filter(s => s !== specialty);
+  }
 }
