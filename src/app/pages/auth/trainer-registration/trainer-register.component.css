@@ -67,11 +67,15 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
 }
 
 /* Avatar Uploader */
-.avatar-uploader {
+.avatar-uploader, .selected-specialties {
   display: flex;
   align-items: center;
   gap: 16px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
+  padding: 4px;
+  min-height: 40px;
+  width: 100%;
 }
 
 .avatar-preview {
@@ -123,23 +127,29 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
   justify-content: center;
 }
 
-.remove-photo {
-  color: #dc3545;
+.remove-photo, .remove-resume-btn {
+  color: #dc3545 !important;
   padding: 0;
   font-size: 14px;
   display: flex;
   align-items: center;
   gap: 4px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  text-decoration: underline;
   transition: color 0.2s;
 }
 
-.remove-photo:hover {
-  color: #c82333;
+.remove-photo:hover, .remove-resume-btn:hover {
+  color: #c82333 !important;
   text-decoration: none;
 }
 
-.remove-photo i {
+.remove-photo i, .remove-resume-btn i {
   font-size: 12px;
+  color: inherit;
+  margin-right: 2px;
 }
 
 /* Training Specialties Dropdown */
@@ -199,16 +209,6 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
   font-size: 15px;
   color: #2c3e50;
   line-height: 1.4;
-}
-
-.selected-specialties {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 4px;
-  min-height: 40px;
-  align-items: center;
-  width: 100%;
 }
 
 .specialty-tag {
@@ -290,28 +290,6 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
   color: red;
   margin-left: 2px;
   font-weight: bold;
-}
-
-.remove-resume-btn {
-  color: #dc3545 !important;
-  font-size: 14px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: none;
-  border: none;
-  box-shadow: none;
-  text-decoration: underline;
-  transition: color 0.2s;
-}
-.remove-resume-btn:hover {
-  color: #c82333 !important;
-  text-decoration: none;
-}
-.remove-resume-btn i {
-  font-size: 12px;
-  color: inherit;
-  margin-right: 2px;
 }
 
 ::ng-deep .remove-resume-btn {
