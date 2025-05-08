@@ -18,6 +18,9 @@
           <!-- ✅ Registration Form (Hidden After Submission) -->
           <div *ngIf="!isFormSubmitted" class="card register-card">
             <div class="card-body">
+              <div *ngIf="errorMessage" class="alert alert-danger text-center mb-3">
+                {{ errorMessage }}
+              </div>
               <!-- Stepper Progress Bar -->
               <div class="stepper">
                 <div *ngFor="let s of steps; let i = index" class="step" [class.active]="step === i+1">
@@ -63,7 +66,22 @@
                 </div>
                 <div class="form-group">
                   <label>Phone Number <span class="req-astrix">*</span></label>
-                  <input type="tel" class="form-control" [(ngModel)]="trainer.phone" required />
+                  <div style="display: flex; gap: 8px; align-items: center;">
+                    <select class="form-control" style="max-width: 110px;" [(ngModel)]="trainer.countryCode" name="countryCode" required>
+                      <option value="+1">🇺🇸 +1</option>
+                      <option value="+91">🇮🇳 +91</option>
+                      <option value="+44">🇬🇧 +44</option>
+                      <option value="+61">🇦🇺 +61</option>
+                      <option value="+971">🇦🇪 +971</option>
+                      <option value="+81">🇯🇵 +81</option>
+                      <option value="+49">🇩🇪 +49</option>
+                      <option value="+33">🇫🇷 +33</option>
+                      <option value="+86">🇨🇳 +86</option>
+                      <option value="+63">🇵🇭 +63</option>
+                      <!-- Add more as needed -->
+                    </select>
+                    <input type="tel" class="form-control" style="flex:1;" [(ngModel)]="trainer.phone" name="phone" required placeholder="Phone number" />
+                  </div>
                 </div>
               </div>
 
@@ -79,7 +97,6 @@
                 <div class="form-group">
                   <label>Employment Type <span class="req-astrix">*</span></label>
                   <select class="form-control" [(ngModel)]="trainer.employmentType">
-                    <option value="">Select Employment Type</option>
                     <option *ngFor="let type of employmentTypeOptions" [value]="type">{{ type }}</option>
                   </select>
                 </div>
@@ -92,7 +109,7 @@
                   <input type="text" class="form-control" [(ngModel)]="trainer.job_title" />
                 </div>
                 <div class="form-group">
-                  <label>Training Specialities <span class="req-astrix">*</span></label>
+                  <label>Area of Expertise <span class="req-astrix">*</span></label>
                   <ng-select
                     [items]="specialtiesOptions"
                     [(ngModel)]="trainer.specialties"
@@ -126,26 +143,24 @@
 
               <!-- Step 3: Public Profile -->
               <div *ngIf="step === 3">
-                <h4>Public Profile</h4>
+                <h4>Profile</h4>
                 <div class="form-group">
-                  <label>Upload CV/Resume (PDF, DOC, DOCX)</label>
-                  <input type="file" class="form-control" accept=".pdf,.doc,.docx" (change)="onFileSelected($event)" />
-                  <div *ngIf="selectedFileName" class="mt-2">
-                    <span>{{ selectedFileName }}</span>
-                    <button type="button" class="btn btn-link text-danger p-0 ms-2" (click)="removeSelectedFile()">Remove</button>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label>Bio <span class="req-astrix">*</span></label>
+                  <label>Professional Summary <span class="req-astrix">*</span></label>
                   <textarea class="form-control" [(ngModel)]="trainer.bio"></textarea>
                 </div>
                 <div class="form-group">
-                  <label>LinkedIn <span class="req-astrix">*</span></label>
-                  <input type="text" class="form-control" [(ngModel)]="trainer.linkedin_profile" />
+                  <label>Upload Resume</label>
+                  <input type="file" class="form-control" accept=".pdf,.doc,.docx" (change)="onFileSelected($event)" />
+                  <div *ngIf="selectedFileName" class="mt-2">
+                    <span>{{ selectedFileName }}</span>
+                    <button type="button" class="remove-resume-btn p-0 ms-2" (click)="removeSelectedFile()">
+                      <i class="fas fa-times"></i> Remove
+                    </button>
+                  </div>
                 </div>
                 <div class="form-group">
-                  <label>Show Public Profile?</label>
-                  <input type="checkbox" [(ngModel)]="trainer.public_profile" />
+                  <label>LinkedIn</label>
+                  <input type="text" class="form-control" [(ngModel)]="trainer.linkedin_profile" />
                 </div>
               </div>
 

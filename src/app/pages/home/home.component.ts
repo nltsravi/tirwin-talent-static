@@ -114,7 +114,9 @@ export class HomeComponent implements OnInit {
       }
   }
 
-  navigateToTrainerRegistration() {
+  navigateToTrainerRegistration(event: Event) {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.router.navigate(['/auth/trainer-registration']);
   }
 }

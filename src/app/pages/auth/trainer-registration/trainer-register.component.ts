@@ -9,7 +9,7 @@ import { TrainerRegisterService } from './trainer-register.service';
 })
 export class TrainerRegisterComponent implements OnInit {
   step = 1;
-  steps = ['Personal Info', 'Professional Details', 'Public Profile'];
+  steps = ['Personal Info', 'Professional Details', 'Profile'];
   progress = 0;
   isSubmitting = false;
   successMessage = '';
@@ -24,6 +24,7 @@ export class TrainerRegisterComponent implements OnInit {
     first_name: '',
     last_name: '',
     email: '',
+    countryCode: '+91', // Default country code (India)
     phone: '',
     job_title: '',
     organization: '',
@@ -38,8 +39,8 @@ export class TrainerRegisterComponent implements OnInit {
     training_modes: { online: false, offline: false, hybrid: false }
   };
 
-  experienceOptions: string[] = ['0-2 years', '3-5 years', '6-10 years', '10+ years'];
-  employmentTypeOptions: string[] = ['Employed', 'Consultant', 'Freelancer'];
+  experienceOptions: string[] = ['Less than 5 Years', '5-10 Years', '10-20 Years', '20+ Years'];
+  employmentTypeOptions: string[] = ['Employed', 'Consultant'];
   specialtiesOptions: string[] = ['Fleet Management', 'Customs Compliance', 'Cold Chain Logistics', 'Route Optimization'];
 
   constructor(private trainerService: TrainerRegisterService, private router: Router) {}
@@ -103,9 +104,16 @@ export class TrainerRegisterComponent implements OnInit {
         return false;
       }
     }
-    if (this.step === 3 && (!this.trainer.bio || !this.trainer.linkedin_profile)) {
-      this.errorMessage = 'Bio and LinkedIn profile are required!';
-      return false;
+    if (this.step === 3) {
+      if (!this.trainer.bio) {
+        this.errorMessage = 'Professional Summary is required!';
+        return false;
+      }
+      // LinkedIn validation: if not empty, must be a valid LinkedIn URL
+      if (this.trainer.linkedin_profile && !/^https?:\/\/(www\.)?linkedin\.com\/(in|pub|company)\/[A-Za-z0-9\-_%]+/i.test(this.trainer.linkedin_profile.trim())) {
+        this.errorMessage = 'Please enter a valid LinkedIn profile URL.';
+        return false;
+      }
     }
     return true;
   }
@@ -115,7 +123,9 @@ export class TrainerRegisterComponent implements OnInit {
     this.isSubmitting = true;
     this.successMessage = '';
     this.errorMessage = '';
-    this.trainerService.registerTrainer(this.trainer).subscribe({
+    // Combine country code and phone for backend
+    const trainerData = { ...this.trainer, phone: `${this.trainer.countryCode} ${this.trainer.phone}` };
+    this.trainerService.registerTrainer(trainerData).subscribe({
       next: (response) => {
         this.successMessage = 'Your profile has been submitted for verification!';
         this.isFormSubmitted = true; // ✅ Hide form
