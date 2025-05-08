@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TrainerRegisterService } from './trainer-register.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-trainer-register',
@@ -19,6 +21,8 @@ export class TrainerRegisterComponent implements OnInit {
   selectedFileName: string = '';
   photoFile: File | null = null;
   photoPreview: string | null = null;
+  isUploadingPhoto = false;
+  uploadPhotoUrl = '';
 
   trainer = {
     first_name: '',
@@ -43,7 +47,7 @@ export class TrainerRegisterComponent implements OnInit {
   employmentTypeOptions: string[] = ['Employed', 'Consultant'];
   specialtiesOptions: string[] = ['Fleet Management', 'Customs Compliance', 'Cold Chain Logistics', 'Route Optimization'];
 
-  constructor(private trainerService: TrainerRegisterService, private router: Router) {}
+  constructor(private trainerService: TrainerRegisterService, private router: Router, private http: HttpClient) {}
 
   ngOnInit() {
     // Example: Assume user info is stored in localStorage as 'user' JSON
@@ -175,13 +179,49 @@ export class TrainerRegisterComponent implements OnInit {
         return;
       }
       this.photoFile = file;
+      // Show preview immediately
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.photoPreview = e.target.result;
       };
       reader.readAsDataURL(file);
       this.errorMessage = '';
+      // Immediately upload to S3
+      this.getPhotoUploadUrl(file.type);
     }
+  }
+
+  getPhotoUploadUrl(fileType: string) {
+    this.isUploadingPhoto = true;
+    const url = `${environment.api}/users/profile-image/upload-url`;
+    // No userId for registration, so omit it
+    const body = { fileType };
+    this.http.post<{ uploadUrl: string; imageUrl: string }>(url, body).subscribe({
+      next: (response) => {
+        this.uploadPhotoUrl = response.uploadUrl;
+        this.uploadPhotoToS3(response.uploadUrl, response.imageUrl);
+      },
+      error: (error) => {
+        this.isUploadingPhoto = false;
+        this.errorMessage = 'Failed to get upload URL.';
+      }
+    });
+  }
+
+  uploadPhotoToS3(uploadUrl: string, imageUrl: string) {
+    if (!this.photoFile) return;
+    this.http.put(uploadUrl, this.photoFile, {
+      headers: { 'Content-Type': this.photoFile.type },
+    }).subscribe({
+      next: () => {
+        this.isUploadingPhoto = false;
+        this.trainer.profile_image = imageUrl;
+      },
+      error: (error) => {
+        this.isUploadingPhoto = false;
+        this.errorMessage = 'Failed to upload image.';
+      }
+    });
   }
 
   removePhoto() {
