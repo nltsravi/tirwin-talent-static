@@ -117,6 +117,11 @@ export class HomeComponent implements OnInit {
   navigateToTrainerRegistration(event: Event) {
     event.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    const userStr = sessionStorage.getItem('user');
+    if (!userStr) {
+      this.router.navigate(['/auth/login']);
+      return;
+    }
     this.router.navigate(['/auth/trainer-registration']);
   }
 }

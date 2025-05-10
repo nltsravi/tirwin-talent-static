@@ -23,6 +23,7 @@ export class TrainerRegisterComponent implements OnInit {
   photoPreview: string | null = null;
   isUploadingPhoto = false;
   uploadPhotoUrl = '';
+  emailDisabled = false;
 
   trainer = {
     first_name: '',
@@ -50,8 +51,8 @@ export class TrainerRegisterComponent implements OnInit {
   constructor(private trainerService: TrainerRegisterService, private router: Router, private http: HttpClient) {}
 
   ngOnInit() {
-    // Example: Assume user info is stored in localStorage as 'user' JSON
-    const userStr = localStorage.getItem('user');
+    // Example: Assume user info is stored in sessionStorage as 'user' JSON
+    const userStr = sessionStorage.getItem('user');
     if (userStr) {
       try {
         const user = JSON.parse(userStr);
@@ -63,6 +64,7 @@ export class TrainerRegisterComponent implements OnInit {
         }
         if (user.email) {
           this.trainer.email = user.email;
+          this.emailDisabled = true;
         }
         if (user.profile_image) {
           this.photoPreview = user.profile_image;
