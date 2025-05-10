@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { TrainerRegisterService } from './trainer-register.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-trainer-register',
@@ -24,7 +25,22 @@ export class TrainerRegisterComponent implements OnInit {
   isUploadingPhoto = false;
   uploadPhotoUrl = '';
   emailDisabled = false;
+  isEmailVerified = false;
+  isVerifyingEmail = false;
+  isOtpVerified = false;
+  isVerifyingOtp = false;
+  otpCode = '';
 
+  userAsTrainer={
+    first_name: '',
+    last_name: '',
+    email: '',
+    user_type:'trainee',
+    is_verified:false,
+    is_first_time_login: false,
+    subscriptionId: '06fff7d5-00b6-4679-afd8-d3dd4ae3beda',
+    is_active:true,
+  }
   trainer = {
     first_name: '',
     last_name: '',
@@ -38,17 +54,23 @@ export class TrainerRegisterComponent implements OnInit {
     specialties: [] as string[],
     linkedin_profile: '',
     bio: '',
-    profile_image: 'https://example.com/profile.jpg', // Default image
+    profile_image: 'assets/default-avatar.png', // Updated default image path
     subscription_id: '06fff7d5-00b6-4679-afd8-d3dd4ae3beda',
     public_profile: false,
-    training_modes: { online: false, offline: false, hybrid: false }
+    training_modes: { online: false, offline: false, hybrid: false },
+    resume_url: ''
   };
 
   experienceOptions: string[] = ['Less than 5 Years', '5-10 Years', '10-20 Years', '20+ Years'];
   employmentTypeOptions: string[] = ['Employed', 'Consultant'];
   specialtiesOptions: string[] = ['Fleet Management', 'Customs Compliance', 'Cold Chain Logistics', 'Route Optimization'];
 
-  constructor(private trainerService: TrainerRegisterService, private router: Router, private http: HttpClient) {}
+  constructor(
+    private trainerService: TrainerRegisterService, 
+    private router: Router, 
+    private http: HttpClient,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     // Example: Assume user info is stored in sessionStorage as 'user' JSON
@@ -68,6 +90,7 @@ export class TrainerRegisterComponent implements OnInit {
         }
         if (user.profile_image) {
           this.photoPreview = user.profile_image;
+          this.trainer.profile_image = user.profile_image;
         }
       } catch (e) {
         // Ignore parse errors
@@ -95,6 +118,14 @@ export class TrainerRegisterComponent implements OnInit {
     if (this.step === 1) {
       if (!this.trainer.first_name || !this.trainer.last_name || !this.trainer.email || !this.trainer.phone) {
         this.errorMessage = 'All fields in Personal Info are required!';
+        return false;
+      }
+      if (!this.isEmailVerified) {
+        this.errorMessage = 'Please verify your email address first.';
+        return false;
+      }
+      if (!this.isOtpVerified) {
+        this.errorMessage = 'Please verify your OTP first.';
         return false;
       }
     }
@@ -163,12 +194,43 @@ export class TrainerRegisterComponent implements OnInit {
       this.selectedFile = file;
       this.selectedFileName = file.name;
       this.errorMessage = '';
+      
+      // Upload resume immediately
+      this.uploadResume(file);
     }
+  }
+
+  uploadResume(file: File) {
+    const formData = new FormData();
+    formData.append('resume', file);
+    formData.append('email', this.trainer.email);
+    formData.append('userId', this.trainer.email);
+    formData.append('fileType', file.type);
+
+    this.http.post(`${environment.api}/users/trainer/upload-resume`, formData)
+      .subscribe({
+        next: (response: any) => {
+          this.toastr.success('Resume uploaded successfully!', 'Success');
+          // Store the resume URL if provided in the response
+          if (response.resumeUrl) {
+            this.trainer.resume_url = response.resumeUrl;
+          }
+        },
+        error: (error) => {
+          console.error('Error uploading resume:', error);
+          this.errorMessage = error.error.message || 'Failed to upload resume. Please try again.';
+          this.toastr.error(this.errorMessage, 'Error');
+          // Reset file selection on error
+          this.selectedFile = null;
+          this.selectedFileName = '';
+        }
+      });
   }
 
   removeSelectedFile() {
     this.selectedFile = null;
     this.selectedFileName = '';
+    this.trainer.resume_url = ''; // Clear the resume URL
   }
 
   onPhotoSelected(event: Event) {
@@ -232,10 +294,68 @@ export class TrainerRegisterComponent implements OnInit {
   removePhoto() {
     this.photoFile = null;
     this.photoPreview = null;
+    this.trainer.profile_image = 'assets/default-avatar.png'; // Reset to default avatar
   }
 
   removeSpecialty(specialty: string, event: Event) {
     event.stopPropagation(); // Prevent dropdown from opening
     this.trainer.specialties = this.trainer.specialties.filter(s => s !== specialty);
+  }
+
+  verifyEmail() {
+    if (!this.trainer.email) {
+      this.errorMessage = 'Please enter an email address first.';
+      return;
+    }
+
+    this.isVerifyingEmail = true;
+    this.errorMessage = '';
+    this.userAsTrainer.email = this.trainer.email;
+    this.userAsTrainer.first_name = this.trainer.first_name;
+    this.userAsTrainer.last_name = this.trainer.last_name;
+    this.userAsTrainer.user_type = 'trainee';
+    this.userAsTrainer.is_first_time_login = true;
+    this.userAsTrainer.is_verified = false;
+    this.userAsTrainer.is_active = true;
+
+    this.http.post(`${environment.api}/users/validate-trainer-email`, this.userAsTrainer)
+      .subscribe({
+        next: (response: any) => {
+          this.isEmailVerified = true;
+          this.isVerifyingEmail = false;
+          this.toastr.success('Email verified successfully!', 'Success');
+        },
+        error: (error) => {
+          this.isVerifyingEmail = false;
+          this.errorMessage = error.error.message || 'Failed to verify email. Please try again.';
+          this.toastr.error(this.errorMessage, 'Error');
+        }
+      });
+  }
+
+  validateOtp() {
+    if (!this.otpCode || this.otpCode.length !== 6) {
+      this.errorMessage = 'Please enter a valid 6-digit OTP.';
+      return;
+    }
+
+    this.isVerifyingOtp = true;
+    this.errorMessage = '';
+
+    this.http.post(`${environment.api}/auth/validate-trainer-otp`, {
+      email: this.trainer.email,
+      otpCode: this.otpCode
+    }).subscribe({
+      next: (response: any) => {
+        this.isOtpVerified = true;
+        this.isVerifyingOtp = false;
+        this.toastr.success('OTP verified successfully!', 'Success');
+      },
+      error: (error) => {
+        this.isVerifyingOtp = false;
+        this.errorMessage = error.error.message || 'Failed to verify OTP. Please try again.';
+        this.toastr.error(this.errorMessage, 'Error');
+      }
+    });
   }
 }

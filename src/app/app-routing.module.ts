@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './layout/default-layout/default-layout.component';
 import { AdminUserComponent } from './pages/admin-user/admin-user.component';
 import { TrainerDetailsComponent } from './pages/admin-user/trainer-details.component';
+import { BecomeInstructorLandingComponent } from './pages/become-instructor/become-instructor-landing.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
       { path: 'myregistration', loadChildren: () => import('./pages/my-courses/my-courses.module').then(m => m.MyCoursesModule), data: { showSlider: false, account: true }  }, // 
       { path: 'admin/user', component: AdminUserComponent, data: { showSlider: false } },
       { path: 'admin/user/trainer/:id', component: TrainerDetailsComponent, data: { showSlider: false } },
+      { path: 'become-instructor', component: BecomeInstructorLandingComponent, data: { showSlider: false } },
     ]
   },
   { path: '**', redirectTo: 'home' } // Catch-all route

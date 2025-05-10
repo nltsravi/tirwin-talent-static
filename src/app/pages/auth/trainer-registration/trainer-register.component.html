@@ -42,7 +42,7 @@
                           <i class="fas fa-camera"></i>
                           <span>Upload Photo</span>
                         </div>
-                        <div class="remove-photo" *ngIf="photoPreview || trainer.profile_image" (click)="removePhoto()">
+                        <div class="remove-photo" *ngIf="photoPreview || (trainer.profile_image && trainer.profile_image !== 'assets/default-avatar.png')" (click)="removePhoto()">
                           <i class="fas fa-times"></i>
                         </div>
                         <i class="fas fa-camera avatar-edit-icon"></i>
@@ -67,8 +67,60 @@
                     </div>
                     <div class="form-group">
                       <label for="email">Email <span class="req-astrix">*</span></label>
-                      <input type="email" id="email" class="form-control" [(ngModel)]="trainer.email" required [disabled]="emailDisabled">
+                      <div class="input-group">
+                        <input type="email" id="email" class="form-control" [(ngModel)]="trainer.email" required [disabled]="emailDisabled">
+                        <button 
+                          class="btn btn-primary" 
+                          type="button" 
+                          (click)="verifyEmail()" 
+                          [disabled]="!trainer.email || isEmailVerified || isVerifyingEmail || emailDisabled"
+                        >
+                          <span *ngIf="isVerifyingEmail">
+                            <i class="fas fa-spinner fa-spin"></i> Verifying...
+                          </span>
+                          <span *ngIf="!isVerifyingEmail">
+                            <i class="fas" [class.fa-check]="isEmailVerified" [class.fa-envelope]="!isEmailVerified"></i>
+                            {{ isEmailVerified ? 'Verified' : 'Verify' }}
+                          </span>
+                        </button>
+                      </div>
+                      <small class="text-success" *ngIf="isEmailVerified">
+                        <i class="fas fa-check-circle"></i> Email verified successfully
+                      </small>
                     </div>
+
+                    <!-- OTP Validation Field -->
+                    <div class="form-group" *ngIf="isEmailVerified && !isOtpVerified">
+                      <label for="otp">Enter OTP <span class="req-astrix">*</span></label>
+                      <div class="input-group">
+                        <input 
+                          type="text" 
+                          id="otp" 
+                          class="form-control" 
+                          [(ngModel)]="otpCode" 
+                          placeholder="Enter 6-digit OTP" 
+                          maxlength="6"
+                          [disabled]="isVerifyingOtp"
+                        >
+                        <button 
+                          class="btn btn-primary" 
+                          type="button" 
+                          (click)="validateOtp()" 
+                          [disabled]="!otpCode || otpCode.length !== 6 || isVerifyingOtp"
+                        >
+                          <span *ngIf="isVerifyingOtp">
+                            <i class="fas fa-spinner fa-spin"></i> Verifying...
+                          </span>
+                          <span *ngIf="!isVerifyingOtp">
+                            <i class="fas fa-check"></i> Validate OTP
+                          </span>
+                        </button>
+                      </div>
+                      <small class="text-success" *ngIf="isOtpVerified">
+                        <i class="fas fa-check-circle"></i> OTP verified successfully
+                      </small>
+                    </div>
+
                     <div class="form-group">
                       <label for="phone">Phone <span class="req-astrix">*</span></label>
                       <div class="input-group" style="display: flex; gap: 8px; align-items: center;">
@@ -172,12 +224,36 @@
                 </div>
                 <div class="form-group">
                   <label>Upload Resume</label>
-                  <input type="file" class="form-control" accept=".pdf,.doc,.docx" (change)="onFileSelected($event)" />
-                  <div *ngIf="selectedFileName" class="mt-2">
-                    <span>{{ selectedFileName }}</span>
-                    <button type="button" class="remove-resume-btn p-0 ms-2" (click)="removeSelectedFile()">
-                      <i class="fas fa-times"></i> Remove
-                    </button>
+                  <div class="resume-upload-container">
+                    <div class="input-group">
+                      <input 
+                        type="file" 
+                        class="form-control" 
+                        accept=".pdf,.doc,.docx" 
+                        (change)="onFileSelected($event)"
+                        [disabled]="!!selectedFileName"
+                      />
+                      <button 
+                        *ngIf="selectedFileName"
+                        type="button" 
+                        class="btn btn-danger" 
+                        (click)="removeSelectedFile()"
+                      >
+                        <i class="fas fa-times"></i> Remove
+                      </button>
+                    </div>
+                    <div *ngIf="selectedFileName" class="mt-2">
+                      <div class="d-flex align-items-center">
+                        <i class="fas fa-file-alt text-primary me-2"></i>
+                        <span class="text-truncate">{{ selectedFileName }}</span>
+                        <span *ngIf="trainer.resume_url" class="badge bg-success ms-2">
+                          <i class="fas fa-check"></i> Uploaded
+                        </span>
+                      </div>
+                    </div>
+                    <small class="text-muted mt-1 d-block">
+                      Supported formats: PDF, DOC, DOCX (Max size: 5MB)
+                    </small>
                   </div>
                 </div>
                 <div class="form-group">

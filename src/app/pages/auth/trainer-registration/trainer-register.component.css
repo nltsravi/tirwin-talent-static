@@ -95,19 +95,15 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
 }
 
 .avatar-preview {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: #f4f6fa;
-  border: 2px solid #bfc9d9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+  width: 160px;
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 0;
+  margin: 0 auto 16px auto;
   cursor: pointer;
-  overflow: hidden;
-  transition: border-color 0.2s;
-  margin: 0 auto;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .avatar-preview:hover {
@@ -360,4 +356,95 @@ select.form-control {
   background-position: right 8px center;
   background-size: 16px;
   padding-right: 30px;
+}
+
+/* Email Verification */
+.input-group .btn-primary {
+  min-width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.input-group .form-control {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.input-group .btn-primary:disabled {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.input-group .btn-primary i {
+  font-size: 14px;
+}
+
+.text-success {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.text-success i {
+  font-size: 14px;
+}
+
+/* OTP Validation */
+#otp {
+  letter-spacing: 0.5em;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+#otp::placeholder {
+  letter-spacing: normal;
+  font-size: 0.9em;
+  font-weight: normal;
+}
+
+.input-group .btn-primary {
+  min-width: 120px;
+}
+
+/* Resume Upload */
+.resume-upload-container {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.resume-upload-container .input-group {
+  margin-bottom: 10px;
+}
+
+.resume-upload-container .form-control {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.resume-upload-container .btn-danger {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.resume-upload-container .text-truncate {
+  max-width: 300px;
+}
+
+.resume-upload-container .badge {
+  font-size: 0.8em;
+  padding: 0.4em 0.6em;
+}
+
+.resume-upload-container .badge i {
+  font-size: 0.8em;
+  margin-right: 4px;
 }
