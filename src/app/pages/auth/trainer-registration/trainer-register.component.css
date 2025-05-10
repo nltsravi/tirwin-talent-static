@@ -67,7 +67,7 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
 }
 
 /* Avatar Uploader */
-.avatar-uploader, .selected-specialties {
+.avatar-uploader {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -76,11 +76,27 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
   padding: 4px;
   min-height: 40px;
   width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+
+.avatar-uploader::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 220px;
+  height: 220px;
+  border: 2px dashed #bfc9d9;
+  border-radius: 50%;
+  z-index: -1;
 }
 
 .avatar-preview {
-  width: 96px;
-  height: 96px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   background: #f4f6fa;
   border: 2px solid #bfc9d9;
@@ -91,6 +107,7 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
   cursor: pointer;
   overflow: hidden;
   transition: border-color 0.2s;
+  margin: 0 auto;
 }
 
 .avatar-preview:hover {
@@ -111,20 +128,21 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
 
 .avatar-edit-icon {
   position: absolute;
-  bottom: 8px;
-  right: 8px;
+  bottom: 25px;
+  right: 25px;
   background: #fff;
   border-radius: 50%;
-  padding: 6px;
-  font-size: 16px;
+  padding: 8px;
+  font-size: 18px;
   color: #2250fc;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   pointer-events: none;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1;
 }
 
 .remove-photo, .remove-resume-btn {
@@ -155,17 +173,24 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
 /* Training Specialties Dropdown */
 .specialties-ng-select.ng-select .ng-select-container,
 .specialties-ng-select .ng-select-container {
-  min-height: 48px;
+  min-height: 60px;
   border-radius: 8px;
-  border: 1.5px solid #bfc9d9 !important;
+  border: 2px solid #4ba3b3 !important;
   font-size: 16px;
-  background: #fff;
+  background: #eaf6fa;
   box-shadow: none;
   position: relative;
   transition: border-color 0.2s;
-  padding: 4px 8px;
+  padding: 8px 8px 8px 8px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+  padding-right: 30px;
+  flex-wrap: wrap;
+  box-sizing: border-box;
 }
 
 .specialties-ng-select .ng-dropdown-panel {
@@ -191,6 +216,7 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
   transition: background-color 0.2s;
   min-height: 48px;
   background: #fff;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .specialty-option:hover {
@@ -211,27 +237,45 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
   line-height: 1.4;
 }
 
+.selected-specialties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-start;
+  min-height: 40px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
 .specialty-tag {
-  background: #e6f0ff;
-  color: #2250fc;
-  border-radius: 16px;
-  padding: 6px 14px;
-  font-size: 14px;
-  display: inline-flex;
+  background: #4ba3b3;
+  color: #fff;
+  border-radius: 18px;
+  padding: 8px 18px 8px 16px;
+  font-size: 15px;
+  font-weight: 500;
+  display: flex;
   align-items: center;
   gap: 8px;
-  transition: background-color 0.2s;
-  height: 32px;
-  margin: 0;
+  box-shadow: 0 2px 8px rgba(34,80,252,0.08), 0 1.5px 4px rgba(0,0,0,0.04);
+  margin: 0 0 4px 0;
   white-space: nowrap;
+  position: relative;
+  border: 1px solid #4ba3b3;
+  transition: background 0.2s, box-shadow 0.2s;
+  vertical-align: top;
+  box-sizing: border-box;
 }
 
 .specialty-tag:hover {
-  background: #d4e4ff;
+  background: #368a99;
+  box-shadow: 0 4px 12px rgba(34,80,252,0.12), 0 2px 6px rgba(0,0,0,0.06);
 }
 
 .specialty-tag i {
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
   padding: 4px;
   border-radius: 50%;
@@ -239,12 +283,20 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
+  color: #fff;
+  background: #368a99;
+  margin-left: 6px;
+  box-shadow: 0 1px 3px rgba(34,80,252,0.08);
 }
 
 .specialty-tag i:hover {
-  background: rgba(34, 80, 252, 0.1);
+  background: #4ba3b3;
+}
+
+.glossy-gradient-1, .glossy-gradient-2, .glossy-gradient-3, .glossy-gradient-4, .glossy-gradient-5 {
+  background: none !important;
 }
 
 .specialties-ng-select .ng-select-container.ng-select-focused {
@@ -300,3 +352,12 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
 }
 
 /* .card.register-card .card-body width reverted to default */
+
+select.form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+  padding-right: 30px;
+}

@@ -218,6 +218,7 @@ export class TrainerRegisterComponent implements OnInit {
         this.trainer.profile_image = imageUrl;
       },
       error: (error) => {
+        console.log(error);
         this.isUploadingPhoto = false;
         this.errorMessage = 'Failed to upload image.';
       }

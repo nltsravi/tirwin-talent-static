@@ -33,54 +33,75 @@
               </div>
 
               <!-- Step 1: Personal Info -->
-              <div *ngIf="step === 1">
-                <h4>Personal Information</h4>
-                <div class="form-group">
-                  <label>Profile Picture</label>
-                  <div class="avatar-uploader">
-                    <div class="avatar-preview" (click)="avatarInput.click()">
-                      <img *ngIf="photoPreview" [src]="photoPreview" alt="Profile Preview" />
-                      <i *ngIf="!photoPreview" class="fas fa-user avatar-placeholder"></i>
-                      <i class="fas fa-camera avatar-edit-icon"></i>
+              <div *ngIf="step === 1" class="step-content">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="avatar-uploader">
+                      <div class="avatar-preview" [style.background-image]="'url(' + (photoPreview || trainer.profile_image) + ')'" (click)="photoInput.click()">
+                        <div class="upload-overlay" *ngIf="!photoPreview && !trainer.profile_image">
+                          <i class="fas fa-camera"></i>
+                          <span>Upload Photo</span>
+                        </div>
+                        <div class="remove-photo" *ngIf="photoPreview || trainer.profile_image" (click)="removePhoto()">
+                          <i class="fas fa-times"></i>
+                        </div>
+                        <i class="fas fa-camera avatar-edit-icon"></i>
+                      </div>
+                      <input type="file" #photoInput accept="image/*" (change)="onPhotoSelected($event)" style="display: none">
                     </div>
-                    <input #avatarInput type="file" accept="image/png, image/jpeg, image/jpg" (change)="onPhotoSelected($event)" style="display:none" />
-                    <button *ngIf="photoPreview" type="button" class="btn btn-link remove-photo" (click)="removePhoto()">
-                      <i class="fas fa-times"></i> Remove
-                    </button>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label>First Name <span class="req-astrix">*</span></label>
-                  <input type="text" class="form-control" [(ngModel)]="trainer.first_name" required />
-                </div>
-                <div class="form-group">
-                  <label>Last Name <span class="req-astrix">*</span></label>
-                  <input type="text" class="form-control" [(ngModel)]="trainer.last_name" required />
-                </div>
-                <div class="form-group">
-                  <label>Email <span class="req-astrix">*</span></label>
-                  <input type="email" class="form-control" [(ngModel)]="trainer.email" required #emailInput="ngModel" email />
-                  <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="text-danger small mt-1">
-                    Please enter a valid email address.
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label>Phone Number <span class="req-astrix">*</span></label>
-                  <div style="display: flex; gap: 8px; align-items: center;">
-                    <select class="form-control" style="max-width: 110px;" [(ngModel)]="trainer.countryCode" name="countryCode" required>
-                      <option value="+1">🇺🇸 +1</option>
-                      <option value="+91">🇮🇳 +91</option>
-                      <option value="+44">🇬🇧 +44</option>
-                      <option value="+61">🇦🇺 +61</option>
-                      <option value="+971">🇦🇪 +971</option>
-                      <option value="+81">🇯🇵 +81</option>
-                      <option value="+49">🇩🇪 +49</option>
-                      <option value="+33">🇫🇷 +33</option>
-                      <option value="+86">🇨🇳 +86</option>
-                      <option value="+63">🇵🇭 +63</option>
-                      <!-- Add more as needed -->
-                    </select>
-                    <input type="tel" class="form-control" style="flex:1;" [(ngModel)]="trainer.phone" name="phone" required placeholder="Phone number" />
+                  <div class="col-md-8">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="firstName">First Name <span class="req-astrix">*</span></label>
+                          <input type="text" id="firstName" class="form-control" [(ngModel)]="trainer.first_name" required>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="lastName">Last Name <span class="req-astrix">*</span></label>
+                          <input type="text" id="lastName" class="form-control" [(ngModel)]="trainer.last_name" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="email">Email <span class="req-astrix">*</span></label>
+                      <input type="email" id="email" class="form-control" [(ngModel)]="trainer.email" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="phone">Phone <span class="req-astrix">*</span></label>
+                      <div class="input-group" style="display: flex; gap: 8px; align-items: center;">
+                        <select class="form-control" style="max-width: 160px;" [(ngModel)]="trainer.countryCode">
+                          <option value="+1">🇺🇸 United States (+1)</option>
+                          <option value="+91">🇮🇳 India (+91)</option>
+                          <option value="+44">🇬🇧 United Kingdom (+44)</option>
+                          <option value="+61">🇦🇺 Australia (+61)</option>
+                          <option value="+81">🇯🇵 Japan (+81)</option>
+                          <option value="+49">🇩🇪 Germany (+49)</option>
+                          <option value="+33">🇫🇷 France (+33)</option>
+                          <option value="+39">🇮🇹 Italy (+39)</option>
+                          <option value="+7">🇷🇺 Russia (+7)</option>
+                          <option value="+86">🇨🇳 China (+86)</option>
+                          <option value="+34">🇪🇸 Spain (+34)</option>
+                          <option value="+55">🇧🇷 Brazil (+55)</option>
+                          <option value="+27">🇿🇦 South Africa (+27)</option>
+                          <option value="+82">🇰🇷 South Korea (+82)</option>
+                          <option value="+31">🇳🇱 Netherlands (+31)</option>
+                          <option value="+351">🇵🇹 Portugal (+351)</option>
+                          <option value="+1">🇨🇦 Canada (+1)</option>
+                          <option value="+971">🇦🇪 United Arab Emirates (+971)</option>
+                          <option value="+90">🇹🇷 Turkey (+90)</option>
+                          <option value="+62">🇮🇩 Indonesia (+62)</option>
+                          <option value="+63">🇵🇭 Philippines (+63)</option>
+                          <option value="+65">🇸🇬 Singapore (+65)</option>
+                          <option value="+60">🇲🇾 Malaysia (+60)</option>
+                          <option value="+64">🇳🇿 New Zealand (+64)</option>
+                          <option value="+20">🇪🇬 Egypt (+20)</option>
+                        </select>
+                        <input type="tel" id="phone" class="form-control" style="flex: 1;" [(ngModel)]="trainer.phone" required placeholder="Phone number">
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -110,6 +131,12 @@
                 </div>
                 <div class="form-group">
                   <label>Area of Expertise <span class="req-astrix">*</span></label>
+                  <div class="selected-specialties" *ngIf="trainer.specialties.length > 0">
+                    <span *ngFor="let item of trainer.specialties" class="specialty-tag">
+                      {{ item }}
+                      <i class="fas fa-times" (click)="removeSpecialty(item, $event)"></i>
+                    </span>
+                  </div>
                   <ng-select
                     [items]="specialtiesOptions"
                     [(ngModel)]="trainer.specialties"
@@ -130,12 +157,7 @@
                       </div>
                     </ng-template>
                     <ng-template ng-multi-label-tmp let-items="items">
-                      <div class="selected-specialties">
-                        <span *ngFor="let item of items" class="specialty-tag">
-                          {{ item }}
-                          <i class="fas fa-times" (click)="removeSpecialty(item, $event)"></i>
-                        </span>
-                      </div>
+                      <span *ngIf="items.length > 0">{{ items.length }} selected</span>
                     </ng-template>
                   </ng-select>
                 </div>
