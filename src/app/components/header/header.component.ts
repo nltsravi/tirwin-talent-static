@@ -12,6 +12,11 @@ export class HeaderComponent implements OnInit {
   userName: string = "";
   currentUrl: string = "";
   isMobileMenuOpen: boolean = false;
+  isAdmin: boolean = false;
+  isAdminMenuOpen: boolean = false;
+  isAdminMobileMenuOpen: boolean = false;
+  isAdminMenuHovered: boolean = false;
+  isTrainerOrAdmin: boolean = false;
 
   constructor(private router: Router, private authService: AuthService) { 
     this.isActive('/home')
@@ -36,6 +41,11 @@ export class HeaderComponent implements OnInit {
     if (userData) {
       const user = JSON.parse(userData);
       this.userName = `${user.first_name} ${user.last_name}`;
+      this.isAdmin = user.user_type === 'admin';
+      this.isTrainerOrAdmin = user.user_type === 'admin' || user.user_type === 'trainer';
+    } else {
+      this.isAdmin = false;
+      this.isTrainerOrAdmin = false;
     }
   }
 
@@ -53,5 +63,27 @@ export class HeaderComponent implements OnInit {
   
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  toggleAdminMenu() {
+    this.isAdminMenuOpen = !this.isAdminMenuOpen;
+  }
+
+  toggleAdminMobileMenu() {
+    this.isAdminMobileMenuOpen = !this.isAdminMobileMenuOpen;
+  }
+
+  onAdminMenuMouseEnter() {
+    this.isAdminMenuHovered = true;
+    this.isAdminMenuOpen = true;
+  }
+
+  onAdminMenuMouseLeave() {
+    this.isAdminMenuHovered = false;
+    setTimeout(() => {
+      if (!this.isAdminMenuHovered) {
+        this.isAdminMenuOpen = false;
+      }
+    }, 200); // Small delay to allow for submenu interaction
   }
 }

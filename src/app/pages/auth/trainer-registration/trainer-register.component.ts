@@ -92,9 +92,11 @@ export class TrainerRegisterComponent implements OnInit {
 
   validateStep(): boolean {
     this.errorMessage = '';
-    if (this.step === 1 && (!this.trainer.first_name || !this.trainer.last_name || !this.trainer.email || !this.trainer.phone)) {
-      this.errorMessage = 'All fields in Personal Info are required!';
-      return false;
+    if (this.step === 1) {
+      if (!this.trainer.first_name || !this.trainer.last_name || !this.trainer.email || !this.trainer.phone) {
+        this.errorMessage = 'All fields in Personal Info are required!';
+        return false;
+      }
     }
     if (this.step === 2) {
       if (!this.trainer.job_title && this.trainer.employmentType === 'Employed') {

@@ -20,28 +20,8 @@
         </div>
     </div>
 
-
-      <!-- Testimonials Slider -->
-      <h2 class="section-title">Testimonials</h2>
-      <p class="section-subtitle">Hear what professionals say about our training!</p>
-      <div class="testimonial-carousel">
-        <button class="prev-btn" (click)="prevSlide()">❮</button>
-      
-        <div class="testimonial-slider">
-          <div
-            *ngFor="let review of testimonials; let i = index"
-            class="testimonial-card"
-            [class.active]="i === currentIndex">
-            <p>"{{ review.text }}"</p>
-            <strong>{{ review.author }}</strong>
-          </div>
-        </div>
-      
-        <button class="next-btn" (click)="nextSlide()">❯</button>
-      </div>
-
       <!-- Become a Trainer Section -->
-      <div class="trainer-section">
+      <div class="trainer-section" *ngIf="showBecomeTrainerSection">
         <div class="trainer-content">
           <div class="trainer-text">
             <h2>Become a Trainer</h2>

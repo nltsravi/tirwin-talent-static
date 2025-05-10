@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './layout/default-layout/default-layout.component';
+import { AdminUserComponent } from './pages/admin-user/admin-user.component';
+import { TrainerDetailsComponent } from './pages/admin-user/trainer-details.component';
 
 const routes: Routes = [
   {
@@ -15,6 +17,8 @@ const routes: Routes = [
       { path: 'webinar/:style/:id', loadChildren: () => import('./pages/webinar-details/webinar-details.module').then(m => m.CourseDetailsModule), data: { showSlider: false, account: true }  }, // 
       { path: 'checkout', loadChildren: () => import('./pages/checkout/checkout.module').then(m => m.CheckoutModule), data: { showSlider: false, account: true }  }, // 
       { path: 'myregistration', loadChildren: () => import('./pages/my-courses/my-courses.module').then(m => m.MyCoursesModule), data: { showSlider: false, account: true }  }, // 
+      { path: 'admin/user', component: AdminUserComponent, data: { showSlider: false } },
+      { path: 'admin/user/trainer/:id', component: TrainerDetailsComponent, data: { showSlider: false } },
     ]
   },
   { path: '**', redirectTo: 'home' } // Catch-all route

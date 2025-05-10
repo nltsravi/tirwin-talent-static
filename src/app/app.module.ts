@@ -17,6 +17,7 @@ import { CourseDetailsModule } from './pages/webinar-details/webinar-details.mod
 import { CheckoutModule } from './pages/checkout/checkout.module';
 import { RouterModule } from '@angular/router';
 import { MyCoursesModule } from './pages/my-courses/my-courses.module';
+import { AdminUserModule } from './pages/admin-user/admin-user.module';
 
 @NgModule({
     declarations: [
@@ -38,6 +39,7 @@ import { MyCoursesModule } from './pages/my-courses/my-courses.module';
         WebinarListModule,
         CourseDetailsModule,
         CheckoutModule,
-        MyCoursesModule
+        MyCoursesModule,
+        AdminUserModule
     ], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }

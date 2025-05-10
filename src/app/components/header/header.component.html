@@ -28,6 +28,21 @@
                         <li routerLinkActive="active">
                             <a routerLink="/webinar/training">Training</a>
                         </li>
+                        <li *ngIf="isAdmin" class="dropdown" [class.show]="isAdminMenuOpen">
+                            <a href="#" class="dropdown-toggle" 
+                               (mouseenter)="onAdminMenuMouseEnter()"
+                               (mouseleave)="onAdminMenuMouseLeave()"
+                               [attr.aria-expanded]="isAdminMenuOpen">
+                                Admin <i class="fas fa-caret-down"></i>
+                            </a>
+                            <ul class="dropdown-menu" 
+                                [style.display]="isAdminMenuOpen ? 'block' : 'none'"
+                                (mouseenter)="onAdminMenuMouseEnter()"
+                                (mouseleave)="onAdminMenuMouseLeave()">
+                                <li><a routerLink="/admin/webinar" class="dropdown-item">Webinar</a></li>
+                                <li><a routerLink="/admin/user" class="dropdown-item">User</a></li>
+                            </ul>
+                        </li>
                         <li *ngIf="!isAuthenticated" routerLinkActive="active">
                             <a routerLink="/auth/login">Login</a>
                         </li>
@@ -42,7 +57,7 @@
                                 <li>
                                     <a href="#" routerLink="/myregistration" class="dropdown-item">My Courses</a>
                                 </li>
-                                <li>
+                                <li *ngIf="!isTrainerOrAdmin">
                                     <a href="#"  class="dropdown-item">Become a Trainer</a>
                                 </li>
                                 <li>
@@ -77,6 +92,15 @@
                     <li>
                         <a routerLink="/webinar/training" (click)="toggleMobileMenu()">Training</a>
                     </li>
+                    <li *ngIf="isAdmin">
+                        <a href="#" (click)="toggleAdminMobileMenu(); $event.preventDefault();">
+                            Admin <i class="fas fa-caret-down"></i>
+                        </a>
+                        <ul *ngIf="isAdminMobileMenuOpen" class="dropdown-menu show" style="position:static;display:block;background:none;box-shadow:none;">
+                            <li><a routerLink="/admin/webinar" (click)="toggleMobileMenu()" class="dropdown-item">Webinar</a></li>
+                            <li><a routerLink="/admin/user" (click)="toggleMobileMenu()" class="dropdown-item">User</a></li>
+                        </ul>
+                    </li>
                     <li *ngIf="!isAuthenticated">
                         <a routerLink="/auth/login" (click)="toggleMobileMenu()">Login</a>
                     </li>
@@ -100,8 +124,8 @@
                             <li>
                                 <a href="#" routerLink="/myregistration" class="dropdown-item">My Courses</a>
                             </li>
-                            <li>
-                                <a href="#" class="dropdown-item">Become a Trainer</a>
+                            <li *ngIf="!isTrainerOrAdmin">
+                                <a href="#"  class="dropdown-item">Become a Trainer</a>
                             </li>
                             <li>
                                 <a href="#" (click)="logout()" class="dropdown-item text-danger">Logout</a>
