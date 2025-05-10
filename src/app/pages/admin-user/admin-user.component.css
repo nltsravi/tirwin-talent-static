@@ -1,0 +1,81 @@
+.admin-user-container {
+  display: flex;
+  min-height: 80vh;
+}
+.sidebar {
+  width: 220px;
+  background: #f7f7f7;
+  border-right: 1px solid #e0e0e0;
+  padding: 24px 0 0 0;
+}
+.menu-group {
+  margin-bottom: 32px;
+}
+.menu-title {
+  font-weight: bold;
+  margin-left: 24px;
+  margin-bottom: 8px;
+  color: #2250fc;
+}
+.submenu {
+  list-style: none;
+  padding: 0 0 0 16px;
+  margin: 0;
+}
+.submenu li {
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  transition: background 0.2s;
+}
+.submenu li.active, .submenu li:hover {
+  background: #e6f0ff;
+  color: #2250fc;
+  font-weight: bold;
+}
+.content {
+  flex: 1;
+  padding: 32px;
+}
+.trainer-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+.trainer-table th, .trainer-table td {
+  padding: 8px 12px;
+  text-align: left;
+}
+.trainer-table th {
+  background: #f0f4fa;
+}
+.trainer-table.no-border, .trainer-table.no-border th, .trainer-table.no-border td {
+  border: none !important;
+}
+.error {
+  color: #d32f2f;
+  margin: 12px 0;
+}
+.btn-action {
+  padding: 4px 12px;
+  margin-right: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  background: #e0e0e0;
+  color: #333;
+  transition: background 0.2s;
+}
+.btn-action.view {
+  background: #f0f4fa;
+  color: #2250fc;
+}
+.btn-action.approve {
+  background: #d4edda;
+  color: #155724;
+}
+.btn-action:hover {
+  background: #cce5ff;
+} 

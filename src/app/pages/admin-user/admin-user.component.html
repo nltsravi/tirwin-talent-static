@@ -1,0 +1,43 @@
+<div class="admin-user-container">
+  <div class="sidebar">
+    <div class="menu-group">
+      <div class="menu-title">Users</div>
+      <ul class="submenu">
+        <li [class.active]="selectedUserMenu === 'trainee'" (click)="selectUserMenu('trainee')">Trainee</li>
+        <li [class.active]="selectedUserMenu === 'trainer'" (click)="selectUserMenu('trainer')">Trainer</li>
+        <li [class.active]="selectedUserMenu === 'admin'" (click)="selectUserMenu('admin')">Admin User</li>
+      </ul>
+    </div>
+    <div class="menu-group">
+      <div class="menu-title">Webinars</div>
+      <!-- Add webinar submenu here if needed -->
+    </div>
+  </div>
+  <div class="content">
+    <h2>Trainers</h2>
+    <div *ngIf="loading">Loading trainers...</div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+    <table *ngIf="!loading && !error && trainers.length > 0" class="trainer-table no-border">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Type</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let trainer of trainers">
+          <td>{{ trainer.first_name }} {{ trainer.last_name }}</td>
+          <td>{{ trainer.email }}</td>
+          <td>{{ trainer.user_type }}</td>
+          <td>
+            <button class="btn-action view" [routerLink]="['/admin/user/trainer', trainer.id]">View</button>
+            <button class="btn-action approve" (click)="onApproveTrainer(trainer)">Approve</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!loading && !error && trainers.length === 0">No trainers found.</div>
+  </div>
+</div> 
