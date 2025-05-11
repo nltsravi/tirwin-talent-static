@@ -5,6 +5,34 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
 
+interface TrainerData {
+  first_name: string;
+  last_name: string;
+  email: string;
+  countryCode: string;
+  phone: string;
+  job_title: string;
+  organization: string;
+  experience: string;
+  employmentType: string;
+  specialties: string[];
+  resume_url: string;
+  linkedin_profile: string;
+  bio: string;
+  profile_image: string;
+  subscription_id: string;
+  public_profile: boolean;
+  training_modes: {
+    online: boolean;
+    offline: boolean;
+    hybrid: boolean;
+  };
+  additional_info: {
+    resume_url?: string;
+    [key: string]: any;
+  };
+}
+
 @Component({
   selector: 'app-trainer-register',
   templateUrl: './trainer-register.component.html',
@@ -23,7 +51,9 @@ export class TrainerRegisterComponent implements OnInit {
   photoFile: File | null = null;
   photoPreview: string | null = null;
   isUploadingPhoto = false;
+  isUploadingResume = false;
   uploadPhotoUrl = '';
+  uploadResumeUrl = '';
   emailDisabled = false;
   isEmailVerified = false;
   isVerifyingEmail = false;
@@ -41,7 +71,7 @@ export class TrainerRegisterComponent implements OnInit {
     subscriptionId: '06fff7d5-00b6-4679-afd8-d3dd4ae3beda',
     is_active:true,
   }
-  trainer = {
+  trainer: TrainerData = {
     first_name: '',
     last_name: '',
     email: '',
@@ -51,14 +81,15 @@ export class TrainerRegisterComponent implements OnInit {
     organization: '',
     experience: '',
     employmentType: '',
-    specialties: [] as string[],
+    specialties: [],
+    resume_url: '',
     linkedin_profile: '',
     bio: '',
-    profile_image: 'assets/default-avatar.png', // Updated default image path
+    profile_image: 'assets/default-avatar.png',
     subscription_id: '06fff7d5-00b6-4679-afd8-d3dd4ae3beda',
     public_profile: false,
     training_modes: { online: false, offline: false, hybrid: false },
-    resume_url: ''
+    additional_info: {}
   };
 
   experienceOptions: string[] = ['Less than 5 Years', '5-10 Years', '10-20 Years', '20+ Years'];
@@ -77,7 +108,7 @@ export class TrainerRegisterComponent implements OnInit {
     const userStr = sessionStorage.getItem('user');
     if (userStr) {
       try {
-        const user = JSON.parse(userStr);
+        const user: { first_name?: string; last_name?: string; email?: string; profile_image?: string } = JSON.parse(userStr);
         if (user.first_name) {
           this.trainer.first_name = user.first_name;
         }
@@ -196,10 +227,44 @@ export class TrainerRegisterComponent implements OnInit {
       this.errorMessage = '';
       
       // Upload resume immediately
-      this.uploadResume(file);
+      this.getUploadResumeUrl(file.type);
     }
   }
 
+  getUploadResumeUrl(fileType: string) {
+    this.isUploadingResume = true;
+    const userId = this.userAsTrainer.email;
+    const url = `${environment.api}/users/trainer/upload-resume`;
+  
+    const body = { userId, fileType };
+  
+    this.http.post<{ uploadUrl: string; imageUrl: string }>(url, body).subscribe({
+      next: (response) => {
+        this.uploadResumeUrl = response.uploadUrl;
+        this.uploadResumeToS3(this.uploadResumeUrl, response.imageUrl);
+      },
+      error: (error) => {
+        console.error('Error fetching upload URL:', error);
+      }
+    });
+  }
+
+  uploadResumeToS3(uploadUrl: string, imageUrl: string) {
+    if (!this.selectedFile) return;
+    this.http.put(uploadUrl, this.selectedFile, {
+      headers: { 'Content-Type': this.selectedFile.type },
+    }).subscribe({
+      next: () => {
+        this.isUploadingResume = false;
+        this.trainer.additional_info.resume_url = imageUrl;
+      },
+      error: (error) => {
+        console.log(error);
+        this.isUploadingResume = false;
+        this.errorMessage = 'Failed to upload image.';
+      }
+    });
+  }
   uploadResume(file: File) {
     const formData = new FormData();
     formData.append('resume', file);
@@ -357,5 +422,35 @@ export class TrainerRegisterComponent implements OnInit {
         this.toastr.error(this.errorMessage, 'Error');
       }
     });
+  }
+
+  submit() {
+    if (this.validateStep()) {
+      this.isSubmitting = true;
+      this.errorMessage = '';
+
+      // Prepare the trainer data
+      const trainerData: TrainerData = {
+        ...this.trainer,
+        additional_info: {
+          ...(this.trainer.additional_info || {}),
+          resume_url: this.trainer.resume_url || ''
+        }
+      };
+
+      this.http.post(`${environment.api}/users/trainer`, trainerData)
+        .subscribe({
+          next: (response: any) => {
+            this.isSubmitting = false;
+            this.toastr.success('Registration successful!', 'Success');
+            this.router.navigate(['/auth/login']);
+          },
+          error: (error) => {
+            this.isSubmitting = false;
+            this.errorMessage = error.error.message || 'Registration failed. Please try again.';
+            this.toastr.error(this.errorMessage, 'Error');
+          }
+        });
+    }
   }
 }

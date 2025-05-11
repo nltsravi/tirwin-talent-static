@@ -39,7 +39,7 @@
                                 [style.display]="isAdminMenuOpen ? 'block' : 'none'"
                                 (mouseenter)="onAdminMenuMouseEnter()"
                                 (mouseleave)="onAdminMenuMouseLeave()">
-                                <li><a routerLink="/admin/webinar" class="dropdown-item">Webinar</a></li>
+                                <li><a routerLink="/admin/webinar-management" class="dropdown-item">Webinar</a></li>
                                 <li><a routerLink="/admin/user" class="dropdown-item">User</a></li>
                             </ul>
                         </li>
@@ -97,7 +97,7 @@
                             Admin <i class="fas fa-caret-down"></i>
                         </a>
                         <ul *ngIf="isAdminMobileMenuOpen" class="dropdown-menu show" style="position:static;display:block;background:none;box-shadow:none;">
-                            <li><a routerLink="/admin/webinar" (click)="toggleMobileMenu()" class="dropdown-item">Webinar</a></li>
+                            <li><a routerLink="/admin/webinar-management" (click)="toggleMobileMenu()" class="dropdown-item">Webinar</a></li>
                             <li><a routerLink="/admin/user" (click)="toggleMobileMenu()" class="dropdown-item">User</a></li>
                         </ul>
                     </li>

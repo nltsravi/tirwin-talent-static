@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-trainer-details',
@@ -16,10 +17,35 @@ export class TrainerDetailsComponent implements OnInit {
   currentIndex = 0;
   toastMessage = '';
   showToastFlag = false;
+  isApproving: boolean = false;
+  errorMessage: string = '';
 
-  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private http: HttpClient,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
+    // Check if user is admin
+    const userStr = sessionStorage.getItem('user');
+    if (!userStr) {
+      this.router.navigate(['/auth/login']);
+      return;
+    }
+
+    try {
+      const user = JSON.parse(userStr);
+      if (user.user_type !== 'admin') {
+        this.router.navigate(['/auth/login']);
+        return;
+      }
+    } catch (e) {
+      this.router.navigate(['/auth/login']);
+      return;
+    }
+
     const trainerId = this.route.snapshot.paramMap.get('id');
     if (trainerId) {
       this.http.get<any>(`${environment.api}/admin/users/${trainerId}/details`).subscribe({
@@ -65,17 +91,35 @@ export class TrainerDetailsComponent implements OnInit {
 
   onApprove() {
     if (!this.trainer?.id) return;
-    this.http.put(`${environment.api}/admin/users/${this.trainer.id}/verify`, {}).subscribe({
-      next: () => {
-        this.showToast('Trainer approved successfully!');
-        setTimeout(() => {
-          this.router.navigate(['/admin/user']);
-        }, 2000);
-      },
-      error: () => {
-        this.showToast('Failed to approve trainer.');
-      }
-    });
+    
+    this.isApproving = true;
+    this.errorMessage = '';
+
+    this.http.put(`${environment.api}/admin/users/${this.trainer.id}/verify`, {})
+      .subscribe({
+        next: () => {
+          this.isApproving = false;
+          this.toastr.success('Trainer approved successfully!', 'Success', {
+            timeOut: 3000,
+            positionClass: 'toast-top-right',
+            progressBar: true,
+            closeButton: true
+          });
+          setTimeout(() => {
+            this.router.navigate(['/admin/user']);
+          }, 2000);
+        },
+        error: (error) => {
+          this.isApproving = false;
+          this.errorMessage = error.error.message || 'Failed to approve trainer.';
+          this.toastr.error(this.errorMessage, 'Error', {
+            timeOut: 3000,
+            positionClass: 'toast-top-right',
+            progressBar: true,
+            closeButton: true
+          });
+        }
+      });
   }
 
   showToast(message: string) {
