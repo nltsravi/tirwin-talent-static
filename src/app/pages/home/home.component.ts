@@ -72,6 +72,41 @@ export class HomeComponent implements OnInit {
   isLoadingTrainers = false;
   trainersError = '';
 
+  // Add a palette of nice background colors
+  trainerCardColors: string[] = [
+    'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+    'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+    'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+    'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+    'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+    'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+    'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+    'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+    'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+    'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'
+  ];
+
+  trainerBannerColors: string[] = [
+    'linear-gradient(90deg, #43cea2 0%, #185a9d 100%)',
+    'linear-gradient(90deg, #43cea2 0%, #185a9d 100%)',
+    'linear-gradient(90deg, #43cea2 0%, #185a9d 100%)',
+    'linear-gradient(90deg, #43cea2 0%, #185a9d 100%)',
+    'linear-gradient(90deg, #43cea2 0%, #185a9d 100%)',
+    'linear-gradient(90deg, #43cea2 0%, #185a9d 100%)',
+    'linear-gradient(90deg, #43cea2 0%, #185a9d 100%)',
+    'linear-gradient(90deg, #43cea2 0%, #185a9d 100%)',
+    'linear-gradient(90deg, #43cea2 0%, #185a9d 100%)',
+    'linear-gradient(90deg, #43cea2 0%, #185a9d 100%)'
+  ];
+
+  getTrainerCardColor(index: number): string {
+    return this.trainerCardColors[index % this.trainerCardColors.length];
+  }
+
+  getTrainerBannerColor(index: number): string {
+    return this.trainerBannerColors[index % this.trainerBannerColors.length];
+  }
+
   constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {

@@ -51,7 +51,6 @@ export class TrainerDetailsComponent implements OnInit {
       this.http.get<any>(`${environment.api}/admin/users/${trainerId}/details`).subscribe({
         next: (data) => {
           const user = data.user;
-
           this.trainer = {
             id: user.id,
             first_name: user.first_name,
@@ -69,7 +68,8 @@ export class TrainerDetailsComponent implements OnInit {
             totalWebinars: user.trainer_total_sessions,
             followers: user.trainer_followers,
             resume_urls: user.trainer_resume_urls,
-            trainer_id:user.trainer_id
+            trainer_id:user.trainer_id,
+            isVerified: user.is_verified
           };
           this.loading = false;
         },
@@ -181,7 +181,8 @@ export class TrainerDetailsPublicComponent implements OnInit {
             rating: user.trainer_rating,
             totalWebinars: user.trainer_total_sessions,
             followers: user.trainer_followers,
-            resume_urls: user.trainer_resume_urls
+            resume_urls: user.trainer_resume_urls,
+            isVerified: user.is_verified
           };
           this.loading = false;
         },

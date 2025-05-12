@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
@@ -25,6 +25,7 @@ export class AdminUserComponent implements OnInit {
   totalPages: number = 0;
   sortColumn: string = 'name';
   sortDirection: 'asc' | 'desc' = 'asc';
+  selectedTrainerFilter: 'all' | 'approved' | 'pending' = 'pending';
 
   constructor(private http: HttpClient, private titleService: Title, private toastr: ToastrService, private router: Router) {
     this.titleService.setTitle('Admin - User Management');
@@ -64,10 +65,25 @@ export class AdminUserComponent implements OnInit {
     }
   }
 
+  onTrainerFilterChange(filter: 'all' | 'approved' | 'pending') {
+    this.selectedTrainerFilter = filter;
+    this.fetchTrainers();
+  }
+
   fetchTrainers() {
     this.loading = true;
     this.error = '';
-    this.http.get<any[]>(`${environment.api}/admin/users/by-type?userType=trainer&isVerified=false`).subscribe({
+    let params = new HttpParams();
+    
+    if (this.selectedTrainerFilter === 'approved') {
+      params = params.set('isVerified', 'true');
+    } else if (this.selectedTrainerFilter === 'pending') {
+      params = params.set('isVerified', 'false');
+    }
+
+    this.http.get<any[]>(`${environment.api}/admin/users/by-type`, {
+      params: params.set('userType', 'trainer')
+    }).subscribe({
       next: (data) => {
         this.trainers = data;
         this.loading = false;

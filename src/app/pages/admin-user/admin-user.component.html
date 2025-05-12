@@ -23,6 +23,22 @@
     <div *ngIf="loading">Loading {{ selectedUserMenu }}...</div>
     <div *ngIf="error" class="error">{{ error }}</div>
     
+    <!-- Trainer Filter Tiles -->
+    <div *ngIf="selectedUserMenu === 'trainer'" class="filter-tiles mb-4">
+      <div class="filter-tile" [class.active]="selectedTrainerFilter === 'all'" (click)="onTrainerFilterChange('all')">
+        <i class="fas fa-users"></i>
+        <span>All Trainers</span>
+      </div>
+      <div class="filter-tile" [class.active]="selectedTrainerFilter === 'approved'" (click)="onTrainerFilterChange('approved')">
+        <i class="fas fa-check-circle"></i>
+        <span>Approved</span>
+      </div>
+      <div class="filter-tile" [class.active]="selectedTrainerFilter === 'pending'" (click)="onTrainerFilterChange('pending')">
+        <i class="fas fa-clock"></i>
+        <span>Pending Approval</span>
+      </div>
+    </div>
+
     <!-- Trainer List -->
     <table *ngIf="!loading && !error && selectedUserMenu === 'trainer' && trainers.length > 0" class="user-table">
       <thead>
@@ -36,7 +52,8 @@
             Email
             <i class="fas" [class]="getSortIcon('email')"></i>
           </th>
-          <th>Type</th>
+          <th>Verified</th>
+          <th>Active</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -49,10 +66,16 @@
           </td>
           <td>{{ trainer.first_name }} {{ trainer.last_name }}</td>
           <td>{{ trainer.email }}</td>
-          <td>{{ trainer.user_type }}</td>
+          <td>
+            <i class="fas" [ngClass]="trainer.is_verified ? 'fa-check-circle text-success' : 'fa-times-circle text-danger'"></i>
+          </td>
+          <td>
+            <i class="fas" [ngClass]="trainer.is_active ? 'fa-check-circle text-success' : 'fa-times-circle text-danger'"></i>
+          </td>
           <td>
             <button class="btn-action view" [routerLink]="['/admin/user/trainer', trainer.id]">View</button>
             <button 
+              *ngIf="selectedTrainerFilter !== 'approved' && !trainer.is_verified"
               class="btn-action approve" 
               (click)="onApproveTrainer(trainer)"
               [disabled]="approvingTrainers[trainer.id]"

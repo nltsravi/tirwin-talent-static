@@ -257,6 +257,16 @@
   font-size: 18px;
 }
 
+/* Verified/Active Icon Styles */
+.fa-check-circle.text-success {
+  color: #22c55e !important;
+  font-size: 1.2rem;
+}
+.fa-times-circle.text-danger {
+  color: #ef4444 !important;
+  font-size: 1.2rem;
+}
+
 /* Action Button Styles */
 .btn-action {
   padding: 6px 12px;
@@ -292,4 +302,75 @@
 
 .btn-action i {
   font-size: 12px;
+}
+
+.filter-tiles {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.filter-tile {
+  flex: 1;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-tile:hover {
+  background: #e9ecef;
+  transform: translateY(-2px);
+}
+
+.filter-tile.active {
+  background: #2250fc;
+  color: white;
+  border-color: #2250fc;
+}
+
+.filter-tile i {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.filter-tile span {
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .user-table th, .user-table td {
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+  .filter-tile {
+    padding: 1.1rem 0.5rem;
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 600px) {
+  .content {
+    padding: 10px;
+  }
+  .filter-tiles {
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .user-table th, .user-table td {
+    padding: 8px 4px;
+    font-size: 12px;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
 } 
