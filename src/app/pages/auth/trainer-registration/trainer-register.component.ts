@@ -31,9 +31,7 @@ interface TrainerData {
     resume_url?: string;
     [key: string]: any;
   };
-  documents: {
-    resume: string;
-  };
+  doc_urls: string[];
 }
 
 @Component({
@@ -93,9 +91,7 @@ export class TrainerRegisterComponent implements OnInit {
     public_profile: false,
     training_modes: { online: false, offline: false, hybrid: false },
     additional_info: {},
-    documents: {
-      resume: ''
-    }
+    doc_urls: []
   };
 
   experienceOptions: string[] = ['Less than 5 Years', '5-10 Years', '10-20 Years', '20+ Years'];
@@ -248,7 +244,7 @@ export class TrainerRegisterComponent implements OnInit {
     this.http.post<{ uploadUrl: string; resumeUrl: string }>(url, body).subscribe({
       next: (response) => {
         this.uploadResumeUrl = response.uploadUrl;
-        this.trainer.documents.resume = response.resumeUrl;
+        //this.trainer.doc_urls = [response.resumeUrl];
         this.uploadResumeToS3(this.uploadResumeUrl, response.resumeUrl);
       },
       error: (error) => {
@@ -264,7 +260,7 @@ export class TrainerRegisterComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.isUploadingResume = false;
-        this.trainer.documents.resume = resumeUrl;
+        this.trainer.doc_urls = [resumeUrl];
       },
       error: (error) => {
         console.log(error);
@@ -286,7 +282,7 @@ export class TrainerRegisterComponent implements OnInit {
           this.toastr.success('Resume uploaded successfully!', 'Success');
           // Store the resume URL if provided in the response
           if (response.resumeUrl) {
-            this.trainer.documents.resume = response.resumeUrl;
+            this.trainer.doc_urls = [response.resumeUrl];
           }
         },
         error: (error) => {
