@@ -223,6 +223,10 @@
                   <textarea class="form-control" [(ngModel)]="trainer.bio"></textarea>
                 </div>
                 <div class="form-group">
+                  <label>LinkedIn</label>
+                  <input type="text" class="form-control" [(ngModel)]="trainer.linkedin_profile" />
+                </div>
+                <div class="form-group">
                   <label>Upload Resume</label>
                   <div class="resume-upload-container">
                     <div class="input-group">
@@ -255,10 +259,6 @@
                       Supported formats: PDF, DOC, DOCX (Max size: 5MB)
                     </small>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label>LinkedIn</label>
-                  <input type="text" class="form-control" [(ngModel)]="trainer.linkedin_profile" />
                 </div>
               </div>
 

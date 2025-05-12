@@ -42,19 +42,6 @@
         <p class="bio">{{ trainer.bio }}</p>
       </div>
       <div class="d-flex justify-content-end gap-2">
-        <button class="btn btn-secondary" (click)="onCancel()">Cancel</button>
-        <button 
-          class="btn btn-success" 
-          (click)="onApprove()"
-          [disabled]="isApproving"
-        >
-          <span *ngIf="isApproving">
-            <i class="fas fa-spinner fa-spin"></i> Approving...
-          </span>
-          <span *ngIf="!isApproving">
-            <i class="fas fa-check"></i> Approve
-          </span>
-        </button>
       </div>
     </div>
   </div>

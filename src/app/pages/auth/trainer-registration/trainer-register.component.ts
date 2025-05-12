@@ -31,6 +31,9 @@ interface TrainerData {
     resume_url?: string;
     [key: string]: any;
   };
+  documents: {
+    resume: string;
+  };
 }
 
 @Component({
@@ -89,7 +92,10 @@ export class TrainerRegisterComponent implements OnInit {
     subscription_id: '06fff7d5-00b6-4679-afd8-d3dd4ae3beda',
     public_profile: false,
     training_modes: { online: false, offline: false, hybrid: false },
-    additional_info: {}
+    additional_info: {},
+    documents: {
+      resume: ''
+    }
   };
 
   experienceOptions: string[] = ['Less than 5 Years', '5-10 Years', '10-20 Years', '20+ Years'];
@@ -193,6 +199,7 @@ export class TrainerRegisterComponent implements OnInit {
     this.isSubmitting = true;
     this.successMessage = '';
     this.errorMessage = '';
+    alert(this.trainer.documents.resume);
     // Combine country code and phone for backend
     const trainerData = { ...this.trainer, phone: `${this.trainer.countryCode} ${this.trainer.phone}` };
     this.trainerService.registerTrainer(trainerData).subscribe({
@@ -238,10 +245,11 @@ export class TrainerRegisterComponent implements OnInit {
   
     const body = { userId, fileType };
   
-    this.http.post<{ uploadUrl: string; imageUrl: string }>(url, body).subscribe({
+    this.http.post<{ uploadUrl: string; resumeUrl: string }>(url, body).subscribe({
       next: (response) => {
         this.uploadResumeUrl = response.uploadUrl;
-        this.uploadResumeToS3(this.uploadResumeUrl, response.imageUrl);
+        this.trainer.documents.resume = response.resumeUrl;
+        this.uploadResumeToS3(this.uploadResumeUrl, response.resumeUrl);
       },
       error: (error) => {
         console.error('Error fetching upload URL:', error);
@@ -249,14 +257,14 @@ export class TrainerRegisterComponent implements OnInit {
     });
   }
 
-  uploadResumeToS3(uploadUrl: string, imageUrl: string) {
+  uploadResumeToS3(uploadUrl: string, resumeUrl: string) {
     if (!this.selectedFile) return;
     this.http.put(uploadUrl, this.selectedFile, {
       headers: { 'Content-Type': this.selectedFile.type },
     }).subscribe({
       next: () => {
         this.isUploadingResume = false;
-        this.trainer.additional_info.resume_url = imageUrl;
+        this.trainer.documents.resume = resumeUrl;
       },
       error: (error) => {
         console.log(error);
@@ -278,7 +286,7 @@ export class TrainerRegisterComponent implements OnInit {
           this.toastr.success('Resume uploaded successfully!', 'Success');
           // Store the resume URL if provided in the response
           if (response.resumeUrl) {
-            this.trainer.resume_url = response.resumeUrl;
+            this.trainer.documents.resume = response.resumeUrl;
           }
         },
         error: (error) => {

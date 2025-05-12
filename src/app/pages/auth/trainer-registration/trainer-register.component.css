@@ -448,3 +448,15 @@ select.form-control {
   font-size: 0.8em;
   margin-right: 4px;
 }
+
+.resume-preview-link {
+  display: inline-block;
+  margin-top: 4px;
+  color: #2250fc;
+  font-weight: 500;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+.resume-preview-link:hover {
+  color: #1d4ed8;
+}

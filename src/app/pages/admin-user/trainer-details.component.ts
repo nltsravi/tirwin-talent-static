@@ -139,4 +139,59 @@ export class TrainerDetailsComponent implements OnInit {
     if (!this.trainer?.testimonials) return;
     this.currentIndex = (this.currentIndex + 1) % this.trainer.testimonials.length;
   }
+}
+
+@Component({
+  selector: 'app-trainer-details-public',
+  templateUrl: './trainer-details-public.component.html',
+  styleUrls: ['./trainer-details.component.css']
+})
+export class TrainerDetailsPublicComponent implements OnInit {
+  trainer: any = null;
+  loading = true;
+  error = '';
+  starsArray = [1, 2, 3, 4, 5];
+  currentIndex = 0;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private http: HttpClient
+  ) {}
+
+  ngOnInit() {
+    const trainerId = this.route.snapshot.paramMap.get('id');
+    if (trainerId) {
+      this.http.get<any>(`${environment.api}/admin/users/${trainerId}/details`).subscribe({
+        next: (data) => {
+          const user = data.user;
+          this.trainer = {
+            id: user.id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            phone: user.phone,
+            job_title: user.job_title,
+            organization: user.trainer_organization || user.organization,
+            profile_image: user.trainer_profile_image || user.profile_image,
+            linkedin_profile: user.trainer_linkedin_url || user.linkedin_id,
+            bio: user.trainer_bio,
+            expertise: user.trainer_expertise,
+            experience: user.trainer_experience_years,
+            rating: user.trainer_rating,
+            totalWebinars: user.trainer_total_sessions,
+            followers: user.trainer_followers,
+          };
+          this.loading = false;
+        },
+        error: (err) => {
+          this.error = 'Failed to load trainer details.';
+          this.loading = false;
+        }
+      });
+    } else {
+      this.error = 'No trainer ID provided.';
+      this.loading = false;
+    }
+  }
 } 

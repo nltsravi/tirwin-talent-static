@@ -221,3 +221,188 @@
     max-width: 300px;
   }
 }
+
+/* Expert Trainers Section */
+.expert-trainers-section {
+  margin-top: 60px;
+  padding: 40px 0;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.trainer-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.trainer-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(34,80,252,0.06), 0 1.5px 4px rgba(0,0,0,0.04);
+  padding: 24px 18px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+  min-height: 260px;
+  cursor: pointer;
+}
+
+.trainer-card:hover {
+  transform: rotateY(180deg);
+}
+
+.trainer-card-front, .trainer-card-back {
+  backface-visibility: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(34,80,252,0.06), 0 1.5px 4px rgba(0,0,0,0.04);
+}
+
+.trainer-card-back {
+  transform: rotateY(180deg);
+}
+
+.trainer-card-front {
+  background: #fff;
+  border-radius: 12px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(34,80,252,0.06), 0 1.5px 4px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+
+.trainer-card-front::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 25%;
+  background: linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%);
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  opacity: 1;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.trainer-card-front > * {
+  position: relative;
+  z-index: 2;
+}
+
+.trainer-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #eaf6fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #368a99;
+}
+
+.trainer-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.avatar-placeholder {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eaf6fa;
+  border-radius: 50%;
+  font-size: 32px;
+  font-weight: 700;
+  color: #368a99;
+}
+
+.trainer-info {
+  text-align: center;
+}
+
+.trainer-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a237e;
+  margin-bottom: 8px;
+}
+
+.trainer-bio {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 10px;
+  min-height: 36px;
+}
+
+.trainer-specialties {
+  margin-top: 6px;
+  z-index: 2;
+  position: relative;
+}
+
+.trainer-specialties .badge {
+  background: #4ba3b3;
+  color: #fff;
+  border-radius: 12px;
+  padding: 4px 12px;
+  font-size: 12px;
+  margin-right: 4px;
+  margin-bottom: 2px;
+  display: inline-block;
+}
+
+.trainer-experience {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.linkedin-icon {
+  margin-top: 10px;
+  font-size: 24px;
+  color: #0077b5;
+}
+
+@media (max-width: 768px) {
+  .expert-trainers-section {
+    padding: 20px 0;
+  }
+  .trainer-card-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .trainer-card {
+    padding: 18px 8px 14px 8px;
+  }
+}

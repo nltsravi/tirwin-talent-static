@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: "app-home",
@@ -66,8 +68,11 @@ export class HomeComponent implements OnInit {
   ];
 
   showBecomeTrainerSection = true;
+  trainers: any[] = [];
+  isLoadingTrainers = false;
+  trainersError = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
     const userStr = sessionStorage.getItem('user');
@@ -81,6 +86,34 @@ export class HomeComponent implements OnInit {
         // Ignore parse errors
       }
     }
+    this.fetchTrainers();
+  }
+
+  fetchTrainers() {
+    this.isLoadingTrainers = true;
+    this.trainersError = '';
+    const url = `${environment.api}/admin/users/by-type?userType=trainer&isVerified=true`;
+    this.http.get(url).subscribe({
+      next: (res: any) => {
+        let trainers: any[] = [];
+        if (Array.isArray(res)) {
+          trainers = res;
+        } else if (res && Array.isArray(res.data)) {
+          trainers = res.data;
+        }
+        // Only show if at least 3 trainers, and at most 5
+        if (trainers.length >= 3) {
+          this.trainers = trainers.slice(0, 5);
+        } else {
+          this.trainers = [];
+        }
+        this.isLoadingTrainers = false;
+      },
+      error: (err) => {
+        this.trainersError = 'Failed to load trainers.';
+        this.isLoadingTrainers = false;
+      }
+    });
   }
 
   navigateToLogistics(item: any) {
@@ -97,5 +130,11 @@ export class HomeComponent implements OnInit {
     event.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
     this.router.navigate(['/auth/trainer-registration']);
+  }
+
+  navigateToTrainerDetails(event: Event, trainer: any) {
+    alert(trainer.id);
+    event.preventDefault();
+    this.router.navigate(['/trainer/details', trainer.id]);
   }
 }

@@ -6,6 +6,7 @@ import { TrainerDetailsComponent } from './pages/admin-user/trainer-details.comp
 import { BecomeInstructorLandingComponent } from './pages/become-instructor/become-instructor-landing.component';
 import { AdminGuard } from './guards/admin.guard';
 import { AdminWebinarComponent } from './pages/admin-webinar/admin-webinar.component';
+import { TrainerDetailsPublicComponent } from './pages/admin-user/trainer-details.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,7 @@ const routes: Routes = [
           { path: 'create', component: AdminWebinarComponent }
         ]
       },
+      { path: 'trainer/details/:id', component: TrainerDetailsPublicComponent, data: { showSlider: false } },
     ]
   },
   { path: '**', redirectTo: 'home' } // Catch-all route
