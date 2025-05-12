@@ -199,7 +199,7 @@ export class TrainerRegisterComponent implements OnInit {
     this.isSubmitting = true;
     this.successMessage = '';
     this.errorMessage = '';
-    alert(this.trainer.documents.resume);
+
     // Combine country code and phone for backend
     const trainerData = { ...this.trainer, phone: `${this.trainer.countryCode} ${this.trainer.phone}` };
     this.trainerService.registerTrainer(trainerData).subscribe({
@@ -459,6 +459,14 @@ export class TrainerRegisterComponent implements OnInit {
             this.toastr.error(this.errorMessage, 'Error');
           }
         });
+    }
+  }
+
+  onAvatarClick(isEnabled: boolean, photoInput: HTMLInputElement) {
+    if (isEnabled) {
+      photoInput.click();
+    } else {
+      this.toastr.info('Profile photo upload will be enabled after email OTP validation.', 'Info');
     }
   }
 }

@@ -37,7 +37,7 @@
                 <div class="row">
                   <div class="col-md-4">
                     <div class="avatar-uploader">
-                      <div class="avatar-preview" [style.background-image]="'url(' + (photoPreview || trainer.profile_image) + ')'" (click)="photoInput.click()">
+                      <div class="avatar-preview" [style.background-image]="'url(' + (photoPreview || trainer.profile_image) + ')'" [class.avatar-disabled]="!isEmailVerified || !isOtpVerified" (click)="onAvatarClick(isEmailVerified && isOtpVerified, photoInput)" style="width: 100%; min-height: 180px; max-width: 100%;">
                         <div class="upload-overlay" *ngIf="!photoPreview && !trainer.profile_image">
                           <i class="fas fa-camera"></i>
                           <span>Upload Photo</span>
@@ -48,6 +48,9 @@
                         <i class="fas fa-camera avatar-edit-icon"></i>
                       </div>
                       <input type="file" #photoInput accept="image/*" (change)="onPhotoSelected($event)" style="display: none">
+                      <button class="btn btn-primary mt-2 w-100" (click)="photoInput.click()" [disabled]="!isEmailVerified || !isOtpVerified">
+                        <i class="fas fa-upload"></i> Upload Photo
+                      </button>
                     </div>
                   </div>
                   <div class="col-md-8">
@@ -84,7 +87,7 @@
                           </span>
                         </button>
                       </div>
-                      <small class="text-success" *ngIf="isEmailVerified">
+                      <small class="text-success" *ngIf="isEmailVerified && !(!isOtpVerified && isEmailVerified)">
                         <i class="fas fa-check-circle"></i> Email verified successfully. OTP sent to your email id for validation.
                       </small>
                     </div>

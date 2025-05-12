@@ -69,9 +69,7 @@ export class AdminUserComponent implements OnInit {
     this.error = '';
     this.http.get<any[]>(`${environment.api}/admin/users/by-type?userType=trainer&isVerified=false`).subscribe({
       next: (data) => {
-        console.log('API response:', data);
         this.trainers = data;
-        console.log('Trainers set:', this.trainers);
         this.loading = false;
       },
       error: (err) => {
@@ -137,35 +135,32 @@ export class AdminUserComponent implements OnInit {
   }
 
   onApproveTrainer(trainer: any) {
-    if (!trainer.id) return;
-    
-    this.approvingTrainers[trainer.id] = true;
-    
-    this.http.put(`${environment.api}/admin/users/${trainer.id}/verify`, {})
-      .subscribe({
-        next: () => {
-          this.approvingTrainers[trainer.id] = false;
-          // Remove the approved trainer from the list
-          this.trainers = this.trainers.filter(t => t.id !== trainer.id);
-          // Show success toast
-          this.toastr.success('Trainer approved successfully!', 'Success', {
-            timeOut: 3000,
-            positionClass: 'toast-top-right',
-            progressBar: true,
-            closeButton: true
-          });
-        },
-        error: (error) => {
-          this.approvingTrainers[trainer.id] = false;
-          this.error = error.error.message || 'Failed to approve trainer.';
-          this.toastr.error(this.error, 'Error', {
-            timeOut: 3000,
-            positionClass: 'toast-top-right',
-            progressBar: true,
-            closeButton: true
-          });
-        }
-      });
+    if (!trainer.trainer.id) return;
+    this.approvingTrainers[trainer.trainer.id] = true;
+    this.http.patch(`${environment.api}/users/trainer/${trainer.trainer.id}/verify-profile`, {}).subscribe({
+      next: () => {
+        this.approvingTrainers[trainer.trainer.id] = false;
+        // Remove the approved trainer from the list
+        this.trainers = this.trainers.filter(t => t.trainer.id !== trainer.trainer.id);
+        // Show success toast
+        this.toastr.success('Trainer approved successfully!', 'Success', {
+          timeOut: 3000,
+          positionClass: 'toast-top-right',
+          progressBar: true,
+          closeButton: true
+        });
+      },
+      error: (error) => {
+        this.approvingTrainers[trainer.trainer.id] = false;
+        this.error = error.error.message || 'Failed to approve trainer.';
+        this.toastr.error(this.error, 'Error', {
+          timeOut: 3000,
+          positionClass: 'toast-top-right',
+          progressBar: true,
+          closeButton: true
+        });
+      }
+    });
   }
 
   onSort(column: string) {

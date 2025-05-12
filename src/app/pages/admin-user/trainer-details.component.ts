@@ -51,6 +51,7 @@ export class TrainerDetailsComponent implements OnInit {
       this.http.get<any>(`${environment.api}/admin/users/${trainerId}/details`).subscribe({
         next: (data) => {
           const user = data.user;
+
           this.trainer = {
             id: user.id,
             first_name: user.first_name,
@@ -67,7 +68,8 @@ export class TrainerDetailsComponent implements OnInit {
             rating: user.trainer_rating,
             totalWebinars: user.trainer_total_sessions,
             followers: user.trainer_followers,
-            // Add more fields as needed
+            resume_urls: user.trainer_resume_urls,
+            trainer_id:user.trainer_id
           };
           this.loading = false;
         },
@@ -91,35 +93,33 @@ export class TrainerDetailsComponent implements OnInit {
 
   onApprove() {
     if (!this.trainer?.id) return;
-    
     this.isApproving = true;
     this.errorMessage = '';
 
-    this.http.put(`${environment.api}/admin/users/${this.trainer.id}/verify`, {})
-      .subscribe({
-        next: () => {
-          this.isApproving = false;
-          this.toastr.success('Trainer approved successfully!', 'Success', {
-            timeOut: 3000,
-            positionClass: 'toast-top-right',
-            progressBar: true,
-            closeButton: true
-          });
-          setTimeout(() => {
-            this.router.navigate(['/admin/user']);
-          }, 2000);
-        },
-        error: (error) => {
-          this.isApproving = false;
-          this.errorMessage = error.error.message || 'Failed to approve trainer.';
-          this.toastr.error(this.errorMessage, 'Error', {
-            timeOut: 3000,
-            positionClass: 'toast-top-right',
-            progressBar: true,
-            closeButton: true
-          });
-        }
-      });
+    this.http.patch(`${environment.api}/users/trainer/${this.trainer.trainer_id}/verify-profile`, {}).subscribe({
+      next: () => {
+        this.isApproving = false;
+        this.toastr.success('Trainer approved successfully!', 'Success', {
+          timeOut: 3000,
+          positionClass: 'toast-top-right',
+          progressBar: true,
+          closeButton: true
+        });
+        setTimeout(() => {
+          this.router.navigate(['/admin/user']);
+        }, 2000);
+      },
+      error: (error) => {
+        this.isApproving = false;
+        this.errorMessage = error.error.message || 'Failed to approve trainer.';
+        this.toastr.error(this.errorMessage, 'Error', {
+          timeOut: 3000,
+          positionClass: 'toast-top-right',
+          progressBar: true,
+          closeButton: true
+        });
+      }
+    });
   }
 
   showToast(message: string) {
@@ -181,6 +181,7 @@ export class TrainerDetailsPublicComponent implements OnInit {
             rating: user.trainer_rating,
             totalWebinars: user.trainer_total_sessions,
             followers: user.trainer_followers,
+            resume_urls: user.trainer_resume_urls
           };
           this.loading = false;
         },

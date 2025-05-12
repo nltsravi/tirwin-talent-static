@@ -101,6 +101,12 @@ export class HomeComponent implements OnInit {
         } else if (res && Array.isArray(res.data)) {
           trainers = res.data;
         }
+        // Sort by createdAt or created_at descending if available
+        trainers = trainers.sort((a, b) => {
+          const dateA = new Date(a.createdAt || a.created_at || 0).getTime();
+          const dateB = new Date(b.createdAt || b.created_at || 0).getTime();
+          return dateB - dateA;
+        });
         // Only show if at least 3 trainers, and at most 5
         if (trainers.length >= 3) {
           this.trainers = trainers.slice(0, 5);
@@ -133,7 +139,6 @@ export class HomeComponent implements OnInit {
   }
 
   navigateToTrainerDetails(event: Event, trainer: any) {
-    alert(trainer.id);
     event.preventDefault();
     this.router.navigate(['/trainer/details', trainer.id]);
   }

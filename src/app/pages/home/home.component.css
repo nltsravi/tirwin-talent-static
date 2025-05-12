@@ -239,22 +239,22 @@
 }
 
 .trainer-card {
-  background: #fff;
+  background: #f4f8fb;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(34,80,252,0.06), 0 1.5px 4px rgba(0,0,0,0.04);
   padding: 24px 18px 18px 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-  position: relative;
   min-height: 260px;
   cursor: pointer;
+  position: relative;
+  transition: box-shadow 0.2s, transform 0.2s;
 }
 
 .trainer-card:hover {
-  transform: rotateY(180deg);
+  box-shadow: 0 6px 18px rgba(34,80,252,0.12), 0 2px 8px rgba(0,0,0,0.08);
+  transform: translateY(-4px) scale(1.03);
 }
 
 .trainer-card-front, .trainer-card-back {
@@ -276,6 +276,8 @@
 }
 
 .trainer-card-front {
+  position: relative;
+  overflow: hidden;
   background: #fff;
   border-radius: 12px;
   width: 100%;
@@ -284,71 +286,44 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
   box-shadow: 0 2px 8px rgba(34,80,252,0.06), 0 1.5px 4px rgba(0,0,0,0.04);
-  overflow: hidden;
 }
 
-.trainer-card-front::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 25%;
-  background: linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%);
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  opacity: 1;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.trainer-card-front > * {
+.trainer-avatar.center-over-tile {
   position: relative;
-  z-index: 2;
-}
-
-.trainer-avatar {
-  width: 80px;
-  height: 80px;
+  margin-top: 0;
+  margin-bottom: 8px;
+  z-index: 3;
+  width: 90px;
+  height: 90px;
+  background: #fff;
   border-radius: 50%;
-  overflow: hidden;
-  background: #eaf6fa;
+  box-shadow: 0 2px 8px rgba(34,80,252,0.10), 0 1.5px 4px rgba(0,0,0,0.08);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16px;
-  font-size: 32px;
-  font-weight: 700;
-  color: #368a99;
+  border: 3px solid #fff;
 }
 
-.trainer-avatar img {
-  width: 100%;
-  height: 100%;
+.trainer-avatar.center-over-tile img,
+.trainer-avatar.center-over-tile .avatar-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
   object-fit: cover;
-  border-radius: 50%;
+  display: block;
 }
 
-.avatar-placeholder {
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #eaf6fa;
-  border-radius: 50%;
-  font-size: 32px;
-  font-weight: 700;
-  color: #368a99;
+.trainer-card-front, .trainer-card-back, .trainer-card:hover, .trainer-card {
+  transform: none !important;
+  backface-visibility: visible !important;
 }
 
 .trainer-info {
+  width: 100%;
   text-align: center;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .trainer-name {
@@ -356,6 +331,7 @@
   font-weight: 600;
   color: #1a237e;
   margin-bottom: 8px;
+  margin-top: 0;
 }
 
 .trainer-bio {
@@ -367,8 +343,10 @@
 
 .trainer-specialties {
   margin-top: 6px;
-  z-index: 2;
-  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
 }
 
 .trainer-specialties .badge {
@@ -392,6 +370,21 @@
   margin-top: 10px;
   font-size: 24px;
   color: #0077b5;
+}
+
+.resume-preview-icon {
+  display: inline-block;
+  margin-top: 8px;
+  margin-left: 6px;
+  color: #2250fc;
+  font-size: 22px;
+  transition: color 0.2s;
+  vertical-align: middle;
+}
+
+.resume-preview-icon:hover {
+  color: #1a73e8;
+  text-decoration: none;
 }
 
 @media (max-width: 768px) {

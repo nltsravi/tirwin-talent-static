@@ -95,15 +95,18 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
 }
 
 .avatar-preview {
-  width: 160px;
-  height: 160px;
+  width: 100%;
+  min-height: 180px;
+  max-width: 100%;
+  border-radius: 12px;
   background-size: cover;
   background-position: center;
-  border-radius: 0;
-  margin: 0 auto 16px auto;
-  cursor: pointer;
   position: relative;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  cursor: pointer;
+  border: 2px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .avatar-preview:hover {
@@ -459,4 +462,10 @@ select.form-control {
 }
 .resume-preview-link:hover {
   color: #1d4ed8;
+}
+
+.avatar-disabled {
+  cursor: not-allowed !important;
+  opacity: 0.6;
+  pointer-events: none;
 }
