@@ -55,8 +55,7 @@
           *ngIf="!trainer?.is_verified"
           class="btn btn-success" 
           (click)="onApprove()"
-          [disabled]="isApproving"
-        >
+          [disabled]="isApproving">
           <span *ngIf="isApproving">
             <i class="fas fa-spinner fa-spin"></i> Approving...
           </span>
