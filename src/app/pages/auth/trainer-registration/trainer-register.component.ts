@@ -96,7 +96,15 @@ export class TrainerRegisterComponent implements OnInit {
 
   experienceOptions: string[] = ['Less than 5 Years', '5-10 Years', '10-20 Years', '20+ Years'];
   employmentTypeOptions: string[] = ['Employed', 'Consultant'];
-  specialtiesOptions: string[] = ['Fleet Management', 'Customs Compliance', 'Cold Chain Logistics', 'Route Optimization'];
+  specialtiesOptions: string[] = ['Fleet Management', 'Customs Compliance', 'Cold Chain Logistics', 'Route Optimization', 'Other'];
+
+  // Modal specialties selection
+  showSpecialtiesModal = false;
+  specialtiesSearch = '';
+  filteredSpecialtiesOptions: string[] = [...this.specialtiesOptions];
+  tempSelectedSpecialties: string[] = [];
+  showOtherInput = false;
+  otherExpertise = '';
 
   constructor(
     private trainerService: TrainerRegisterService, 
@@ -464,5 +472,76 @@ export class TrainerRegisterComponent implements OnInit {
     } else {
       this.toastr.info('Profile photo upload will be enabled after email OTP validation.', 'Info');
     }
+  }
+
+  // Modal specialties selection
+  openSpecialtiesModal() {
+    this.tempSelectedSpecialties = [...this.trainer.specialties];
+    this.specialtiesSearch = '';
+    this.filteredSpecialtiesOptions = [...this.specialtiesOptions];
+    this.showSpecialtiesModal = true;
+    this.showOtherInput = this.tempSelectedSpecialties.some(s => !this.specialtiesOptions.includes(s));
+    if (this.showOtherInput) {
+      this.otherExpertise = this.tempSelectedSpecialties.find(s => !this.specialtiesOptions.includes(s)) || '';
+    }
+  }
+
+  closeSpecialtiesModal() {
+    this.showSpecialtiesModal = false;
+    this.showOtherInput = false;
+    this.otherExpertise = '';
+  }
+
+  filterSpecialties() {
+    const search = this.specialtiesSearch.trim().toLowerCase();
+    if (!search) {
+      this.filteredSpecialtiesOptions = [...this.specialtiesOptions];
+    } else {
+      this.filteredSpecialtiesOptions = this.specialtiesOptions.filter(opt => 
+        opt.toLowerCase().includes(search) || opt === 'Other'
+      );
+    }
+  }
+
+  isSpecialtySelected(item: string): boolean {
+    return this.tempSelectedSpecialties.includes(item);
+  }
+
+  toggleSpecialty(item: string) {
+    if (item === 'Other') {
+      this.showOtherInput = !this.showOtherInput;
+      if (!this.showOtherInput) {
+        // Remove the custom expertise value if 'Other' is unchecked
+        this.tempSelectedSpecialties = this.tempSelectedSpecialties.filter(s => s !== this.otherExpertise.trim());
+        this.otherExpertise = '';
+      } else {
+        // If opening the input, add the value if it exists
+        if (this.otherExpertise.trim() && !this.tempSelectedSpecialties.includes(this.otherExpertise.trim())) {
+          this.tempSelectedSpecialties.push(this.otherExpertise.trim());
+        }
+      }
+    } else {
+      if (this.tempSelectedSpecialties.includes(item)) {
+        this.tempSelectedSpecialties = this.tempSelectedSpecialties.filter(s => s !== item);
+      } else {
+        this.tempSelectedSpecialties.push(item);
+      }
+    }
+  }
+
+  updateOtherExpertise() {
+    // Remove any previous custom value (not in the predefined list)
+    this.tempSelectedSpecialties = this.tempSelectedSpecialties.filter(s => this.specialtiesOptions.includes(s));
+    if (this.showOtherInput && this.otherExpertise.trim()) {
+      this.tempSelectedSpecialties.push(this.otherExpertise.trim());
+    }
+  }
+
+  applySpecialtiesModal() {
+    // Remove empty strings and duplicates
+    this.trainer.specialties = Array.from(new Set(this.tempSelectedSpecialties.filter(s => s.trim() !== '')));
+    this.showSpecialtiesModal = false;
+    this.showOtherInput = false;
+    this.otherExpertise = '';
   }
 }

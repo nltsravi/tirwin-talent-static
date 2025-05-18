@@ -192,29 +192,44 @@
                       <i class="fas fa-times" (click)="removeSpecialty(item, $event)"></i>
                     </span>
                   </div>
-                  <ng-select
-                    [items]="specialtiesOptions"
-                    [(ngModel)]="trainer.specialties"
-                    [multiple]="true"
-                    [placeholder]="trainer.specialties.length > 0 ? '' : 'Select your training specialities'"
-                    [closeOnSelect]="false"
-                    [searchable]="false"
-                    [hideSelected]="true"
-                    [selectOnTab]="true"
-                    [clearable]="true"
-                    [dropdownPosition]="'auto'"
-                    class="form-control specialties-ng-select"
-                  >
-                    <ng-template ng-option-tmp let-item="item" let-index="index">
-                      <div class="specialty-option">
-                        <input type="checkbox" [checked]="(trainer.specialties || []).indexOf(item) > -1" />
-                        <span>{{ item }}</span>
+                  <div class="expertise-btn-wrapper mt-2">
+                    <button type="button" class="btn expertise-btn" (click)="openSpecialtiesModal()">
+                      {{ trainer.specialties.length > 0 ? 'Edit Expertise' : 'Select your areas of expertise' }}
+                    </button>
+                  </div>
+
+                  <!-- Modal -->
+                  <div class="modal fade show" tabindex="-1" [ngStyle]="{display: showSpecialtiesModal ? 'block' : 'none', background: showSpecialtiesModal ? 'rgba(0,0,0,0.4)' : 'none'}" *ngIf="showSpecialtiesModal">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Select Areas of Expertise</h5>
+                          <button type="button" class="btn-close" (click)="closeSpecialtiesModal()"></button>
+                        </div>
+                        <div class="modal-body">
+                          <input type="text" class="form-control mb-3" placeholder="Search expertise..." [(ngModel)]="specialtiesSearch" (input)="filterSpecialties()">
+                          <div class="specialties-list-modal">
+                            <div *ngFor="let item of filteredSpecialtiesOptions" class="specialty-item">
+                              <div class="specialty-checkbox">
+                                <input type="checkbox" class="form-check-input" [checked]="isSpecialtySelected(item)" (change)="toggleSpecialty(item)">
+                              </div>
+                              <div class="specialty-content">
+                                <span class="specialty-text">{{ item }}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="other-expertise-input mt-3" *ngIf="showOtherInput">
+                            <label class="form-label">Enter your expertise</label>
+                            <input type="text" class="form-control" [(ngModel)]="otherExpertise" (input)="updateOtherExpertise()" placeholder="Type your expertise here...">
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" (click)="closeSpecialtiesModal()">Cancel</button>
+                          <button type="button" class="btn btn-primary" (click)="applySpecialtiesModal()">Apply</button>
+                        </div>
                       </div>
-                    </ng-template>
-                    <ng-template ng-multi-label-tmp let-items="items">
-                      <span *ngIf="items.length > 0">{{ items.length }} selected</span>
-                    </ng-template>
-                  </ng-select>
+                    </div>
+                  </div>
                 </div>
               </div>
 

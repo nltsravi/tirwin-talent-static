@@ -160,11 +160,11 @@ export class HomeComponent implements OnInit {
   navigateToLogistics(item: any) {
     if (item?.redirect) {
       if (item?.title === 'Logistics') {
-        this.router.navigate(['/webinar/events'], { queryParams: { type: 'logistics' } });
+          this.router.navigate(['/webinar/events'], { queryParams: { type: 'logistics' } });
       } else {
-        this.router.navigate(['/webinar/masterclass'], { queryParams: { type: 'freight-cargo-management' } });
+          this.router.navigate(['/webinar/masterclass'], { queryParams: { type: 'freight-cargo-management' } });          
+        }
       }
-    }
   }
 
   navigateToTrainerRegistration(event: Event) {

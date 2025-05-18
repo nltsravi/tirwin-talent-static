@@ -170,72 +170,132 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
 }
 
 /* Training Specialties Dropdown */
-.specialties-ng-select.ng-select .ng-select-container,
-.specialties-ng-select .ng-select-container {
-  min-height: 60px;
-  border-radius: 8px;
-  border: 2px solid #4ba3b3 !important;
-  font-size: 16px;
-  background: #eaf6fa;
-  box-shadow: none;
-  position: relative;
-  transition: border-color 0.2s;
-  padding: 8px 8px 8px 8px;
+.specialties-ng-select, .specialties-ng-select .ng-select-container, .specialties-ng-select .ng-dropdown-panel {
+  display: none !important;
+}
+
+/* Modal styles */
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 1050;
   display: flex;
-  align-items: flex-start;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 8px center;
-  background-size: 16px;
-  padding-right: 30px;
-  flex-wrap: wrap;
-  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.4);
+  overflow-y: auto;
 }
-
-.specialties-ng-select .ng-dropdown-panel {
+.modal-dialog {
+  margin: 1.75rem auto;
+  max-height: calc(100vh - 3.5rem);
+  width: 100%;
+}
+.modal-content {
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(34,80,252,0.10), 0 2px 8px rgba(0,0,0,0.08);
+  border: none;
+  max-height: calc(100vh - 3.5rem);
+  display: flex;
+  flex-direction: column;
+}
+.modal-header {
+  border-bottom: 1px solid #eaeaea;
+  padding: 16px 20px;
+}
+.modal-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #888;
+  cursor: pointer;
+}
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+.specialties-list-modal {
+  max-height: 260px;
+  overflow-y: auto;
+  border: 1px solid #eaeaea;
   border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  border: 1.5px solid #bfc9d9;
-  margin-top: 2px;
-  background: #fff;
-}
-
-.specialties-ng-select .ng-dropdown-panel .ng-dropdown-panel-items {
-  max-height: 400px;
   padding: 8px 0;
-  background: #fff;
+  background: #f9fafd;
+  margin-bottom: 16px;
 }
-
-.specialty-option {
+.specialty-item {
+  padding: 0;
+  margin: 0;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  min-height: 48px;
-  background: #fff;
+  padding: 12px 18px;
   border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background 0.2s;
 }
-
-.specialty-option:hover {
-  background-color: #f8f9fa;
+.specialty-item:last-child {
+  border-bottom: none;
 }
-
-.specialty-option input[type="checkbox"] {
+.specialty-item:hover {
+  background: #eaf6fa;
+}
+.specialty-checkbox {
+  flex-shrink: 0;
   width: 20px;
   height: 20px;
-  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.specialty-content {
+  flex: 1;
+  min-width: 0;
+}
+.specialty-text {
+  font-size: 16px;
+  line-height: 1.4;
+  color: #2c3e50;
+}
+.form-check-input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
   accent-color: #2250fc;
+  margin: 0;
   cursor: pointer;
 }
-
-.specialty-option span {
-  font-size: 15px;
-  color: #2c3e50;
-  line-height: 1.4;
+.other-expertise-input {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  margin-top: 16px;
 }
-
+.other-expertise-input .form-label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #2c3e50;
+}
+.other-expertise-input .form-control {
+  border: 1px solid #ced4da;
+  padding: 10px 12px;
+  font-size: 15px;
+}
+.other-expertise-input .form-control:focus {
+  border-color: #2250fc;
+  box-shadow: 0 0 0 0.2rem rgba(34, 80, 252, 0.15);
+}
+.modal-footer {
+  border-top: 1px solid #eaeaea;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
 .selected-specialties {
   display: flex;
   flex-wrap: wrap;
@@ -244,13 +304,12 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
   min-height: 40px;
   width: 100%;
   padding: 0;
-  margin: 0;
+  margin: 0 0 10px 0;
   box-sizing: border-box;
 }
-
 .specialty-tag {
-  background: #4ba3b3;
-  color: #fff;
+  background: #e3edfd;
+  color: #2250fc;
   border-radius: 18px;
   padding: 8px 18px 8px 16px;
   font-size: 15px;
@@ -262,17 +321,11 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
   margin: 0 0 4px 0;
   white-space: nowrap;
   position: relative;
-  border: 1px solid #4ba3b3;
+  border: 1px solid #2250fc;
   transition: background 0.2s, box-shadow 0.2s;
   vertical-align: top;
   box-sizing: border-box;
 }
-
-.specialty-tag:hover {
-  background: #368a99;
-  box-shadow: 0 4px 12px rgba(34,80,252,0.12), 0 2px 6px rgba(0,0,0,0.06);
-}
-
 .specialty-tag i {
   font-size: 14px;
   cursor: pointer;
@@ -285,13 +338,12 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
   width: 18px;
   height: 18px;
   color: #fff;
-  background: #368a99;
+  background: #2250fc;
   margin-left: 6px;
   box-shadow: 0 1px 3px rgba(34,80,252,0.08);
 }
-
 .specialty-tag i:hover {
-  background: #4ba3b3;
+  background: #1d4ed8;
 }
 
 .glossy-gradient-1, .glossy-gradient-2, .glossy-gradient-3, .glossy-gradient-4, .glossy-gradient-5 {
@@ -468,4 +520,28 @@ select.form-control {
   cursor: not-allowed !important;
   opacity: 0.6;
   pointer-events: none;
+}
+
+.expertise-btn-wrapper {
+  margin-top: 8px;
+}
+
+.expertise-btn {
+  width: fit-content;
+  min-width: 200px;
+  background-color: #87ceeb;
+  border-color: #87ceeb;
+  color: #2250fc;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.expertise-btn:hover {
+  background-color: #5ec6f3;
+  border-color: #5ec6f3;
+  color: #2250fc;
+  box-shadow: 0 2px 4px rgba(34, 80, 252, 0.12);
 }
