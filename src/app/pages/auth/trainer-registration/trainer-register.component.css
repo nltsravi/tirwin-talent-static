@@ -1,6 +1,8 @@
 .register-section {
     position: relative;
     top: -20px;
+    background: linear-gradient(to bottom, #fae3e8 0%, #eaf1fa 100%);
+    min-height: 100vh;
 }
 
 /* Stepper */
@@ -566,6 +568,7 @@ select.form-control {
 
 /* Adjust card for right column */
 .register-card {
+  /* background: linear-gradient(to bottom, #eaf1fa 0%, #fae3e8 100%); */
   box-shadow: 0 4px 24px rgba(34,80,252,0.08);
   border-radius: 18px;
   margin-bottom: 0;

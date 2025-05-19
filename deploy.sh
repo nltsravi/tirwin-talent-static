@@ -3,10 +3,15 @@
 # Exit on any error
 set -e
 
+export AWS_DEFAULT_PROFILE=dev.tirwin.fe
 # Configuration
-S3_BUCKET="tirwin-talent-fe"
-CLOUDFRONT_DISTRIBUTION_ID="YOUR_CLOUDFRONT_DISTRIBUTION_ID"
-DIST_FOLDER="dist/angular-17-crud"
+
+set -o allexport
+source .env.development
+set +o allexport
+
+
+DIST_FOLDER="dist/browser"
 
 # Function to check AWS CLI is installed and configured
 check_aws_cli() {
@@ -43,7 +48,7 @@ check_s3_bucket
 
 # Build the Angular application
 echo "Building the application..."
-ng build --configuration=production || handle_error "Angular build failed"
+ng build --configuration=development || handle_error "Angular build failed"
 
 # Check if dist folder exists
 if [ ! -d "$DIST_FOLDER" ]; then
@@ -79,10 +84,10 @@ fi
 # Create CloudFront invalidation
 echo "Creating CloudFront invalidation..."
 if [ -n "$CLOUDFRONT_DISTRIBUTION_ID" ] && [ "$CLOUDFRONT_DISTRIBUTION_ID" != "YOUR_CLOUDFRONT_DISTRIBUTION_ID" ]; then
-    if ! aws cloudfront create-invalidation \
+   if ! aws cloudfront create-invalidation \
         --distribution-id $CLOUDFRONT_DISTRIBUTION_ID \
         --paths "/*"; then
-        handle_error "Failed to create CloudFront invalidation"
+       handle_error "Failed to create CloudFront invalidation"
     fi
     echo "CloudFront invalidation created successfully"
 else
