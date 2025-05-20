@@ -250,6 +250,26 @@
   border: 1px solid #c3e6cb;
 }
 
+.btn-action.delete {
+  background: linear-gradient(90deg, #dc2626 60%, #ef4444 100%);
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 8px rgba(220,38,38,0.12);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.btn-action.delete:hover {
+  background: linear-gradient(90deg, #ef4444 60%, #dc2626 100%);
+  box-shadow: 0 4px 16px rgba(220,38,38,0.18);
+}
+
+.btn-action.delete i {
+  margin-right: 7px;
+  font-size: 15px;
+}
+
 .btn-action:hover {
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

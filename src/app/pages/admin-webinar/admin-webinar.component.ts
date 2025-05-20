@@ -43,6 +43,8 @@ export class AdminWebinarComponent implements OnInit, OnDestroy {
   showCancelModal = false;
   showSaveModal = false;
   resumeUrl: string | null = null;
+  showDeleteModal = false;
+  selectedWebinar: any = null;
 
   constructor(
     private http: HttpClient,
@@ -521,5 +523,37 @@ export class AdminWebinarComponent implements OnInit, OnDestroy {
 
   onEditClick() {
     alert('This feature is coming soon.');
+  }
+
+  confirmDelete(webinar: any) {
+    this.selectedWebinar = webinar;
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+    this.selectedWebinar = null;
+  }
+
+  deleteWebinar() {
+    if (!this.selectedWebinar) return;
+
+    this.http.delete(`${environment.api}/admin/webinars/${this.selectedWebinar.id}`)
+      .subscribe({
+        next: () => {
+          this.toastr.success('Webinar deleted successfully', 'Success');
+          this.closeDeleteModal();
+          // Refresh the webinar list
+          if (this.selectedWebinarMenu === 'upcoming') {
+            this.fetchUpcomingWebinars();
+          } else if (this.selectedWebinarMenu === 'all') {
+            this.fetchAllWebinars();
+          }
+        },
+        error: (error) => {
+          this.toastr.error(error.error.message || 'Failed to delete webinar', 'Error');
+          this.closeDeleteModal();
+        }
+      });
   }
 } 

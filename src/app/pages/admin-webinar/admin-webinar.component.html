@@ -228,6 +228,9 @@
               <button class="btn-action edit" *ngIf="getWebinarStatus(webinar.end_time) === 'Upcoming'" (click)="onEditClick()">
                 <i class="fas fa-edit"></i> Edit
               </button>
+              <button class="btn-action delete" *ngIf="getWebinarStatus(webinar.end_time) === 'Upcoming'" (click)="confirmDelete(webinar)">
+                <i class="fas fa-trash"></i> Delete
+              </button>
               <button class="btn-action recording" *ngIf="canShowRecording(webinar.date, webinar.recording_url)">
                 <i class="fas fa-play"></i> Recording
               </button>
@@ -263,7 +266,7 @@
             <td>{{ truncateTitle(webinar.title) }}</td>
             <td>{{ formatDate(webinar.date) }}</td>
             <td>
-              <span class="status-badge upcoming">Upcoming</span>
+              <span class="status-badge upcoming">Upcomings</span>
             </td>
             <td>
               <button class="btn-action view" [routerLink]="['/webinar', (webinar.session_type || webinar.type || 'events')?.toLowerCase(), webinar.id]">
@@ -271,6 +274,9 @@
               </button>
               <button class="btn-action edit" *ngIf="getWebinarStatus(webinar.end_time) === 'Upcoming'" (click)="onEditClick()">
                 <i class="fas fa-edit"></i> Edit
+              </button>
+              <button class="btn-action delete" *ngIf="getWebinarStatus(webinar.end_time) === 'Upcoming'" (click)="confirmDelete(webinar)">
+                <i class="fas fa-trash"></i> Delete
               </button>
             </td>
           </tr>
@@ -342,5 +348,24 @@
         </nav>
       </div>
     </ng-template>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade show" tabindex="-1" [ngStyle]="{display: showDeleteModal ? 'block' : 'none', background: showDeleteModal ? 'rgba(0,0,0,0.4)' : 'none'}">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Delete</h5>
+        <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure? You want to delete webinar "{{ selectedWebinar?.title }}"</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="deleteWebinar()">Delete</button>
+      </div>
+    </div>
   </div>
 </div> 
