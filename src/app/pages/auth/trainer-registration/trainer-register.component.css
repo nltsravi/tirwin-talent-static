@@ -310,8 +310,8 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
   box-sizing: border-box;
 }
 .specialty-tag {
-  background: #e3edfd;
-  color: #2250fc;
+  background: #2250fc;
+  color: #ffffff;
   border-radius: 18px;
   padding: 8px 18px 8px 16px;
   font-size: 15px;
@@ -339,13 +339,13 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
   justify-content: center;
   width: 18px;
   height: 18px;
-  color: #fff;
-  background: #2250fc;
+  color: #2250fc;
+  background: #ffffff;
   margin-left: 6px;
   box-shadow: 0 1px 3px rgba(34,80,252,0.08);
 }
 .specialty-tag i:hover {
-  background: #1d4ed8;
+  background: #f0f0f0;
 }
 
 .glossy-gradient-1, .glossy-gradient-2, .glossy-gradient-3, .glossy-gradient-4, .glossy-gradient-5 {
@@ -531,9 +531,9 @@ select.form-control {
 .expertise-btn {
   width: fit-content;
   min-width: 200px;
-  background-color: #87ceeb;
-  border-color: #87ceeb;
-  color: #2250fc;
+  background-color: #2250fc;
+  border-color: #2250fc;
+  color: #ffffff;
   padding: 8px 16px;
   font-size: 14px;
   border-radius: 6px;
@@ -542,9 +542,9 @@ select.form-control {
 }
 
 .expertise-btn:hover {
-  background-color: #5ec6f3;
-  border-color: #5ec6f3;
-  color: #2250fc;
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #ffffff;
   box-shadow: 0 2px 4px rgba(34, 80, 252, 0.12);
 }
 

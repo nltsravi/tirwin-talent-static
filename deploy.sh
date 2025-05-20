@@ -48,7 +48,7 @@ check_s3_bucket
 
 # Build the Angular application
 echo "Building the application..."
-ng build --configuration=development || handle_error "Angular build failed"
+ng build --configuration=production || handle_error "Angular build failed"
 
 # Check if dist folder exists
 if [ ! -d "$DIST_FOLDER" ]; then
@@ -59,25 +59,28 @@ echo "Build successful. Deploying to S3..."
 
 # Sync the dist folder with S3 bucket
 echo "Uploading files to S3..."
-if ! aws s3 sync $DIST_FOLDER/ s3://$S3_BUCKET/ --delete; then
+if ! aws s3 sync $DIST_FOLDER/ s3://$S3_BUCKET/ --delete --exclude "assets/*" --exclude "media/*"; then
     handle_error "Failed to sync files with S3 bucket"
 fi
 
 # Set proper cache control headers
 echo "Setting cache control headers..."
 if ! aws s3 cp s3://$S3_BUCKET/ s3://$S3_BUCKET/ \
+    --content-type text/html \
     --recursive \
     --metadata-directive REPLACE \
     --cache-control max-age=31536000,public \
-    --exclude "index.html"; then
+    --exclude "index.html" --exclude "assets/*" --exclude "media/*"; then
     handle_error "Failed to set cache control headers for static assets"
 fi
 
 # Set no-cache for index.html
 echo "Setting cache control for index.html..."
 if ! aws s3 cp s3://$S3_BUCKET/index.html s3://$S3_BUCKET/index.html \
+    --content-type text/html \
     --metadata-directive REPLACE \
-    --cache-control no-cache,no-store,must-revalidate; then
+    --cache-control no-cache,no-store,must-revalidate \
+    --exclude "assets/*" --exclude "media/*"; then
     handle_error "Failed to set cache control for index.html"
 fi
 

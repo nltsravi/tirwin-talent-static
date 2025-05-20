@@ -98,6 +98,9 @@ export class TrainerRegisterComponent implements OnInit {
   employmentTypeOptions: string[] = ['Employed', 'Consultant'];
   specialtiesOptions: string[] = ['Fleet Management', 'Customs Compliance', 'Cold Chain Logistics', 'Route Optimization', 'Other'];
 
+  // Maximum number of specialties allowed
+  readonly MAX_SPECIALTIES = 3;
+
   // Modal specialties selection
   showSpecialtiesModal = false;
   specialtiesSearch = '';
@@ -515,16 +518,18 @@ export class TrainerRegisterComponent implements OnInit {
         this.tempSelectedSpecialties = this.tempSelectedSpecialties.filter(s => s !== this.otherExpertise.trim());
         this.otherExpertise = '';
       } else {
-        // If opening the input, add the value if it exists
-        if (this.otherExpertise.trim() && !this.tempSelectedSpecialties.includes(this.otherExpertise.trim())) {
+        // If opening the input, add the value if it exists and we haven't reached the limit
+        if (this.otherExpertise.trim() && !this.tempSelectedSpecialties.includes(this.otherExpertise.trim()) && this.tempSelectedSpecialties.length < this.MAX_SPECIALTIES) {
           this.tempSelectedSpecialties.push(this.otherExpertise.trim());
         }
       }
     } else {
       if (this.tempSelectedSpecialties.includes(item)) {
         this.tempSelectedSpecialties = this.tempSelectedSpecialties.filter(s => s !== item);
-      } else {
+      } else if (this.tempSelectedSpecialties.length < this.MAX_SPECIALTIES) {
         this.tempSelectedSpecialties.push(item);
+      } else {
+        this.toastr.warning(`You can select a maximum of ${this.MAX_SPECIALTIES} areas of expertise.`, 'Limit Reached');
       }
     }
   }
