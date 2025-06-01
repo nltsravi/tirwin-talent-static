@@ -96,8 +96,8 @@ export class TrainerRegisterComponent implements OnInit {
 
   experienceOptions: string[] = ['Less than 5 Years', '5-10 Years', '10-20 Years', '20+ Years'];
   employmentTypeOptions: string[] = ['Employed', 'Consultant'];
-  specialtiesOptions: string[] = ['Fleet Management', 'Customs Compliance', 'Cold Chain Logistics', 'Route Optimization', 'Other'];
-
+  //specialtiesOptions: string[] = ['Fleet Management', 'Customs Compliance', 'Cold Chain Logistics', 'Route Optimization', 'Other'];
+  specialtiesOptions:string[]=['Supply Chain & Logistics Management','Customs compliance & documentation','Dangerous goods handling','Freight rate & cost management','Cargo Sales','Ocean pricing','EXIM operations','Freight forwarding - Customer Service','Custom brokers','CFS operations','Supply Chain Technology','Supply Chain Analytics','Other']
   // Maximum number of specialties allowed
   readonly MAX_SPECIALTIES = 3;
 
