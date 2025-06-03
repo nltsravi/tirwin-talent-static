@@ -195,7 +195,7 @@ export class TrainerRegisterComponent implements OnInit {
         return false;
       }
       // LinkedIn validation: if not empty, must be a valid LinkedIn URL
-      if (this.trainer.linkedin_profile && !/^https?:\/\/(www\.)?linkedin\.com\/(in|pub|company)\/[A-Za-z0-9\-_%]+/i.test(this.trainer.linkedin_profile.trim())) {
+      if (this.trainer.linkedin_profile && !this.validateLinkedInUrl(this.trainer.linkedin_profile.trim())) {
         this.errorMessage = 'Please enter a valid LinkedIn profile URL.';
         return false;
       }
@@ -208,6 +208,14 @@ export class TrainerRegisterComponent implements OnInit {
     this.isSubmitting = true;
     this.successMessage = '';
     this.errorMessage = '';
+    if(this.trainer.employmentType != 'Employed'){
+      if(this.trainer.job_title == ''){
+      this.trainer.job_title = '&nbsp;';
+      }
+      if(this.trainer.organization == ''){
+        this.trainer.organization = '&nbsp;';
+      }
+    }
 
     // Combine country code and phone for backend
     const trainerData = { ...this.trainer, phone: `${this.trainer.countryCode} ${this.trainer.phone}` };
@@ -558,5 +566,11 @@ export class TrainerRegisterComponent implements OnInit {
     }
     this.trainer.specialties = [...this.tempSelectedSpecialties];
     this.closeSpecialtiesModal();
+  }
+
+  validateLinkedInUrl(url: string): boolean {
+    if (!url) return true;
+    const linkedInRegex = /^(https?:\/\/)?(www\.)?linkedin\.com\/in\/[\w-]+\/?$/;
+    return linkedInRegex.test(url);
   }
 }
