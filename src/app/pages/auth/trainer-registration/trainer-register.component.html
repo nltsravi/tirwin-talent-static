@@ -36,24 +36,6 @@
                 <div *ngIf="step === 1" class="step-content step-slide active">
                   <!-- Step 1: Personal Info -->
                   <div class="row">
-                    <div class="col-md-4">
-                      <div class="avatar-uploader">
-                        <div class="avatar-preview" [style.background-image]="'url(' + (photoPreview || trainer.profile_image) + ')'" [class.avatar-disabled]="!isEmailVerified || !isOtpVerified" (click)="onAvatarClick(isEmailVerified && isOtpVerified, photoInput)" style="width: 100%; min-height: 180px; max-width: 100%;">
-                          <div class="upload-overlay" *ngIf="!photoPreview && !trainer.profile_image">
-                            <i class="fas fa-camera"></i>
-                            <span>Upload Photo</span>
-                          </div>
-                          <div class="remove-photo" *ngIf="photoPreview || (trainer.profile_image && trainer.profile_image !== 'assets/default-avatar.png')" (click)="removePhoto()">
-                            <i class="fas fa-times"></i>
-                          </div>
-                          <i class="fas fa-camera avatar-edit-icon"></i>
-                        </div>
-                        <input type="file" #photoInput accept="image/*" (change)="onPhotoSelected($event)" style="display: none">
-                        <button class="btn btn-primary mt-2 w-100" (click)="photoInput.click()" [disabled]="!isEmailVerified || !isOtpVerified">
-                          <i class="fas fa-upload"></i> Upload Photo
-                        </button>
-                      </div>
-                    </div>
                     <div class="col-md-8">
                       <div class="row">
                         <div class="col-md-6">
@@ -128,7 +110,7 @@
                       <div class="form-group">
                         <label for="phone">Phone <span class="req-astrix">*</span></label>
                         <div class="input-group" style="display: flex; gap: 8px; align-items: center;">
-                          <select class="form-control" style="max-width: 160px;" [(ngModel)]="trainer.countryCode">
+                          <select class="form-control" style="max-width: 160px;" [(ngModel)]="trainer.countryCode" title="Select country code">
                             <option value="+1">🇺🇸 United States (+1)</option>
                             <option value="+91">🇮🇳 India (+91)</option>
                             <option value="+44">🇬🇧 United Kingdom (+44)</option>
@@ -157,6 +139,27 @@
                           </select>
                           <input type="tel" id="phone" class="form-control" style="flex: 1;" [(ngModel)]="trainer.phone" required placeholder="Phone number">
                         </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="avatar-uploader">
+                        <div class="avatar-preview" [style.background-image]="'url(' + (photoPreview || trainer.profile_image) + ')'" [class.avatar-disabled]="!isEmailVerified || !isOtpVerified" (click)="onAvatarClick(isEmailVerified && isOtpVerified, photoInput)" style="width: 100%; min-height: 180px; max-width: 100%;">
+                          <div class="upload-overlay" *ngIf="!photoPreview && !trainer.profile_image">
+                            <i class="fas fa-camera"></i>
+                            <span>Upload Photo</span>
+                          </div>
+                          <div class="remove-photo" *ngIf="photoPreview || (trainer.profile_image && trainer.profile_image !== 'assets/default-avatar.png')" (click)="removePhoto()">
+                            <i class="fas fa-times"></i>
+                          </div>
+                          <i class="fas fa-camera avatar-edit-icon"></i>
+                        </div>
+                        <input type="file" #photoInput accept="image/*" (change)="onPhotoSelected($event)" style="display: none">
+                        <button class="btn btn-primary mt-2 w-100" (click)="photoInput.click()" [disabled]="!isEmailVerified || !isOtpVerified">
+                          <i class="fas fa-upload"></i> Upload Photo
+                        </button>
+                        <small class="text-info mt-2 d-block" *ngIf="!isEmailVerified || !isOtpVerified">
+                          <i class="fas fa-info-circle"></i> Photo upload will be enabled after email address is validated with OTP
+                        </small>
                       </div>
                     </div>
                   </div>
@@ -202,15 +205,26 @@
                       <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">Select Areas of Expertise</h5>
-                            <button type="button" class="btn-close" (click)="closeSpecialtiesModal()"></button>
+                            <h5 class="modal-title">Select Areas of Expertise (Max 3)</h5>
+                            <button type="button" class="btn-close" (click)="closeSpecialtiesModal()" title="Close modal"></button>
                           </div>
                           <div class="modal-body">
-                            <input type="text" class="form-control mb-3" placeholder="Search expertise..." [(ngModel)]="specialtiesSearch" (input)="filterSpecialties()">
+                            <div class="info-message mb-3">
+                              <i class="fas fa-info-circle text-info"></i>
+                              <span>Select multiple applicable expertise (max 3)</span>
+                            </div>
                             <div class="specialties-list-modal">
-                              <div *ngFor="let item of filteredSpecialtiesOptions" class="specialty-item">
+                              <div *ngFor="let item of specialtiesOptions" 
+                                   class="specialty-item" 
+                                   [class.disabled]="!isSpecialtySelected(item) && tempSelectedSpecialties.length >= MAX_SPECIALTIES"
+                                   (click)="!isSpecialtySelected(item) && tempSelectedSpecialties.length >= MAX_SPECIALTIES ? null : toggleSpecialty(item)">
                                 <div class="specialty-checkbox">
-                                  <input type="checkbox" class="form-check-input" [checked]="isSpecialtySelected(item)" (change)="toggleSpecialty(item)">
+                                  <input type="checkbox" 
+                                         class="form-check-input" 
+                                         [checked]="isSpecialtySelected(item)" 
+                                         (change)="toggleSpecialty(item)"
+                                         [disabled]="!isSpecialtySelected(item) && tempSelectedSpecialties.length >= MAX_SPECIALTIES"
+                                         [title]="item">
                                 </div>
                                 <div class="specialty-content">
                                   <span class="specialty-text">{{ item }}</span>
@@ -219,7 +233,12 @@
                             </div>
                             <div class="other-expertise-input mt-3" *ngIf="showOtherInput">
                               <label class="form-label">Enter your expertise</label>
-                              <input type="text" class="form-control" [(ngModel)]="otherExpertise" (input)="updateOtherExpertise()" placeholder="Type your expertise here...">
+                              <input type="text" 
+                                     class="form-control" 
+                                     [(ngModel)]="otherExpertise" 
+                                     (input)="updateOtherExpertise()" 
+                                     placeholder="Type your expertise here..."
+                                     [disabled]="tempSelectedSpecialties.length >= MAX_SPECIALTIES && !isSpecialtySelected('Other')">
                             </div>
                           </div>
                           <div class="modal-footer">

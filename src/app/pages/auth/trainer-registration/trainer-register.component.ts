@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { TrainerRegisterService } from './trainer-register.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface TrainerData {
   first_name: string;
@@ -113,7 +114,8 @@ export class TrainerRegisterComponent implements OnInit {
     private trainerService: TrainerRegisterService, 
     private router: Router, 
     private http: HttpClient,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -470,18 +472,16 @@ export class TrainerRegisterComponent implements OnInit {
   }
 
   onAvatarClick(isEnabled: boolean, photoInput: HTMLInputElement) {
-    if (isEnabled) {
-      photoInput.click();
-    } else {
-      this.toastr.info('Profile photo upload will be enabled after email OTP validation.', 'Info');
+    if (!isEnabled) {
+      this.toastr.info('Photo upload will be enabled after email address is validated with OTP', 'Information');
+      return;
     }
+    photoInput.click();
   }
 
   // Modal specialties selection
   openSpecialtiesModal() {
     this.tempSelectedSpecialties = [...this.trainer.specialties];
-    this.specialtiesSearch = '';
-    this.filteredSpecialtiesOptions = [...this.specialtiesOptions];
     this.showSpecialtiesModal = true;
     this.showOtherInput = this.tempSelectedSpecialties.some(s => !this.specialtiesOptions.includes(s));
     if (this.showOtherInput) {
@@ -512,21 +512,24 @@ export class TrainerRegisterComponent implements OnInit {
 
   toggleSpecialty(item: string) {
     if (item === 'Other') {
-      this.showOtherInput = !this.showOtherInput;
-      if (!this.showOtherInput) {
-        // Remove the custom expertise value if 'Other' is unchecked
-        this.tempSelectedSpecialties = this.tempSelectedSpecialties.filter(s => s !== this.otherExpertise.trim());
+      if (this.tempSelectedSpecialties.includes(item)) {
+        // If unchecking 'Other', remove the custom expertise
+        this.tempSelectedSpecialties = this.tempSelectedSpecialties.filter(s => s !== item && s !== this.otherExpertise.trim());
+        this.showOtherInput = false;
         this.otherExpertise = '';
+      } else if (this.tempSelectedSpecialties.length < this.MAX_SPECIALTIES) {
+        // If checking 'Other' and under limit, add it
+        this.tempSelectedSpecialties.push(item);
+        this.showOtherInput = true;
       } else {
-        // If opening the input, add the value if it exists and we haven't reached the limit
-        if (this.otherExpertise.trim() && !this.tempSelectedSpecialties.includes(this.otherExpertise.trim()) && this.tempSelectedSpecialties.length < this.MAX_SPECIALTIES) {
-          this.tempSelectedSpecialties.push(this.otherExpertise.trim());
-        }
+        this.toastr.warning(`You can select a maximum of ${this.MAX_SPECIALTIES} areas of expertise.`, 'Limit Reached');
       }
     } else {
       if (this.tempSelectedSpecialties.includes(item)) {
+        // Remove the item if it's already selected
         this.tempSelectedSpecialties = this.tempSelectedSpecialties.filter(s => s !== item);
       } else if (this.tempSelectedSpecialties.length < this.MAX_SPECIALTIES) {
+        // Add the item if under limit
         this.tempSelectedSpecialties.push(item);
       } else {
         this.toastr.warning(`You can select a maximum of ${this.MAX_SPECIALTIES} areas of expertise.`, 'Limit Reached');
@@ -535,18 +538,25 @@ export class TrainerRegisterComponent implements OnInit {
   }
 
   updateOtherExpertise() {
-    // Remove any previous custom value (not in the predefined list)
-    this.tempSelectedSpecialties = this.tempSelectedSpecialties.filter(s => this.specialtiesOptions.includes(s));
-    if (this.showOtherInput && this.otherExpertise.trim()) {
-      this.tempSelectedSpecialties.push(this.otherExpertise.trim());
+    // If Other is selected and we have space for more selections
+    if (this.isSpecialtySelected('Other') && this.tempSelectedSpecialties.length <= this.MAX_SPECIALTIES) {
+      // Remove any previous custom value
+      this.tempSelectedSpecialties = this.tempSelectedSpecialties.filter(s => s !== this.otherExpertise.trim());
+      
+      if (this.otherExpertise.trim()) {
+        // Add the new custom value
+        this.tempSelectedSpecialties.push(this.otherExpertise.trim());
+      }
     }
   }
 
   applySpecialtiesModal() {
-    // Remove empty strings and duplicates
-    this.trainer.specialties = Array.from(new Set(this.tempSelectedSpecialties.filter(s => s.trim() !== '')));
-    this.showSpecialtiesModal = false;
-    this.showOtherInput = false;
-    this.otherExpertise = '';
+    // If Others is selected but no custom text is entered, show an error
+    if (this.isSpecialtySelected('Others') && (!this.otherExpertise || !this.otherExpertise.trim())) {
+      this.toastr.warning('Please enter your expertise in the text box');
+      return;
+    }
+    this.trainer.specialties = [...this.tempSelectedSpecialties];
+    this.closeSpecialtiesModal();
   }
 }
