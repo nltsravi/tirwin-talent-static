@@ -40,7 +40,7 @@
         <p class="text-muted">{{ trainer.job_title }}</p>
         <div *ngIf="trainer.resume_urls && trainer.resume_urls.length > 0" class="mt-3 text-start">
           <h5 class="mb-2">Attachment(s)</h5>
-          <a [href]="trainer.resume_urls[0]" target="_blank" class="resume-doc-link d-block mb-1" title="View Resume">
+          <a [href]="trainer.resume_urls" target="_blank" class="resume-doc-link d-block mb-1" title="View Resume">
             <img src="assets/images/document.png" alt="Resume Document" style="width:56px;height:56px;vertical-align:middle;" />
           </a>
           <div class="mb-2">Resume</div>
