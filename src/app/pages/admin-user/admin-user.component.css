@@ -1,0 +1,376 @@
+.admin-user-container {
+  display: flex;
+  min-height: 80vh;
+}
+.sidebar {
+  width: 260px;
+  background: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  padding: 24px 0;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+}
+.menu-group {
+  margin-bottom: 32px;
+}
+.menu-title {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 24px;
+  margin-bottom: 12px;
+  color: #64748b;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e2e8f0;
+}
+.submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.submenu li {
+  padding: 12px 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #475569;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+.submenu li i {
+  margin-right: 12px;
+  font-size: 18px;
+  width: 20px;
+  text-align: center;
+  color: #64748b;
+  transition: all 0.2s ease;
+}
+.submenu li:hover {
+  background: #f8fafc;
+  color: #2250fc;
+}
+.submenu li:hover i {
+  color: #2250fc;
+}
+.submenu li.active {
+  background: #e6f0ff;
+  color: #2250fc;
+  font-weight: 500;
+}
+.submenu li.active i {
+  color: #2250fc;
+}
+.submenu li.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: #2250fc;
+  border-radius: 0 2px 2px 0;
+}
+.content {
+  flex: 1;
+  padding: 32px;
+}
+.trainer-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+.trainer-table th, .trainer-table td {
+  padding: 8px 12px;
+  text-align: left;
+}
+.trainer-table th {
+  background: #f0f4fa;
+}
+.trainer-table.no-border, .trainer-table.no-border th, .trainer-table.no-border td {
+  border: none !important;
+}
+.error {
+  color: #d32f2f;
+  margin: 12px 0;
+}
+.btn-action {
+  padding: 4px 12px;
+  margin-right: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  background: #e0e0e0;
+  color: #333;
+  transition: background 0.2s;
+}
+.btn-action.view {
+  background: #f0f4fa;
+  color: #2250fc;
+}
+.btn-action.approve {
+  background: #d4edda;
+  color: #155724;
+}
+.btn-action.approve:disabled {
+  background: #e2e3e5;
+  color: #383d41;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+.btn-action.approve i {
+  margin-right: 4px;
+}
+.btn-action.approve .fa-spinner {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.btn-action:hover {
+  background: #cce5ff;
+}
+
+/* Pagination */
+.pagination-container {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.page-item {
+  margin: 0 4px;
+}
+
+.page-link {
+  display: block;
+  padding: 8px 16px;
+  color: #2250fc;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.page-link:hover {
+  background-color: #e6f0ff;
+  border-color: #2250fc;
+}
+
+.page-item.active .page-link {
+  background-color: #2250fc;
+  border-color: #2250fc;
+  color: #fff;
+}
+
+.page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+  background-color: #fff;
+  border-color: #dee2e6;
+}
+
+/* User Table Styles */
+.user-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 16px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.user-table th,
+.user-table td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.user-table th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #475569;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.user-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+
+.user-table th.sortable:hover {
+  background-color: #f1f5f9;
+}
+
+.user-table th.sortable i {
+  margin-left: 8px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.user-table th.sortable:hover i {
+  color: #2250fc;
+}
+
+.user-table tr:last-child td {
+  border-bottom: none;
+}
+
+.user-table tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Avatar Styles */
+.avatar-column {
+  width: 60px;
+}
+
+.avatar-cell {
+  padding: 12px 16px !important;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e6f0ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2250fc;
+  font-size: 18px;
+}
+
+/* Verified/Active Icon Styles */
+.fa-check-circle.text-success {
+  color: #22c55e !important;
+  font-size: 1.2rem;
+}
+.fa-times-circle.text-danger {
+  color: #ef4444 !important;
+  font-size: 1.2rem;
+}
+
+/* Action Button Styles */
+.btn-action {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-action.view {
+  background: #f0f4fa;
+  color: #2250fc;
+  border: 1px solid #e6f0ff;
+}
+
+.btn-action.approve {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.btn-action:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-action:active {
+  transform: translateY(0);
+}
+
+.btn-action i {
+  font-size: 12px;
+}
+
+.filter-tiles {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.filter-tile {
+  flex: 1;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-tile:hover {
+  background: #e9ecef;
+  transform: translateY(-2px);
+}
+
+.filter-tile.active {
+  background: #2250fc;
+  color: white;
+  border-color: #2250fc;
+}
+
+.filter-tile i {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.filter-tile span {
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .user-table th, .user-table td {
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+  .filter-tile {
+    padding: 1.1rem 0.5rem;
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 600px) {
+  .content {
+    padding: 10px;
+  }
+  .filter-tiles {
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .user-table th, .user-table td {
+    padding: 8px 4px;
+    font-size: 12px;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+} 

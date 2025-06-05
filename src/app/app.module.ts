@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +19,7 @@ import { CourseDetailsModule } from './pages/webinar-details/webinar-details.mod
 import { CheckoutModule } from './pages/checkout/checkout.module';
 import { RouterModule } from '@angular/router';
 import { MyCoursesModule } from './pages/my-courses/my-courses.module';
+import { AdminUserModule } from './pages/admin-user/admin-user.module';
 
 @NgModule({
     declarations: [
@@ -28,6 +31,7 @@ import { MyCoursesModule } from './pages/my-courses/my-courses.module';
     imports: [
         RouterModule.forRoot([]),
         BrowserModule,
+        BrowserAnimationsModule,
         AppRoutingModule,
         FormsModule,
         HeaderModule,
@@ -38,6 +42,10 @@ import { MyCoursesModule } from './pages/my-courses/my-courses.module';
         WebinarListModule,
         CourseDetailsModule,
         CheckoutModule,
-        MyCoursesModule
-    ], providers: [provideHttpClient(withInterceptorsFromDi())] })
+        MyCoursesModule,
+        AdminUserModule,
+        ToastrModule.forRoot()
+    ],
+    providers: [provideHttpClient(withInterceptorsFromDi())]
+})
 export class AppModule { }

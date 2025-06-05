@@ -1,0 +1,371 @@
+<div class="admin-webinar-container">
+  <div class="sidebar">
+    <div class="menu-group">
+      <div class="menu-title">Webinar Management</div>
+      <ul class="submenu">
+        <li [class.active]="selectedWebinarMenu === 'all'" (click)="selectWebinarMenu('all')">
+          <i class="fas fa-list"></i>
+          Webinars List
+        </li>
+        <li [class.active]="selectedWebinarMenu === 'upcoming'" (click)="selectWebinarMenu('upcoming')">
+          <i class="fas fa-video"></i>
+          Upcoming Webinars
+        </li>
+        <li [class.active]="selectedWebinarMenu === 'past'" (click)="selectWebinarMenu('past')">
+          <i class="fas fa-history"></i>
+          Past Webinars
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="content">
+    <ng-container *ngIf="!isCreateRoute()">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h2 style="margin: 0;">{{ selectedWebinarMenu === 'all' ? 'All Webinars' : selectedWebinarMenu === 'upcoming' ? 'Upcoming Webinars' : 'Past Webinars' }}</h2>
+        <button class="btn btn-primary" [routerLink]="['/admin/webinar-management/create']">
+          <i class="fas fa-plus" style="margin-right: 8px;"></i> Create Webinar
+        </button>
+      </div>
+    </ng-container>
+    <div *ngIf="loading">Loading {{ selectedWebinarMenu }} webinars...</div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <ng-container *ngIf="isCreateRoute(); else webinarList">
+      <div class="create-webinar-two-col">
+        <div class="create-webinar-form-col">
+          <h2>Create New Webinar</h2>
+          <p>Fill in the details below to create a new webinar</p>
+          <form [formGroup]="webinarForm" (ngSubmit)="onSubmit()" novalidate>
+            <!-- Title -->
+            <div class="form-group">
+              <label>Title <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="title" placeholder="Enter webinar title">
+              <div *ngIf="webinarForm.get('title')?.invalid && webinarForm.get('title')?.touched" class="text-danger small">Title is required.</div>
+            </div>
+            <!-- Description -->
+            <div class="form-group">
+              <label>Description <span class="text-danger">*</span></label>
+              <textarea class="form-control" rows="3" formControlName="description" placeholder="Enter webinar description"></textarea>
+              <div *ngIf="webinarForm.get('description')?.invalid && webinarForm.get('description')?.touched" class="text-danger small">Description is required.</div>
+            </div>
+            <!-- Session Description -->
+            <div class="form-group">
+              <label>Session Description <span class="text-danger">*</span></label>
+              <textarea class="form-control" rows="3" formControlName="session_description" placeholder="Enter session description"></textarea>
+              <div *ngIf="webinarForm.get('session_description')?.invalid && webinarForm.get('session_description')?.touched" class="text-danger small">Session description is required.</div>
+            </div>
+            <!-- Banner Image -->
+            <div class="form-group">
+              <label>Banner Image</label>
+              <input type="file" class="form-control" (change)="onBannerChange($event)" accept="image/png, image/jpeg, image/gif">
+              <div *ngIf="bannerPreview" class="mt-2"><img [src]="bannerPreview" alt="Banner Preview" style="max-width: 200px; max-height: 100px;"></div>
+            </div>
+            <div class="form-row two-col">
+              <div class="form-group">
+                <label>Type <span class="text-danger">*</span></label>
+                <select class="form-control" formControlName="type">
+                  <option value="">Select a type</option>
+                  <ng-container *ngFor="let t of typeOptions">
+                    <option [ngValue]="t">{{ getOptionLabel(t) }}</option>
+                  </ng-container>
+                </select>
+                <div *ngIf="webinarForm.get('type')?.invalid && webinarForm.get('type')?.touched" class="text-danger small">Type is required.</div>
+              </div>
+              <div class="form-group">
+                <label>Session Type <span class="text-danger">*</span></label>
+                <select class="form-control" formControlName="session_type">
+                  <option value="">Select a session type</option>
+                  <ng-container *ngFor="let s of sessionTypeOptions">
+                    <option [ngValue]="s">{{ getOptionLabel(s) }}</option>
+                  </ng-container>
+                </select>
+                <div *ngIf="webinarForm.get('session_type')?.invalid && webinarForm.get('session_type')?.touched" class="text-danger small">Session type is required.</div>
+              </div>
+              <div class="form-group">
+                <label>Category</label>
+                <select class="form-control" formControlName="category">
+                  <option value="">Select a category</option>
+                  <ng-container *ngFor="let c of categoryOptions">
+                    <option [ngValue]="c">{{ getOptionLabel(c) }}</option>
+                  </ng-container>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Subcategory</label>
+                <select class="form-control" formControlName="subcategory">
+                  <option value="">Select a subcategory</option>
+                  <ng-container *ngFor="let sc of subcategoryOptions">
+                    <option [ngValue]="sc">{{ getOptionLabel(sc) }}</option>
+                  </ng-container>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Start Time <span class="text-danger">*</span></label>
+                <input type="datetime-local" class="form-control" formControlName="start_time">
+                <div *ngIf="webinarForm.get('start_time')?.invalid && webinarForm.get('start_time')?.touched" class="text-danger small">Start time is required.</div>
+              </div>
+              <div class="form-group">
+                <label>End Time <span class="text-danger">*</span></label>
+                <input type="datetime-local" class="form-control" formControlName="end_time">
+                <div *ngIf="webinarForm.get('end_time')?.invalid && webinarForm.get('end_time')?.touched" class="text-danger small">End time is required.</div>
+              </div>
+              <div class="form-group">
+                <label>Price <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" formControlName="price" min="0">
+                <div *ngIf="webinarForm.get('price')?.invalid && webinarForm.get('price')?.touched" class="text-danger small">Price is required.</div>
+              </div>
+              <div class="form-group">
+                <label>Tags (comma-separated)</label>
+                <input type="text" class="form-control" formControlName="tags" placeholder="tag1, tag2, tag3">
+              </div>
+            </div>
+            <!-- Meeting Link full width -->
+            <div class="form-group full-width">
+              <label>Meeting Link</label>
+              <input type="url" class="form-control" formControlName="meeting_link" placeholder="https://">
+            </div>
+            <!-- Trainer(s) full width -->
+            <div class="form-group full-width">
+              <label>Trainer(s) <span class="text-danger">*</span></label>
+              <div class="custom-multiselect">
+                <div class="selected-trainers">
+                  <div *ngFor="let t of webinarForm.get('trainers')?.value" class="trainer-tag">
+                    <ng-container *ngIf="t.profile_picture || t.user?.profile_picture; else tagAvatarPlaceholder">
+                      <img [src]="t.profile_picture || t.user?.profile_picture" class="trainer-avatar" alt="Profile" />
+                    </ng-container>
+                    <ng-template #tagAvatarPlaceholder>
+                      <div class="trainer-avatar avatar-placeholder">{{ getTrainerInitials(t) }}</div>
+                    </ng-template>
+                    <span>{{ getTrainerFirstName(t) }}</span>
+                    <button type="button" class="remove-btn" (click)="removeTrainer(t)">&times;</button>
+                  </div>
+                </div>
+                <input type="text" class="form-control" [(ngModel)]="trainerSearch" [ngModelOptions]="{standalone: true}" placeholder="Search trainers by name or email..." (focus)="showTrainerDropdown=true" (input)="showTrainerDropdown=true" />
+                <div class="trainer-dropdown" *ngIf="showTrainerDropdown">
+                  <div *ngFor="let trainer of filteredTrainers()" class="trainer-option" (click)="toggleTrainer(trainer)">
+                    <ng-container *ngIf="trainer.profile_picture || trainer.user?.profile_picture; else avatarPlaceholder">
+                      <img [src]="trainer.profile_picture || trainer.user?.profile_picture" class="trainer-avatar" alt="Profile" />
+                    </ng-container>
+                    <ng-template #avatarPlaceholder>
+                      <div class="trainer-avatar avatar-placeholder">{{ getTrainerInitials(trainer) }}</div>
+                    </ng-template>
+                    <div class="trainer-info">
+                      <span class="trainer-name">{{ getTrainerName(trainer) }}</span>
+                      <span class="trainer-email">{{ trainer.email || trainer.user?.email }}</span>
+                    </div>
+                    <span class="checkmark" *ngIf="isTrainerSelected(trainer)">&#10003;</span>
+                  </div>
+                  <div *ngIf="filteredTrainers().length === 0" class="no-results">No pending approval trainers found.</div>
+                </div>
+              </div>
+              <div *ngIf="webinarForm.get('trainers')?.invalid && webinarForm.get('trainers')?.touched" class="text-danger small">Trainer(s) is required.</div>
+            </div>
+            <!-- Buttons -->
+            <div class="form-group" style="display: flex; justify-content: flex-end; gap: 12px;">
+              <button type="button" class="btn btn-light" (click)="onCancelClick()">Cancel</button>
+              <button type="button" class="btn btn-secondary" (click)="onSaveClick()">Save</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+        <div class="create-webinar-preview-col">
+          <div class="webinar-card-preview">
+            <div class="webinar-card-banner" *ngIf="bannerPreview; else defaultBanner">
+              <img [src]="bannerPreview" alt="Banner" />
+            </div>
+            <ng-template #defaultBanner>
+              <div class="webinar-card-banner default-banner"></div>
+            </ng-template>
+            <div class="webinar-card-body">
+              <h3>{{ webinarForm.get('title')?.value || 'Webinar Title' }}</h3>
+              <p class="webinar-card-desc">{{ webinarForm.get('description')?.value || 'Webinar description will appear here.' }}</p>
+              <div class="webinar-card-meta">
+                <div><i class="fas fa-user"></i> {{ webinarForm.get('trainers')?.value?.length ? (webinarForm.get('trainers')?.value[0].name || 'Trainer Name') : 'Trainer Name' }}</div>
+                <div><i class="fas fa-calendar-alt"></i> {{ webinarForm.get('start_time')?.value ? (webinarForm.get('start_time')?.value | date:'mediumDate') : 'TBD' }}</div>
+              </div>
+              <button class="btn btn-primary webinar-card-btn" disabled>VIEW DETAILS</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #webinarList>
+      <!-- All Webinars List -->
+      <table *ngIf="!loading && !error && selectedWebinarMenu === 'all' && allWebinars.length > 0" class="webinar-table">
+        <thead>
+          <tr>
+            <th class="thumbnail-column"></th>
+            <th (click)="onSort('title')" class="sortable">
+              Title
+              <i class="fas" [class]="getSortIcon('title')"></i>
+            </th>
+            <th (click)="onSort('date')" class="sortable">
+              Date & Time
+              <i class="fas" [class]="getSortIcon('date')"></i>
+            </th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let webinar of allWebinars">
+            <td class="thumbnail-cell">
+              <div class="thumbnail">
+                <i class="fas fa-video"></i>
+              </div>
+            </td>
+            <td>{{ truncateTitle(webinar.title) }}</td>
+            <td>{{ formatDate(webinar.start_time) }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="getWebinarStatus(webinar.end_time) === 'Upcoming' ? 'upcoming' : getWebinarStatus(webinar.end_time) === 'Completed' ? 'completed' : 'pending'">
+                {{ getWebinarStatus(webinar.end_time) }}
+              </span>
+            </td>
+            <td>
+              <button class="btn-action view" [routerLink]="['/webinar', (webinar.session_type || webinar.type || 'events')?.toLowerCase(), webinar.id]">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <button class="btn-action edit" *ngIf="getWebinarStatus(webinar.end_time) === 'Upcoming'" (click)="onEditClick()">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+              <button class="btn-action delete" *ngIf="getWebinarStatus(webinar.end_time) === 'Upcoming'" (click)="confirmDelete(webinar)">
+                <i class="fas fa-trash"></i> Delete
+              </button>
+              <button class="btn-action recording" *ngIf="canShowRecording(webinar.date, webinar.recording_url)">
+                <i class="fas fa-play"></i> Recording
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Upcoming Webinars List -->
+      <table *ngIf="!loading && !error && selectedWebinarMenu === 'upcoming' && upcomingWebinars.length > 0" class="webinar-table">
+        <thead>
+          <tr>
+            <th class="thumbnail-column"></th>
+            <th (click)="onSort('title')" class="sortable">
+              Title
+              <i class="fas" [class]="getSortIcon('title')"></i>
+            </th>
+            <th (click)="onSort('date')" class="sortable">
+              Date & Time
+              <i class="fas" [class]="getSortIcon('date')"></i>
+            </th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let webinar of upcomingWebinars">
+            <td class="thumbnail-cell">
+              <div class="thumbnail">
+                <i class="fas fa-video"></i>
+              </div>
+            </td>
+            <td>{{ truncateTitle(webinar.title) }}</td>
+            <td>{{ formatDate(webinar.date) }}</td>
+            <td>
+              <span class="status-badge upcoming">Upcomings</span>
+            </td>
+            <td>
+              <button class="btn-action view" [routerLink]="['/webinar', (webinar.session_type || webinar.type || 'events')?.toLowerCase(), webinar.id]">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <button class="btn-action edit" *ngIf="getWebinarStatus(webinar.end_time) === 'Upcoming'" (click)="onEditClick()">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+              <button class="btn-action delete" *ngIf="getWebinarStatus(webinar.end_time) === 'Upcoming'" (click)="confirmDelete(webinar)">
+                <i class="fas fa-trash"></i> Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Past Webinars List -->
+      <table *ngIf="!loading && !error && selectedWebinarMenu === 'past' && pastWebinars.length > 0" class="webinar-table">
+        <thead>
+          <tr>
+            <th class="thumbnail-column"></th>
+            <th (click)="onSort('title')" class="sortable">
+              Title
+              <i class="fas" [class]="getSortIcon('title')"></i>
+            </th>
+            <th (click)="onSort('date')" class="sortable">
+              Date & Time
+              <i class="fas" [class]="getSortIcon('date')"></i>
+            </th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let webinar of pastWebinars">
+            <td class="thumbnail-cell">
+              <div class="thumbnail">
+                <i class="fas fa-video"></i>
+              </div>
+            </td>
+            <td>{{ truncateTitle(webinar.title) }}</td>
+            <td>{{ formatDate(webinar.date) }}</td>
+            <td>
+              <span class="status-badge completed">Completed</span>
+            </td>
+            <td>
+              <button class="btn-action view" [routerLink]="['/webinar', (webinar.session_type || webinar.type || 'events')?.toLowerCase(), webinar.id]">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <button class="btn-action recording" *ngIf="webinar.recording_url">
+                <i class="fas fa-play"></i> Recording
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- No Data Message -->
+      <div *ngIf="!loading && !error && ((selectedWebinarMenu === 'all' && allWebinars.length === 0) || 
+        (selectedWebinarMenu === 'upcoming' && upcomingWebinars.length === 0) || 
+        (selectedWebinarMenu === 'past' && pastWebinars.length === 0))">
+        No {{ selectedWebinarMenu }} webinars found.
+      </div>
+
+      <!-- Pagination -->
+      <div *ngIf="!loading && !error && totalPages > 1" class="pagination-container">
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" href="javascript:void(0)" (click)="onPageChange(currentPage - 1)" *ngIf="currentPage > 1">Previous</a>
+            </li>
+            <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [class.active]="currentPage === i + 1">
+              <a class="page-link" href="javascript:void(0)" (click)="onPageChange(i + 1)">{{ i + 1 }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" href="javascript:void(0)" (click)="onPageChange(currentPage + 1)" *ngIf="currentPage < totalPages">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade show" tabindex="-1" [ngStyle]="{display: showDeleteModal ? 'block' : 'none', background: showDeleteModal ? 'rgba(0,0,0,0.4)' : 'none'}">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Delete</h5>
+        <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure? You want to delete webinar "{{ selectedWebinar?.title }}"</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="deleteWebinar()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div> 

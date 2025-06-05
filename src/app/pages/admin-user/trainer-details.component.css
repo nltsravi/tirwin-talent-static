@@ -1,0 +1,144 @@
+.container {
+  max-width: 1200px;
+}
+.profile-sidebar {
+  background: #f7f7f7;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 24px 0;
+  margin-bottom: 24px;
+}
+.profile-sidebar img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 16px;
+}
+.rating .fa-star {
+  margin: 0 2px;
+  opacity: 0.5;
+}
+.rating .fa-star.filled {
+  opacity: 1;
+}
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border: none;
+}
+.bio {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+}
+.social-links .btn {
+  margin-right: 8px;
+}
+.webinar-protfolo {
+  max-width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+.testimonial-carousel {
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+}
+.testimonial-slider {
+  flex: 1;
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+.testimonial-card {
+  min-width: 250px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 0 8px;
+  padding: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+.testimonial-card.active {
+  opacity: 1;
+  background: #fff;
+  border: 1px solid #2250fc;
+}
+.prev-btn, .next-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #2250fc;
+  cursor: pointer;
+  padding: 0 12px;
+}
+.custom-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #333;
+  color: #fff;
+  padding: 20px 40px;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  z-index: 9999;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  text-align: center;
+  opacity: 0.95;
+}
+.social-links a img {
+  display: block;
+  margin: 20px 0 0 0;
+  height: 40px;
+  width: 120px;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  background: #fff;
+  padding: 4px 8px;
+}
+.expertise-tag {
+  display: inline-block;
+  background: #2250fc;
+  color: #fff;
+  border-radius: 16px;
+  padding: 4px 12px 4px 8px;
+  margin: 0 6px 6px 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  vertical-align: middle;
+}
+.expertise-tag i {
+  margin-right: 6px;
+}
+.btn-success {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-success:disabled {
+  background-color: #e2e3e5;
+  border-color: #d6d8db;
+  color: #383d41;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.btn-success i {
+  font-size: 14px;
+}
+
+.btn-success .fa-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+} 

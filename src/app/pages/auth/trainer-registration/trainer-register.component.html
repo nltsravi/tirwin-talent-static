@@ -2,9 +2,8 @@
   <section class="register-section">
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-lg-12">
-          
-          <div class="text-center">
+        <div class="col-lg-8 col-md-10 col-12 mx-auto">
+          <div class="text-center mb-4">
             <h3>Trainer Registration</h3>
             <p class="text-muted">Inspire, educate, and earn—start your journey as a trainer!</p>
           </div>
@@ -18,104 +17,297 @@
           <!-- ✅ Registration Form (Hidden After Submission) -->
           <div *ngIf="!isFormSubmitted" class="card register-card">
             <div class="card-body">
-              
+              <div *ngIf="errorMessage" class="alert alert-danger text-center mb-3">
+                {{ errorMessage }}
+              </div>
               <!-- Stepper Progress Bar -->
-              <div class="stepper">
+              <div class="stepper mb-3">
                 <div *ngFor="let s of steps; let i = index" class="step" [class.active]="step === i+1">
                   <div class="step-circle">{{ i+1 }}</div>
                   <div class="step-title">{{ s }}</div>
                 </div>
               </div>
-              <div class="progress">
+              <div class="progress mb-4">
                 <div class="progress-bar" [style.width.%]="progress"></div>
               </div>
 
-              <!-- Form Steps (Personal Info, Professional Details, Training Specialties, Public Profile) -->
-              <div *ngIf="step === 1">
-                <h4>Personal Information</h4>
-                <div class="form-group">
-                  <label>First Name</label>
-                  <input type="text" class="form-control" [(ngModel)]="trainer.first_name" required />
-                </div>
-                <div class="form-group">
-                  <label>Last Name</label>
-                  <input type="text" class="form-control" [(ngModel)]="trainer.last_name" required />
-                </div>
-                <div class="form-group">
-                  <label>Email</label>
-                  <input type="email" class="form-control" [(ngModel)]="trainer.email" required />
-                </div>
-                <div class="form-group">
-                  <label>Phone Number</label>
-                  <input type="tel" class="form-control" [(ngModel)]="trainer.phone" required />
-                </div>
-              </div>
+              <!-- Carousel-like Steps -->
+              <div class="carousel-steps">
+                <div *ngIf="step === 1" class="step-content step-slide active">
+                  <!-- Step 1: Personal Info -->
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="firstName">First Name <span class="req-astrix">*</span></label>
+                            <input type="text" id="firstName" class="form-control" [(ngModel)]="trainer.first_name" required>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="lastName">Last Name <span class="req-astrix">*</span></label>
+                            <input type="text" id="lastName" class="form-control" [(ngModel)]="trainer.last_name" required>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="email">Email <span class="req-astrix">*</span></label>
+                        <div class="input-group">
+                          <input type="email" id="email" class="form-control" [(ngModel)]="trainer.email" required [disabled]="emailDisabled">
+                          <button 
+                            class="btn btn-primary" 
+                            type="button" 
+                            (click)="verifyEmail()" 
+                            [disabled]="!trainer.email || isEmailVerified || isVerifyingEmail || emailDisabled"
+                          >
+                            <span *ngIf="isVerifyingEmail">
+                              <i class="fas fa-spinner fa-spin"></i> Verifying...
+                            </span>
+                            <span *ngIf="!isVerifyingEmail">
+                              <i class="fas" [class.fa-check]="isEmailVerified" [class.fa-envelope]="!isEmailVerified"></i>
+                              {{ isEmailVerified ? 'Verified' : 'Verify' }}
+                            </span>
+                          </button>
+                        </div>
+                        <small class="text-success" *ngIf="isEmailVerified && !isOtpVerified">
+                          <i class="fas fa-check-circle"></i> Email verified successfully. OTP sent to your email id for validation.
+                        </small>
+                      </div>
 
-              <!-- Step 2: Professional Details -->
-              <div *ngIf="step === 2">
-                <h4>Professional Details</h4>
-                <div class="form-group">
-                  <label>Job Title</label>
-                  <input type="text" class="form-control" [(ngModel)]="trainer.job_title" required />
+                      <!-- OTP Validation Field -->
+                      <div class="form-group" *ngIf="isEmailVerified && !isOtpVerified">
+                        <label for="otp">Enter OTP <span class="req-astrix">*</span></label>
+                        <div class="input-group">
+                          <input 
+                            type="text" 
+                            id="otp" 
+                            class="form-control" 
+                            [(ngModel)]="otpCode" 
+                            placeholder="Enter 6-digit OTP" 
+                            maxlength="6"
+                            [disabled]="isVerifyingOtp"
+                          >
+                          <button 
+                            class="btn btn-primary" 
+                            type="button" 
+                            (click)="validateOtp()" 
+                            [disabled]="!otpCode || otpCode.length !== 6 || isVerifyingOtp"
+                          >
+                            <span *ngIf="isVerifyingOtp">
+                              <i class="fas fa-spinner fa-spin"></i> Verifying...
+                            </span>
+                            <span *ngIf="!isVerifyingOtp">
+                              <i class="fas fa-check"></i> Validate OTP
+                            </span>
+                          </button>
+                        </div>
+                        <small class="text-success" *ngIf="isOtpVerified">
+                          <i class="fas fa-check-circle"></i> OTP verified successfully
+                        </small>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="phone">Phone <span class="req-astrix">*</span></label>
+                        <div class="input-group" style="display: flex; gap: 8px; align-items: center;">
+                          <select class="form-control" style="max-width: 160px;" [(ngModel)]="trainer.countryCode" title="Select country code">
+                            <option value="+1">🇺🇸 United States (+1)</option>
+                            <option value="+91">🇮🇳 India (+91)</option>
+                            <option value="+44">🇬🇧 United Kingdom (+44)</option>
+                            <option value="+61">🇦🇺 Australia (+61)</option>
+                            <option value="+81">🇯🇵 Japan (+81)</option>
+                            <option value="+49">🇩🇪 Germany (+49)</option>
+                            <option value="+33">🇫🇷 France (+33)</option>
+                            <option value="+39">🇮🇹 Italy (+39)</option>
+                            <option value="+7">🇷🇺 Russia (+7)</option>
+                            <option value="+86">🇨🇳 China (+86)</option>
+                            <option value="+34">🇪🇸 Spain (+34)</option>
+                            <option value="+55">🇧🇷 Brazil (+55)</option>
+                            <option value="+27">🇿🇦 South Africa (+27)</option>
+                            <option value="+82">🇰🇷 South Korea (+82)</option>
+                            <option value="+31">🇳🇱 Netherlands (+31)</option>
+                            <option value="+351">🇵🇹 Portugal (+351)</option>
+                            <option value="+1">🇨🇦 Canada (+1)</option>
+                            <option value="+971">🇦🇪 United Arab Emirates (+971)</option>
+                            <option value="+90">🇹🇷 Turkey (+90)</option>
+                            <option value="+62">🇮🇩 Indonesia (+62)</option>
+                            <option value="+63">🇵🇭 Philippines (+63)</option>
+                            <option value="+65">🇸🇬 Singapore (+65)</option>
+                            <option value="+60">🇲🇾 Malaysia (+60)</option>
+                            <option value="+64">🇳🇿 New Zealand (+64)</option>
+                            <option value="+20">🇪🇬 Egypt (+20)</option>
+                          </select>
+                          <input type="tel" id="phone" class="form-control" style="flex: 1;" [(ngModel)]="trainer.phone" required placeholder="Phone number">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="avatar-uploader">
+                        <div class="avatar-preview" [style.background-image]="'url(' + (photoPreview || trainer.profile_image) + ')'" [class.avatar-disabled]="!isEmailVerified || !isOtpVerified" (click)="onAvatarClick(isEmailVerified && isOtpVerified, photoInput)" style="width: 100%; min-height: 180px; max-width: 100%;">
+                          <div class="upload-overlay" *ngIf="!photoPreview && !trainer.profile_image">
+                            <i class="fas fa-camera"></i>
+                            <span>Upload Photo</span>
+                          </div>
+                          <div class="remove-photo" *ngIf="photoPreview || (trainer.profile_image && trainer.profile_image !== 'assets/default-avatar.png')" (click)="removePhoto()">
+                            <i class="fas fa-times"></i>
+                          </div>
+                          <i class="fas fa-camera avatar-edit-icon"></i>
+                        </div>
+                        <input type="file" #photoInput accept="image/*" (change)="onPhotoSelected($event)" style="display: none">
+                        <button class="btn btn-primary mt-2 w-100" (click)="photoInput.click()" [disabled]="!isEmailVerified || !isOtpVerified">
+                          <i class="fas fa-upload"></i> Upload Photo
+                        </button>
+                        <small class="text-info mt-2 d-block" *ngIf="!isEmailVerified || !isOtpVerified">
+                          <i class="fas fa-info-circle"></i> Photo upload will be enabled after email address is validated with OTP
+                        </small>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label>Company</label>
-                  <input type="text" class="form-control" [(ngModel)]="trainer.organization" required />
+                <div *ngIf="step === 2" class="step-content step-slide active">
+                  <!-- Step 2: Professional Details -->
+                  <h4>Professional Details</h4>
+                  <div class="form-group">
+                    <label>Years of Experience <span class="req-astrix">*</span></label>
+                    <select class="form-control" [(ngModel)]="trainer.experience">
+                      <option *ngFor="let exp of experienceOptions" [value]="exp">{{ exp }}</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Employment Type <span class="req-astrix">*</span></label>
+                    <select class="form-control" [(ngModel)]="trainer.employmentType">
+                      <option *ngFor="let type of employmentTypeOptions" [value]="type">{{ type }}</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Organization <span *ngIf="trainer.employmentType === 'Employed'" class="req-astrix">*</span></label>
+                    <input type="text" class="form-control" [(ngModel)]="trainer.organization" />
+                  </div>
+                  <div class="form-group">
+                    <label>Designation <span *ngIf="trainer.employmentType === 'Employed'" class="req-astrix">*</span></label>
+                    <input type="text" class="form-control" [(ngModel)]="trainer.job_title" />
+                  </div>
+                  <div class="form-group">
+                    <label>Area of Expertise <span class="req-astrix">*</span></label>
+                    <div class="selected-specialties" *ngIf="trainer.specialties.length > 0">
+                      <span *ngFor="let item of trainer.specialties" class="specialty-tag">
+                        {{ item }}
+                        <i class="fas fa-times" (click)="removeSpecialty(item, $event)"></i>
+                      </span>
+                    </div>
+                    <div class="expertise-btn-wrapper mt-2">
+                      <button type="button" class="btn expertise-btn" (click)="openSpecialtiesModal()">
+                        {{ trainer.specialties.length > 0 ? 'Edit Expertise' : 'Select your areas of expertise' }}
+                      </button>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade show" tabindex="-1" [ngStyle]="{display: showSpecialtiesModal ? 'block' : 'none', background: showSpecialtiesModal ? 'rgba(0,0,0,0.4)' : 'none'}" *ngIf="showSpecialtiesModal">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">Select Areas of Expertise (Max 3)</h5>
+                            <button type="button" class="btn-close" (click)="closeSpecialtiesModal()" title="Close modal"></button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="info-message mb-3">
+                              <i class="fas fa-info-circle text-info"></i>
+                              <span>Select multiple applicable expertise (max 3)</span>
+                            </div>
+                            <div class="specialties-list-modal">
+                              <div *ngFor="let item of specialtiesOptions" 
+                                   class="specialty-item" 
+                                   [class.disabled]="!isSpecialtySelected(item) && tempSelectedSpecialties.length >= MAX_SPECIALTIES"
+                                   (click)="!isSpecialtySelected(item) && tempSelectedSpecialties.length >= MAX_SPECIALTIES ? null : toggleSpecialty(item)">
+                                <div class="specialty-checkbox">
+                                  <input type="checkbox" 
+                                         class="form-check-input" 
+                                         [checked]="isSpecialtySelected(item)" 
+                                         (change)="toggleSpecialty(item)"
+                                         [disabled]="!isSpecialtySelected(item) && tempSelectedSpecialties.length >= MAX_SPECIALTIES"
+                                         [title]="item">
+                                </div>
+                                <div class="specialty-content">
+                                  <span class="specialty-text">{{ item }}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="other-expertise-input mt-3" *ngIf="showOtherInput">
+                              <label class="form-label">Enter your expertise</label>
+                              <input type="text" 
+                                     class="form-control" 
+                                     [(ngModel)]="otherExpertise" 
+                                     (input)="updateOtherExpertise()" 
+                                     placeholder="Type your expertise here..."
+                                     [disabled]="tempSelectedSpecialties.length >= MAX_SPECIALTIES && !isSpecialtySelected('Other')">
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" (click)="closeSpecialtiesModal()">Cancel</button>
+                            <button type="button" class="btn btn-primary" (click)="applySpecialtiesModal()">Apply</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label>Years of Experience</label>
-                  <select class="form-control" [(ngModel)]="trainer.experience">
-                    <option *ngFor="let exp of experienceOptions" [value]="exp">{{ exp }}</option>
-                  </select>
-                </div>
-              </div><!-- Step 3: Training Specialties -->
-              <div *ngIf="step === 3">
-                <h4>Training Specialties</h4>
-                
-                <div class="form-group">
-                  <label>Specialties</label>
-                  <select class="form-control" multiple [(ngModel)]="trainer.specialties">
-                    <option *ngFor="let spec of specialtiesOptions" [value]="spec">{{ spec }}</option>
-                  </select>
-                </div>
-              
-              </div>
-              
-              <!-- Step 4: Public Profile -->
-              <div *ngIf="step === 4">
-                <h4>Public Profile</h4>
-              
-                <div class="form-group">
-                  <label>Bio</label>
-                  <textarea class="form-control" [(ngModel)]="trainer.bio"></textarea>
-                </div>
-              
-                <div class="form-group">
-                  <label>LinkedIn</label>
-                  <input type="text" class="form-control" [(ngModel)]="trainer.linkedin_profile" />
-                </div>
-              
-                <div class="form-group">
-                  <label>Show Public Profile?</label>
-                  <input type="checkbox" [(ngModel)]="trainer.public_profile" />
+                <div *ngIf="step === 3" class="step-content step-slide active">
+                  <!-- Step 3: Public Profile -->
+                  <h4>Profile</h4>
+                  <div class="form-group">
+                    <label>Professional Summary <span class="req-astrix">*</span></label>
+                    <textarea class="form-control" [(ngModel)]="trainer.bio"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label>LinkedIn</label>
+                    <input type="text" class="form-control" [(ngModel)]="trainer.linkedin_profile" />
+                  </div>
+                  <div class="form-group">
+                    <label>Upload Resume</label>
+                    <div class="resume-upload-container">
+                      <div class="input-group">
+                        <input 
+                          type="file" 
+                          class="form-control" 
+                          accept=".pdf,.doc,.docx" 
+                          (change)="onFileSelected($event)"
+                          [disabled]="!!selectedFileName"
+                        />
+                        <button 
+                          *ngIf="selectedFileName"
+                          type="button" 
+                          class="btn btn-danger" 
+                          (click)="removeSelectedFile()"
+                        >
+                          <i class="fas fa-times"></i> Remove
+                        </button>
+                      </div>
+                      <div *ngIf="selectedFileName" class="mt-2">
+                        <div class="d-flex align-items-center">
+                          <i class="fas fa-file-alt text-primary me-2"></i>
+                          <span class="text-truncate">{{ selectedFileName }}</span>
+                          <span *ngIf="trainer.resume_url" class="badge bg-success ms-2">
+                            <i class="fas fa-check"></i> Uploaded
+                          </span>
+                        </div>
+                      </div>
+                      <small class="text-muted mt-1 d-block">
+                        Supported formats: PDF, DOC, DOCX (Max size: 5MB)
+                      </small>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <!-- Navigation Buttons -->
               <div class="mt-4 text-center">
                 <button *ngIf="step > 1" class="btn btn-secondary" (click)="prevStep()">Back</button>
-                <button *ngIf="step < 4" class="btn btn-primary" (click)="nextStep()">Next</button>
-                <button *ngIf="step === 4" class="btn btn-success" (click)="registerTrainer()" [disabled]="isSubmitting">
+                <button *ngIf="step < 3" class="btn btn-primary" (click)="nextStep()">Next</button>
+                <button *ngIf="step === 3" class="btn btn-success" type="submit" (click)="registerTrainer()" [disabled]="isSubmitting">
                   {{ isSubmitting ? 'Registering...' : 'Submit' }}
                 </button>
               </div>
-
-              <!-- Success/Error Messages -->
-              <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
-              <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
             </div>
           </div> <!-- End of Form -->
-
         </div>
       </div>
     </div>

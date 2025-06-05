@@ -8,7 +8,8 @@ import { TraineeRegisterComponent } from './trainee-register/trainee-register.co
 import { OTPComponent } from './otp-validation/otp-validation.component';
 import { TrainerRegisterComponent } from './trainer-registration/trainer-register.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-
+import { NgSelectModule } from '@ng-select/ng-select';
+import { ToastrModule } from 'ngx-toastr';
 
 const routes: Routes = [
   { path: 'login', component: AuthComponent },
@@ -17,7 +18,24 @@ const routes: Routes = [
   { path: 'trainer-registration', component: TrainerRegisterComponent }
 ];
 
-@NgModule({ declarations: [AuthComponent, TraineeRegisterComponent, OTPComponent, TrainerRegisterComponent], // ✅ Use RouterModule.forChild()
-    exports: [RouterModule], imports: [CommonModule, RouterModule.forChild(routes), FormsModule], providers: [AuthService, provideHttpClient(withInterceptorsFromDi())] // ✅ Export RouterModule
- })
+@NgModule({
+  declarations: [
+    AuthComponent,
+    TraineeRegisterComponent,
+    OTPComponent,
+    TrainerRegisterComponent
+  ],
+  exports: [RouterModule],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    FormsModule,
+    NgSelectModule,
+    ToastrModule.forRoot()
+  ],
+  providers: [
+    AuthService,
+    provideHttpClient(withInterceptorsFromDi())
+  ]
+})
 export class AuthModule { }
