@@ -1,7 +1,7 @@
 <div class="body-inner">
   <div class="register-section">
     <div class="container-fluid">
-      <div class="row align-items-center min-vh-100">
+      <div class="row align-items-center min-vh-100" style="padding-top: 50px;">
 
         <!-- Left: Full-Screen Banner Carousel -->
         <div class="col-md-4 d-none d-md-block p-0">
@@ -12,7 +12,7 @@
 
         <!-- Right: Registration Form -->
         <div class="col-md-4 d-flex align-items-center justify-content-center">
-          <div class="card register-card">
+          <div class="card register-card" style="margin-top: 30px;">
             <div class="card-body">
               <div class="mb-3 text-center">
                 <h3>User Registration</h3>
@@ -45,25 +45,6 @@
                 </div>
               
                 <div class="form-group">
-                  <label for="email">Email Address<span class="req-astrix">*</span></label>
-                  <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email"
-                    required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #emailRef="ngModel" />
-                  <div class="text-danger" *ngIf="emailRef.invalid && emailRef.touched">
-                    <small *ngIf="emailRef.errors?.['required']">Email is required.</small>
-                    <small *ngIf="emailRef.errors?.['pattern']">Enter a valid email address.</small>
-                  </div>
-                </div>
-              
-                <div class="form-group">
-                  <label for="phone">Phone Number</label>
-                  <input type="tel" class="form-control" id="phone" [(ngModel)]="phone" name="phone"
-                     pattern="^\d{10}$" #phoneRef="ngModel" />
-                  <div class="text-danger" *ngIf="phoneRef.invalid && phoneRef.touched">
-                    <small *ngIf="phoneRef.errors?.['pattern']">Phone number must be 10 digits.</small>
-                  </div>
-                </div>
-              
-                <div class="form-group">
                   <label for="jobTitle">Job Title<span class="req-astrix">*</span></label>
                   <input type="text" class="form-control" id="jobTitle" [(ngModel)]="jobTitle" name="jobTitle"
                     required maxlength="200" pattern="^[a-zA-Z\s]+$" #jobTitleRef="ngModel" />
@@ -82,6 +63,25 @@
                     <small *ngIf="companyRef.errors?.['required']">Company is required.</small>
                     <small *ngIf="companyRef.errors?.['pattern']">Only letters are allowed.</small>
                     <small *ngIf="companyRef.errors?.['maxlength']">Max length is 200 characters.</small>
+                  </div>
+                </div>
+              
+                <div class="form-group">
+                  <label for="email">Email Address<span class="req-astrix">*</span></label>
+                  <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email"
+                    required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #emailRef="ngModel" />
+                  <div class="text-danger" *ngIf="emailRef.invalid && emailRef.touched">
+                    <small *ngIf="emailRef.errors?.['required']">Email is required.</small>
+                    <small *ngIf="emailRef.errors?.['pattern']">Enter a valid email address.</small>
+                  </div>
+                </div>
+              
+                <div class="form-group">
+                  <label for="phone">Phone Number</label>
+                  <input type="tel" class="form-control" id="phone" [(ngModel)]="phone" name="phone"
+                     pattern="^\d{10}$" #phoneRef="ngModel" />
+                  <div class="text-danger" *ngIf="phoneRef.invalid && phoneRef.touched">
+                    <small *ngIf="phoneRef.errors?.['pattern']">Phone number must be 10 digits.</small>
                   </div>
                 </div>
               

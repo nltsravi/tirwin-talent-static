@@ -10,6 +10,8 @@ export class AuthService {
   private apiUrl = `${environment.api}/auth/login`;
   private otpValidationUrl = `${environment.api}/auth/validate-otp`;
   private profileUrl = `${environment.api}/profile/me`;
+  private registerUserUrl = `${environment.api}/users`;
+  private registerUrl = `${environment.api}/auth/register`;
 
   private authState = new BehaviorSubject<boolean>(this.isUserLoggedIn());
 
@@ -29,6 +31,23 @@ export class AuthService {
     return this.http.post<{ message: string }>(this.apiUrl, { email });
   }
 
+  verifyEmail(userData: any): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${environment.api}/users/validate-trainer-email`, userData);
+  }
+
+  verifyUserEmail(userData: any): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${environment.api}/users/validate-users-email`, userData);
+  }
+  
+  validateUsersOtp(
+    email: string,
+    otpCode: string
+  ): Observable<{ message: string; token: string }> {
+    return this.http.post<{ message: string; token: string }>(
+     `${environment.api}/auth/validate-user-otp`,
+      { email, otpCode }
+    );
+  }
   validateOtp(
     email: string,
     otpCode: string
@@ -37,6 +56,28 @@ export class AuthService {
       this.otpValidationUrl,
       { email, otpCode }
     );
+  }
+
+  validateTrainerOtp(
+    email: string,
+    otpCode: string
+  ): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(
+      `${environment.api}/auth/validate-trainer-otp`,
+      { email, otpCode }
+    );
+  }
+
+  registerTrainee(registrationData: any): Observable<any> {
+    return this.http.post<any>(this.registerUrl, registrationData);
+  }
+
+  registerWebinarWithUser(registrationData: any): Observable<any> {
+    return this.http.post<any>(this.registerUserUrl, registrationData);
+  }
+
+  subscribeToWebinar(subscriptionData: any): Observable<any> {
+    return this.http.post<any>(`${environment.api}/webinar-subscriptions/subscribe`, subscriptionData);
   }
 
   getProfile(): Observable<any> {

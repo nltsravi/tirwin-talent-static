@@ -401,8 +401,8 @@ export class TrainerRegisterComponent implements OnInit {
     this.isVerifyingEmail = true;
     this.errorMessage = '';
     this.userAsTrainer.email = this.trainer.email;
-    this.userAsTrainer.first_name = this.trainer.first_name;
-    this.userAsTrainer.last_name = this.trainer.last_name;
+    this.userAsTrainer.first_name = this.trainer.first_name || '1';
+    this.userAsTrainer.last_name = this.trainer.last_name || '2';
     this.userAsTrainer.user_type = 'trainee';
     this.userAsTrainer.is_first_time_login = true;
     this.userAsTrainer.is_verified = false;
