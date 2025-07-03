@@ -59,8 +59,8 @@ tabs: { id: string; label: string; show: boolean }[] = [];
           trainer_ids:webinar.trainer_ids,
           image: webinar.media.find((m:any) => m.media_type === 'banner')?.media_url || 'https://via.placeholder.com/300',
           author: (this.currentPageType === 'events')? 'Panel Members':`${webinar.trainer.user.first_name} ${webinar.trainer.user.last_name}`,
-          start_time: webinar.start_time?new Date(webinar.start_time).toLocaleDateString():null,
-          end_time: webinar.end_time?new Date(webinar.end_time).toLocaleTimeString():null,
+          start_time: webinar.start_time?new Date(webinar.start_time).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' ,hour: '2-digit', minute: '2-digit', hour12: true }):null,
+          end_time: webinar.end_time?new Date(webinar.end_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }):null,
           category: webinar.category.name,
           isNew: new Date(webinar.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Mark as new if created within the last 7 days
         }));

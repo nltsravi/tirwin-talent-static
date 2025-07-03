@@ -66,10 +66,7 @@
                             </p>
                             <p class="text-muted" *ngIf="webinar?.session_type != 'TRAINING'">
                                 <i class="fas fa-calendar"></i>
-                                {{ webinar?.start_time && webinar?.end_time
-                                    ? 'April 10, 2025 4:00 PM - 5:00 PM'
-                                    : 'TBD'
-                                    }}
+                                {{ webinar?.start_time}}
                             </p>
                             <button class="btn btn-primary w-100" (click)="viewDetails(webinar)">View Details</button>
                         </div>
@@ -107,7 +104,7 @@
                             <p class="text-muted" *ngIf="webinar?.session_type != 'TRAINING'">
                                 <i class="fas fa-calendar"></i>
                                 {{ webinar?.start_time && webinar?.end_time
-                                    ? 'April 10, 2025 4:00 PM - 5:00 PM'
+                                    ? 'April 10, 2025 8:00 PM - 9:00 PM'
                                     : 'TBD'
                                     }}
                             </p>

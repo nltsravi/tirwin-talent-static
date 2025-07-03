@@ -253,21 +253,9 @@
                         <!-- Show Login Box if not logged in -->
                         <div *ngIf="!isLoggedIn" class="login-box mt-4">
                             <h4 class="text-center mb-2">Sign up to Complete Registration</h4> 
+                            <button type="submit" class="btn btn-primary w-100" (click)="socialLogin('self',currentPageType,webinar?.id)">Sign Up</button>        
             
-                            <button class="btn btn-light w-100 d-flex align-items-center justify-content-center" 
-                                    (click)="socialLogin('google')">
-                                <img src="https://developers.google.com/identity/images/g-logo.png" 
-                                    alt="Google Logo" class="me-2" style="width: 20px;" />
-                                <span class="fw-bold">Sign up with Google</span>
-                            </button>     
 
-                            <p class="text-center mb-2">or</p>   
-
-                            <button type="submit" class="btn btn-primary w-100" (click)="socialLogin('self')">Sign up with Email</button>        
-            
-                            <p class="text-center mt-4">
-                                <small>Already signed up? <a href="javascript:;" (click)="login()" class="text-primary fw-bold">Click here to login</a></small>
-                            </p>
                         </div>
             
                         <!-- Confirmation Modal -->

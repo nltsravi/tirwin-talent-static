@@ -265,7 +265,7 @@ export class WebinarRegisterComponent implements OnInit {
       const subscriptionData = {
         webinarId: this.webinarDetails?.id,
         userId: this.userId,
-        amount: this.webinarDetails?.price,
+        amount: parseInt(this.webinarDetails?.price),
         transactionId: this.userTransactionId,
    
       };
@@ -279,9 +279,10 @@ export class WebinarRegisterComponent implements OnInit {
             positionClass: 'toast-center-center',
             timeOut: 3500
           });
+          // Navigate to home page after showing the toast
           setTimeout(() => {
             this.router.navigate(['/home']);
-          }, 1500);
+          }, 2000);
         },
         error: (error: any) => {
           this.isSubmitting = false;
@@ -330,9 +331,10 @@ export class WebinarRegisterComponent implements OnInit {
                 positionClass: 'toast-center-center',
                 timeOut: 3500
               });
+              // Navigate to home page after showing the toast
               setTimeout(() => {
                 this.router.navigate(['/home']);
-              }, 1500);
+              }, 2000);
             },
             error: (error: any) => {
               this.isSubmitting = false;

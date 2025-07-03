@@ -8,34 +8,55 @@
           <div class="webinar-info-section d-flex justify-content-center">
             <!-- Webinar Details Banner -->
             <div class="webinar-details-banner" style="max-width: 900px; width: 100%;">
-              <div class="card border-0 shadow-sm">
-                <div class="card-header bg-primary text-white text-center">
-                  <h4 class="mb-0">
-                    <i class="fas fa-video me-2"></i>
-                    Webinar Details
-                  </h4>
-                </div>
-                <div class="card-body p-4">
-                  <div class="text-center">
-                    <div class="webinar-image mb-3">
-                      <img [src]="webinarDetails.media[0]?.media_url || 'assets/images/default-webinar.jpg'" 
-                           alt="Webinar" 
-                           class="img-fluid rounded"
-                           style="max-height: 150px; width: 100%; object-fit: cover;">
-                    </div>
-                    <h3 class="text-primary fw-bold mb-3">{{ webinarDetails.title }}</h3>
-                    <div *ngIf="webinarDetails.start_time" class="mb-3">
-                      <div class="text-secondary">
-                        <i class="fas fa-calendar me-2"></i>
-                        {{ webinarDetails.start_time | date:'mediumDate' }}
+              <div class="card border-0 shadow-none">
+                <div class="card-body p-0">
+                  <div class="row align-items-center">
+                    <!-- Left Column: Image -->
+                    <div class="col-md-4 p-0">
+                      <div class="webinar-image">
+                        <img [src]="webinarDetails.media[0]?.media_url || 'https://tirwin-media-storage.s3.us-east-1.amazonaws.com/static-images/digipin.png'" 
+                             alt="Webinar" 
+                             class="img-fluid"
+                             style="max-height: 300px; width: 100%; object-fit: cover;">
                       </div>
                     </div>
-                    <p class="text-muted mb-3">{{ webinarDetails.description }}</p>
                     
-                    <!-- Meta Information -->
-                    <div class="webinar-meta">
-                      <span class="badge bg-info text-white me-2" style="font-size: 1rem; padding: 0.5rem 1rem;">{{ webinarDetails.category?.name || webinarDetails.category || 'General' }}</span>
-                      <span class="badge bg-success" style="font-size: 1rem; padding: 0.5rem 1rem;">₹{{ webinarDetails.price }}</span>
+                    <!-- Right Column: Webinar Details -->
+                    <div class="col-md-8 p-4">
+                      <h3 class="text-primary fw-bold mb-3">{{ webinarDetails.title }}</h3>
+                      <div *ngIf="webinarDetails.start_time" class="mb-3">
+                        <div class="text-secondary mb-2">
+                          <i class="fas fa-calendar me-2"></i>
+                          <strong>Date:</strong> {{ webinarDetails.start_time | date:'fullDate' }}
+                        </div>
+                        <div class="text-secondary mb-2">
+                          <i class="fas fa-clock me-2"></i>
+                          <strong>Start Time:</strong> {{ webinarDetails.start_time | date:'shortTime' }} IST
+                        </div>
+                        <div class="text-secondary mb-2" *ngIf="webinarDetails.end_time">
+                          <i class="fas fa-clock me-2"></i>
+                          <strong>End Time:</strong> {{ webinarDetails.end_time | date:'shortTime' }} IST
+                        </div>
+                        <div class="text-secondary" *ngIf="webinarDetails.duration">
+                          <i class="fas fa-hourglass-half me-2"></i>
+                          <strong>Duration:</strong> {{ webinarDetails.duration }}
+                        </div>
+                      </div>
+                      
+                      <!-- Amount Information -->
+                      <div class="amount-section mt-3">
+                        <div class="amount-display">
+                          <span class="amount-badge" style="font-size: 1.5rem; font-weight: bold; color: #28a745; background-color: #d4edda; padding: 0.75rem 1.5rem; border-radius: 8px; border: 2px solid #28a745;">
+                            ₹{{ webinarDetails.price }}
+                          </span>
+                        </div>
+                        <div class="gst-info mt-2">
+                          <small class="text-muted" style="font-size: 0.9rem;">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Inclusive of GST
+                          </small>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -82,7 +103,7 @@
                     <small *ngIf="emailRef.errors?.['pattern']">Enter a valid email address.</small>
                   </div>
                   <small class="text-success" *ngIf="isEmailVerified && !isOtpVerified">
-                    <i class="fas fa-check-circle"></i> Email verified successfully. OTP sent to your email id for validation.
+                    <i class="fas fa-check-circle"></i>OTP sent to your email id for validation.
                   </small>
                 </div>
 
@@ -196,7 +217,7 @@
                       <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
                           <i class="fas fa-credit-card me-2"></i>
-                          Payment Information
+                          Payment Information - ₹{{ webinarDetails.price }}
                         </h5>
                       </div>
                       <div class="card-body">
@@ -229,16 +250,19 @@
 
                   <!-- Transaction ID Field -->
                   <div *ngIf="showPaymentSection && paymentInfo" class="form-group mt-3">
-                    <label for="transactionId">Transaction ID</label>
+                    <label for="transactionId">Transaction ID<span class="req-astrix">*</span></label>
                     <input type="text" class="form-control" id="transactionId" [(ngModel)]="userTransactionId" name="transactionId"
-                           placeholder="Enter your transaction ID">
+                           placeholder="Enter your transaction ID" required #transactionIdRef="ngModel">
+                    <div class="text-danger" *ngIf="transactionIdRef.invalid && transactionIdRef.touched">
+                      <small *ngIf="transactionIdRef.errors?.['required']">Transaction ID is required.</small>
+                    </div>
                     <small class="text-muted">Enter the transaction ID from your payment confirmation</small>
                   </div>
                 </div>
 
                 <div class="mt-3">
                   <button type="submit" class="btn btn-primary btn-block w-100" [disabled]="registerForm.invalid || isSubmitting || !isEmailVerified || !isOtpVerified">
-                    {{ isSubmitting ? 'Processing...' : (showPaymentSection ? 'Register & Pay' : 'Complete Registration') }}
+                    {{ isSubmitting ? 'Processing...' : 'Register' }}
                   </button>
                 </div>
               </form>

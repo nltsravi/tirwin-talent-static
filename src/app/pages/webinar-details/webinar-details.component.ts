@@ -294,13 +294,13 @@ export class WebinarDetailsComponent implements OnInit {
     this.alertClass = '';
   }
 
-  socialLogin(provider: string) {
+  socialLogin(provider: string,type:string,id:string) {
     const returnUrl = this.router.url;
     sessionStorage.setItem('returnUrl', returnUrl);// ✅ Store it in sessionStorage
     if (provider === 'google') {
       window.location.href = `${environment.api}/auth/google`;
     } else {
-      this.router.navigate(['/auth/register'])
+      this.router.navigate(['/auth/register',type,id])
     }
   }
 
