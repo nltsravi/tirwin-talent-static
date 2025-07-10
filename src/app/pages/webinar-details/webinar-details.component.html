@@ -42,7 +42,7 @@
                                 Panel Members
                             }
                             @else {
-                                TDB
+                                {{webinar?.trainer?.user?.first_name + ' ' +  webinar?.trainer?.user?.last_name || 'TDB'}}
                             }
                         </div>
                         <!-- <div class="col-6 col-md-3"><i class="fas fa-tags text-primary"></i> {{ webinar?.tags?.join(',

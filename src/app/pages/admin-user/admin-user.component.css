@@ -374,3 +374,345 @@
     font-size: 16px;
   }
 } 
+
+/* Webinar Subscriptions Styles */
+.webinar-list-section {
+  margin-bottom: 2rem;
+}
+
+.webinar-header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.webinar-header-section h3 {
+  margin: 0;
+  color: #333;
+}
+
+.filter-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.filter-info i {
+  color: #1976d2;
+}
+
+.webinar-table-container {
+  margin-top: 1rem;
+}
+
+.webinar-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.webinar-row:hover {
+  background-color: #f8f9fa;
+}
+
+.webinar-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.webinar-thumbnail {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid #e0e0e0;
+}
+
+.webinar-title-cell {
+  max-width: 300px;
+}
+
+.webinar-title {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+}
+
+.webinar-description {
+  color: #666;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.webinar-type-badge {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.webinar-price-cell {
+  text-align: center;
+}
+
+.webinar-price {
+  font-weight: 600;
+  color: #2e7d32;
+  font-size: 1rem;
+}
+
+.webinar-date-cell {
+  text-align: center;
+}
+
+.webinar-date {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.webinar-time {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+/* Status Badge Styles */
+.status-badge.live {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.status-badge.completed {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.status-badge.upcoming {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.status-badge.unknown {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.transaction-id {
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #666;
+  word-break: break-all;
+}
+
+/* Subscribers Section */
+.subscribers-section {
+  margin-top: 1rem;
+}
+
+.webinar-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.btn-back {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-back:hover {
+  background: #e0e0e0;
+}
+
+.webinar-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.subscribers-table {
+  margin-top: 1rem;
+}
+
+.status-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: #ffebee;
+  color: #c62828;
+}
+
+.status-badge.active {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-style: italic;
+}
+
+.debug-info {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  text-align: left;
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+.debug-info p {
+  margin: 0.25rem 0;
+}
+
+/* Email Actions Section */
+.email-actions-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.select-all-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.select-all-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: #333;
+}
+
+.select-all-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.selected-count {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-buttons .btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+.action-buttons .btn-success:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+.action-buttons .btn-success:focus {
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+/* Checkbox Column */
+.checkbox-column {
+  width: 40px;
+  text-align: center;
+}
+
+.checkbox-column input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.checkbox-cell {
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.checkbox-cell input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Action Cell */
+.action-cell {
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.btn-action.notification {
+  background: #17a2b8;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background-color 0.2s ease;
+}
+
+.btn-action.notification:hover {
+  background: #138496;
+}
+
+.btn-action.notification:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.btn-action.notification:disabled:hover {
+  background: #6c757d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .webinar-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .webinar-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .btn-back {
+    align-self: flex-start;
+  }
+} 
