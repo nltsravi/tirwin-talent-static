@@ -1,22 +1,24 @@
 import { NgModule } from '@angular/core';
 import { DefaultLayoutComponent } from './default-layout.component';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from '../../components';
-import { FooterComponent } from '../../components/footer/footer.component';
+import { RouterModule } from '@angular/router';
+import { HeaderModule } from '../../components/header/header.module';
+import { FooterModule } from '../../components/footer/footer.module';
+import { SliderComponent } from '../../components/slider/slider.component';
 
 @NgModule({
     imports: [
         CommonModule,
+        RouterModule,
+        HeaderModule,
+        FooterModule,
     ],
     declarations: [
         DefaultLayoutComponent,
-        HeaderComponent,
-        FooterComponent
+        SliderComponent
     ],
     exports: [
-        DefaultLayoutComponent,
-        HeaderComponent,
-        FooterComponent
+        DefaultLayoutComponent
     ]
 })
 export class DefaultLayoutModule {
