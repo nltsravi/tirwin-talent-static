@@ -20,12 +20,14 @@ import { CheckoutModule } from './pages/checkout/checkout.module';
 import { RouterModule } from '@angular/router';
 import { MyCoursesModule } from './pages/my-courses/my-courses.module';
 import { AdminUserModule } from './pages/admin-user/admin-user.module';
+import { TermsConditionsComponent } from './pages/terms-conditions/terms-conditions.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         DefaultLayoutComponent,
         SliderComponent,
+        TermsConditionsComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [
