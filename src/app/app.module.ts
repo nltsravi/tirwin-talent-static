@@ -21,12 +21,16 @@ import { RouterModule } from '@angular/router';
 import { MyCoursesModule } from './pages/my-courses/my-courses.module';
 import { AdminUserModule } from './pages/admin-user/admin-user.module';
 import { TermsConditionsComponent } from './pages/terms-conditions/terms-conditions.component';
+import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
+import { PricingPolicyComponent } from './pages/pricing-policy/pricing-policy.component';
 import { DefaultLayoutModule } from './layout/default-layout/default-layout.module';
 
 @NgModule({
     declarations: [
         AppComponent,
         TermsConditionsComponent,
+        PrivacyPolicyComponent,
+        PricingPolicyComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [

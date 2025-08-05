@@ -8,6 +8,8 @@ import { AdminGuard } from './guards/admin.guard';
 import { AdminWebinarComponent } from './pages/admin-webinar/admin-webinar.component';
 import { TrainerDetailsPublicComponent } from './pages/admin-user/trainer-details.component';
 import { TermsConditionsComponent } from './pages/terms-conditions/terms-conditions.component';
+import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
+import { PricingPolicyComponent } from './pages/pricing-policy/pricing-policy.component';
 
 const routes: Routes = [
   {
@@ -26,6 +28,8 @@ const routes: Routes = [
       { path: 'admin/user/trainer/:id', component: TrainerDetailsComponent, data: { showSlider: false }, canActivate: [AdminGuard] },
       { path: 'become-instructor', component: BecomeInstructorLandingComponent, data: { showSlider: false } },
       { path: 'terms-conditions', component: TermsConditionsComponent, data: { showSlider: false } },
+      { path: 'privacy-policy', component: PrivacyPolicyComponent, data: { showSlider: false } },
+      { path: 'pricing-policy', component: PricingPolicyComponent, data: { showSlider: false } },
       { path: 'admin/webinar-management', component: AdminWebinarComponent, data: { showSlider: false }, canActivate: [AdminGuard],
         children: [
           { path: 'create', component: AdminWebinarComponent }
