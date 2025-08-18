@@ -62,6 +62,18 @@
                           </small>
                         </div>
                       </div>
+
+                      <!-- Trainer List -->
+                      <div *ngIf="webinarDetails.trainers && webinarDetails.trainers.length > 0" class="mb-3">
+                        <h5 class="fw-bold mb-2">Trainer{{ webinarDetails.trainers.length > 1 ? 's' : '' }}</h5>
+                        <ul class="list-unstyled">
+                          <li *ngFor="let trainer of webinarDetails.trainers" class="d-flex align-items-center mb-2">
+                            <img *ngIf="trainer.photo" [src]="trainer.photo" alt="{{ trainer.name }}" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                            <span class="fw-semibold">{{ trainer.name }}</span>
+                            <span *ngIf="trainer.title" class="text-muted ms-2" style="font-size: 0.95em;">{{ trainer.title }}</span>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>

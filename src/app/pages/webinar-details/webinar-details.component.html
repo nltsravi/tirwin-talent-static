@@ -37,9 +37,11 @@
                                 : 'TBD' 
                             }}
                         </div>
-                        <div class="col-6 col-md-3"><i class="fas fa-user text-primary"></i> 
+                        <div class="col-6 col-md-3"> 
                             @if(webinar?.trainers){
-                                Panel Members
+                                @for(trainer of webinar?.trainers; track trainer.id){
+                                    <i class="fas fa-user text-primary"></i> {{trainer.user.first_name + ' ' + trainer.user.last_name}}<br>
+                                }
                             }
                             @else {
                                 {{webinar?.trainer?.user?.first_name + ' ' +  webinar?.trainer?.user?.last_name || 'TDB'}}
@@ -93,7 +95,7 @@
                             <h2 class="mb-0">
                                 <span data-bs-toggle="collapse" data-bs-target="#collapseDetails" aria-expanded="true">
                                     @if(webinar?.trainers){
-                                        Panel Discussion Details
+                                        {{currentPageType}} Details
                                     }
                                     @else {
                                         {{currentPageType}} Details
@@ -291,50 +293,18 @@
                 <!-- Trainer Profile Section -->
                  @if(webinar?.trainers){
 
-                    
-                        <h2 class="h4 font-weight-bold text-left">Panel Members ({{webinar.trainers.length}})</h2>
-                       
-                        <div class="trainer-carousel">
-                        <button class="prev-btn" (click)="prevSlide()">❮</button>
-                        <div class="trainer-slider">
-                            <div *ngFor="let trainer of webinar.trainers; let i = index" class="trainer-card"
-                                [class.active]="i === currentIndex">
-                                <div class="card trainer-profile-card shadow-sm p-3 mb-3">
-                                    <div class="d-flex align-items-center">
-                                        <!-- Profile Image (Circular) -->
-                                        <div class="flex-shrink-0">
-                                            <img [src]="trainer?.profile_image || 'https://via.placeholder.com/60'"
-                                                class="trainer-profile-img rounded-circle border" alt="Trainer Image" width="60" height="60">
-                                        </div>
-                                
-                                        <!-- Trainer Details (Compressed) -->
-                                        <div class="flex-grow-1 ms-3">
-                                            <h5 class="mb-1 fw-bold text-dark">{{ trainer?.name  || 'Ramesh Gupta' }}</h5>
-                                            <p class="text-muted mb-1 small">{{ trainer?.organization || 'FedEx Logistics' }}</p>
-                                
-                                            <!-- Trainer Stats (Inline) -->
-                                            <!-- <div class="trainer-stats">
-                                                <span class="badge bg-light text-dark me-2">
-                                                    <i class="fas fa-chalkboard-teacher text-primary"></i> {{ trainer?.experience || '5' }}+ years
-                                                </span>
-                                            </div> -->
-                                        </div>
-                                        <p></p>
-                                        <!-- LinkedIn Profile (Optional) -->
-                                        <!-- <div class="mt-2">
-                                            <a *ngIf="trainer?.linkedin_profile" [href]="trainer?.linkedin_profile" target="_blank"
-                                                class="btn btn-primary btn-sm">
-                                                <i class="fab fa-linkedin"></i>
-                                            </a>
-                                        </div> -->
-                                    </div>
-                                </div>
+                    <h2 class="h4 font-weight-bold text-left">Trainer Profiles</h2>
+                    <ul class="list-unstyled mb-4">
+                        <li *ngFor="let trainer of webinar.trainers" class="d-flex align-items-center mb-3">
+                            <img *ngIf="trainer.profile_image" [src]="trainer.profile_image" alt="{{ trainer.user.first_name}}" class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                            <div>
+                                <div class="fw-semibold">{{ trainer.user.first_name + ' ' + trainer.user.last_name }}</div>
+                                <div *ngIf="trainer.organization" class="text-muted small">{{ trainer.organization }}</div>
+                                <div *ngIf="trainer.title" class="text-muted small">{{ trainer.title }}</div>
                             </div>
-                        </div>
-                        <button class="next-btn" (click)="nextSlide()">❯</button>
-                    </div>
-                    
-                    
+                        </li>
+                    </ul>
+
                 }
                 @else{
                     <div class="card trainer-profile-card shadow-sm p-4 mt-4 text-center">
