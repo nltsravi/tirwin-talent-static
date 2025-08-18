@@ -262,12 +262,12 @@ export class WebinarRegisterComponent implements OnInit {
 
     if (this.isExistingUser) {
       // User already exists, call webinar subscription API
+      const isFreeWebinar = this.webinarDetails?.price === 0 || this.webinarDetails?.price === '0' || this.webinarDetails?.price === '0.00';
       const subscriptionData = {
         webinarId: this.webinarDetails?.id,
         userId: this.userId,
         amount: parseInt(this.webinarDetails?.price),
-        transactionId: this.userTransactionId,
-   
+        transactionId: isFreeWebinar ? '0000-0000-0000' : this.userTransactionId,
       };
 
       this.authService.subscribeToWebinar(subscriptionData).subscribe({
@@ -315,12 +315,12 @@ export class WebinarRegisterComponent implements OnInit {
       this.authService.registerWebinarWithUser(registrationData).subscribe({
         next: (response) => {
           this.isSubmitting = false;
+          const isFreeWebinar = this.webinarDetails?.price === 0 || this.webinarDetails?.price === '0' || this.webinarDetails?.price === '0.00';
           const subscriptionData = {
             webinarId: this.webinarDetails?.id,
             userId: response.user.id,
             amount: parseInt(this.webinarDetails?.price),
-            transactionId: this.userTransactionId,
-       
+            transactionId: isFreeWebinar ? '0000-0000-0000' : this.userTransactionId,
           };
           this.authService.subscribeToWebinar(subscriptionData).subscribe({
             next: (response: any) => {

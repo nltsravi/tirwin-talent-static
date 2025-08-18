@@ -47,10 +47,15 @@
                       <div class="amount-section mt-3">
                         <div class="amount-display">
                           <span class="amount-badge" style="font-size: 1.5rem; font-weight: bold; color: #28a745; background-color: #d4edda; padding: 0.75rem 1.5rem; border-radius: 8px; border: 2px solid #28a745;">
-                            ₹{{ webinarDetails.price }}
+                            <ng-container *ngIf="webinarDetails.price === 0; else paidWebinar">
+                              Free Webinar
+                            </ng-container>
+                            <ng-template #paidWebinar>
+                              ₹{{ webinarDetails.price }}
+                            </ng-template>
                           </span>
                         </div>
-                        <div class="gst-info mt-2">
+                        <div class="gst-info mt-2" *ngIf="webinarDetails.price !== 0">
                           <small class="text-muted" style="font-size: 0.9rem;">
                             <i class="fas fa-info-circle me-1"></i>
                             Inclusive of GST
@@ -212,56 +217,10 @@
                   </div>
 
                   <!-- Payment Section -->
-                  <div *ngIf="showPaymentSection" class="payment-section mt-3">
-                    <div class="card border-primary">
-                      <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">
-                          <i class="fas fa-credit-card me-2"></i>
-                          Payment Information - ₹{{ webinarDetails.price }}
-                        </h5>
-                      </div>
-                      <div class="card-body">
-                        <!-- Loading State -->
-                        <div *ngIf="isLoadingPayment" class="text-center">
-                          <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                          </div>
-                          <p class="mt-2">Loading payment information...</p>
-                        </div>
-                        <!-- Payment Info -->
-                        <div *ngIf="!isLoadingPayment && paymentInfo" class="payment-details">
-                          <!-- QR Code -->
-                          <div class="qr-code-section text-center mb-3">
-                            <label class="form-label fw-bold">Scan QR Code to Pay:</label>
-                            <div class="qr-container">
-                              <img src="/assets/images/create-qr.png" 
-                                   alt="Payment QR Code" 
-                                   class="img-fluid border rounded"
-                                   style="max-width: 200px;">
-                            </div>
-                            <label class="form-label fw-bold">or use below UPI ID </label>
-                            <div class="qr-account-id text-center mt-2" style="font-size: 1.5rem; font-weight: bold; color: #1a365d; letter-spacing: 1px; border: 1px solid #6c757d; border-radius: 8px; padding: 10px; background-color: #f8f9fa; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                              12439552&#64;cbin
-                            </div>
-                            <small class="text-muted d-block mt-2">
-                              Scan this QR code or use the UPI ID with your payment app to complete the transaction
-                            </small>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <!-- Payment information section removed as per request -->
 
                   <!-- Transaction ID Field -->
-                  <div *ngIf="showPaymentSection && paymentInfo" class="form-group mt-3">
-                    <label for="transactionId">Transaction ID<span class="req-astrix">*</span></label>
-                    <input type="text" class="form-control" id="transactionId" [(ngModel)]="userTransactionId" name="transactionId"
-                           placeholder="Enter your transaction ID" required #transactionIdRef="ngModel">
-                    <div class="text-danger" *ngIf="transactionIdRef.invalid && transactionIdRef.touched">
-                      <small *ngIf="transactionIdRef.errors?.['required']">Transaction ID is required.</small>
-                    </div>
-                    <small class="text-muted">Enter the transaction ID from your payment confirmation</small>
-                  </div>
+                  <!-- Transaction ID section removed as per request -->
                 </div>
 
                 <div class="mt-3">
