@@ -10,6 +10,9 @@ import { TrainerDetailsPublicComponent } from './pages/admin-user/trainer-detail
 import { TermsConditionsComponent } from './pages/terms-conditions/terms-conditions.component';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 import { PricingPolicyComponent } from './pages/pricing-policy/pricing-policy.component';
+import { AboutUsComponent } from './pages/about-us/about-us.component';
+import { LeadershipComponent } from './pages/leadership/leadership.component';
+import { ContactUsComponent } from './pages/contact-us/contact-us.component';
 
 const routes: Routes = [
   {
@@ -30,6 +33,9 @@ const routes: Routes = [
       { path: 'terms-conditions', component: TermsConditionsComponent, data: { showSlider: false } },
       { path: 'privacy-policy', component: PrivacyPolicyComponent, data: { showSlider: false } },
       { path: 'pricing-policy', component: PricingPolicyComponent, data: { showSlider: false } },
+      { path: 'about-us', component: AboutUsComponent, data: { showSlider: false } },
+      { path: 'leadership', component: LeadershipComponent, data: { showSlider: false } },
+      { path: 'contact-us', component: ContactUsComponent, data: { showSlider: false } },
       { path: 'admin/webinar-management', component: AdminWebinarComponent, data: { showSlider: false }, canActivate: [AdminGuard],
         children: [
           { path: 'create', component: AdminWebinarComponent }

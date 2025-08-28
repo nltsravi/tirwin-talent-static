@@ -1,0 +1,412 @@
+.leadership-page {
+    padding: 60px 0;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.page-header h1 {
+    color: #2c3e50;
+    font-size: 2.8rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    letter-spacing: -0.5px;
+}
+
+.tagline {
+    color: #007bff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0;
+    letter-spacing: 1px;
+}
+
+.leadership-content {
+    background: white;
+    padding: 50px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    max-width: 1200px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+.leadership-section {
+    margin-bottom: 50px;
+}
+
+.leadership-section:last-child {
+    margin-bottom: 0;
+}
+
+.leadership-section h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e9ecef;
+    letter-spacing: -0.3px;
+}
+
+/* Team Grid */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.team-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 30px;
+    border-left: 4px solid #007bff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.team-member {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.member-avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.member-avatar i {
+    font-size: 2rem;
+    color: white;
+}
+
+.member-info h3 {
+    color: #2c3e50;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.member-title {
+    color: #007bff;
+    font-weight: 600;
+    margin-bottom: 3px;
+    font-size: 1.1rem;
+}
+
+.member-company {
+    color: #6c757d;
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}
+
+.member-bio {
+    color: #495057;
+    line-height: 1.7;
+}
+
+.member-bio p {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    text-align: justify;
+}
+
+.member-education {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+}
+
+.member-education h4 {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.member-education ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.member-education li {
+    color: #495057;
+    padding: 5px 0;
+    padding-left: 20px;
+    position: relative;
+}
+
+.member-education li::before {
+    content: "•";
+    color: #007bff;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+/* Advisors Grid */
+.advisors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 25px;
+}
+
+.advisor-card {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    border: 1px solid #e9ecef;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.advisor-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.advisor-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.advisor-avatar {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.advisor-avatar i {
+    font-size: 1.5rem;
+    color: white;
+}
+
+.advisor-info h3 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.advisor-role {
+    color: #28a745;
+    font-weight: 500;
+    margin-bottom: 0;
+    font-size: 0.95rem;
+}
+
+.advisor-bio {
+    color: #495057;
+    line-height: 1.6;
+}
+
+.advisor-bio p {
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    text-align: justify;
+}
+
+.advisor-bio p:last-child {
+    margin-bottom: 0;
+}
+
+/* Values Section */
+.values-content {
+    color: #495057;
+    line-height: 1.7;
+}
+
+.values-content > p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.value-item {
+    text-align: center;
+    padding: 25px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.value-item:hover {
+    transform: translateY(-3px);
+}
+
+.value-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+}
+
+.value-icon i {
+    font-size: 1.8rem;
+    color: white;
+}
+
+.value-item h4 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.value-item p {
+    color: #495057;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .leadership-page {
+        padding: 40px 0;
+    }
+    
+    .page-header h1 {
+        font-size: 2.2rem;
+    }
+    
+    .leadership-content {
+        padding: 30px;
+        margin: 0 15px;
+    }
+    
+    .leadership-section h2 {
+        font-size: 1.6rem;
+    }
+    
+    .team-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .advisors-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .values-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+    
+    .team-card,
+    .advisor-card {
+        padding: 20px;
+    }
+    
+    .member-avatar {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .member-avatar i {
+        font-size: 1.5rem;
+    }
+    
+    .advisor-avatar {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .advisor-avatar i {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .leadership-content {
+        padding: 25px;
+        margin: 0 10px;
+    }
+    
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .leadership-section h2 {
+        font-size: 1.5rem;
+    }
+    
+    .team-member {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .member-avatar {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    
+    .advisor-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .advisor-avatar {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .values-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .value-item {
+        padding: 20px;
+    }
+    
+    .value-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .value-icon i {
+        font-size: 1.5rem;
+    }
+}

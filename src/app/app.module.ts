@@ -23,6 +23,9 @@ import { AdminUserModule } from './pages/admin-user/admin-user.module';
 import { TermsConditionsComponent } from './pages/terms-conditions/terms-conditions.component';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 import { PricingPolicyComponent } from './pages/pricing-policy/pricing-policy.component';
+import { AboutUsComponent } from './pages/about-us/about-us.component';
+import { LeadershipComponent } from './pages/leadership/leadership.component';
+import { ContactUsComponent } from './pages/contact-us/contact-us.component';
 import { DefaultLayoutModule } from './layout/default-layout/default-layout.module';
 
 @NgModule({
@@ -31,6 +34,9 @@ import { DefaultLayoutModule } from './layout/default-layout/default-layout.modu
         TermsConditionsComponent,
         PrivacyPolicyComponent,
         PricingPolicyComponent,
+        AboutUsComponent,
+        LeadershipComponent,
+        ContactUsComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [

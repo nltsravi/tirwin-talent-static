@@ -260,6 +260,9 @@ export class WebinarRegisterComponent implements OnInit {
     this.isSubmitting = true;
     this.errorMessage = '';
 
+    // Always generate a new transaction ID for this registration
+    const generatedTxnId = this.generateTransactionId();
+
     if (this.isExistingUser) {
       // User already exists, call webinar subscription API
       const isFreeWebinar = this.webinarDetails?.price === 0 || this.webinarDetails?.price === '0' || this.webinarDetails?.price === '0.00';
@@ -267,7 +270,7 @@ export class WebinarRegisterComponent implements OnInit {
         webinarId: this.webinarDetails?.id,
         userId: this.userId,
         amount: parseInt(this.webinarDetails?.price),
-        transactionId: isFreeWebinar ? '0000-0000-0000' : this.userTransactionId,
+        transactionId: generatedTxnId,
       };
 
       this.authService.subscribeToWebinar(subscriptionData).subscribe({
@@ -308,7 +311,8 @@ export class WebinarRegisterComponent implements OnInit {
         email: this.email,
         phone: this.phone,
         job_title: this.jobTitle,
-        company: this.company
+        company: this.company,
+        transactionId: generatedTxnId,
 
       };
 
@@ -320,7 +324,7 @@ export class WebinarRegisterComponent implements OnInit {
             webinarId: this.webinarDetails?.id,
             userId: response.user.id,
             amount: parseInt(this.webinarDetails?.price),
-            transactionId: isFreeWebinar ? '0000-0000-0000' : this.userTransactionId,
+            transactionId: generatedTxnId,
           };
           this.authService.subscribeToWebinar(subscriptionData).subscribe({
             next: (response: any) => {
@@ -390,5 +394,15 @@ export class WebinarRegisterComponent implements OnInit {
   socialLogin(provider: string): void {
     // Implement social login functionality
     console.log('Social login with:', provider);
+  }
+
+  // Utility to generate a unique 10-character alphanumeric transaction ID
+  private generateTransactionId(): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < 10; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
   }
 } 

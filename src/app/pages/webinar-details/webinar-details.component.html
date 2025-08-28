@@ -293,7 +293,7 @@
                 <!-- Trainer Profile Section -->
                  @if(webinar?.trainers){
 
-                    <h2 class="h4 font-weight-bold text-left">Trainer Profiles</h2>
+                    <h2 class="h4 font-weight-bold text-left">Speaker(s)</h2>
                     <ul class="list-unstyled mb-4">
                         <li *ngFor="let trainer of webinar.trainers" class="d-flex align-items-center mb-3">
                             <img *ngIf="trainer.profile_image" [src]="trainer.profile_image" alt="{{ trainer.user.first_name}}" class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;">
