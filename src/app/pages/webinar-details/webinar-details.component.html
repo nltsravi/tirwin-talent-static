@@ -6,22 +6,32 @@
   <!-- Left Column -->
   <div class="left-column">
     <!-- Key Benefits Card -->
-  <div class="card p-xl">
-    <div class="stack">
-      <h1 class="title">{{ getDisplayTitle() }}</h1>
-      <p class="lead">{{ getDisplayTagline() }}</p>
-      
-      <div class="price-chip">
-        <span>Only {{ getDisplayPrice() }} - Seats Limited</span>
+  <div class="card webinar-card">
+    <!-- Banner -->
+    <div class="webinar-banner">
+      <div class="banner-content">
+        <div class="banner-text">
+          <h1 class="banner-title">{{ getDisplayTitle() }}</h1>
+          <p class="banner-subtitle">{{ getDisplayTagline() }}</p>
+        </div>
       </div>
-      
-      <ul class="list">
-        <li *ngFor="let benefit of getDisplayBenefits()">{{ benefit }}</li>
-      </ul>
-      
-      <button class="btn btn-ghost" (click)="scrollToDetails()">
-        Register Now at ₹99
-      </button>
+    </div>
+    
+    <!-- Card Content -->
+    <div class="card-content p-xl">
+      <div class="stack">
+        <div class="price-chip">
+          <span>Only {{ getDisplayPrice() }} - Seats Limited</span>
+        </div>
+        
+        <ul class="list">
+          <li *ngFor="let benefit of getDisplayBenefits()">{{ benefit }}</li>
+        </ul>
+        
+        <button class="btn btn-ghost" (click)="scrollToDetails()">
+          Register Now at ₹99
+        </button>
+      </div>
     </div>
   </div>
 

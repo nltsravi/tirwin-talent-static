@@ -8,7 +8,7 @@ import { filter } from 'rxjs/operators';
   styleUrl: './default-layout.component.css'
 })
 export class DefaultLayoutComponent implements OnInit {
-  showSlider = true;
+  showSlider = false; // Hide slider by default
   showAccount = false
 
   constructor(private router: Router, private route: ActivatedRoute) {}
@@ -18,7 +18,8 @@ export class DefaultLayoutComponent implements OnInit {
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       const currentRoute = this.route.snapshot.firstChild;
-      this.showSlider = currentRoute?.data['showSlider'] !== false;
+      // Only show slider if explicitly set to true (home page only)
+      this.showSlider = currentRoute?.data['showSlider'] === true;
       this.showAccount = currentRoute?.data['account'] !== false;
     });
   }

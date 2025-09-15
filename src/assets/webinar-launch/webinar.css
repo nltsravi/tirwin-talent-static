@@ -28,6 +28,7 @@ a{color:inherit}
 .banner-text{flex:1; text-align:center}
 
 .banner-title{font-size:24px; font-weight:700; margin:0; color:#ffffff}
+.banner-subtitle{font-size:16px; font-weight:400; margin:8px 0 0; color:#ffffff; opacity:0.9}
 
 .card-content{padding:0}
 
@@ -63,8 +64,6 @@ a{color:inherit}
 .hero{display:grid; grid-template-columns:1fr; gap:20px; align-items:stretch}
 .card{background:#ffffff; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border:1px solid #e2e8f0; border-radius:32px !important; box-shadow:0 8px 24px rgba(2,6,23,.12)}
 .p-xl{padding:28px}
-.title{font-size:clamp(26px, 3.2vw, 44px); line-height:1.1; margin:12px 0 12px}
-.lead{font-size:clamp(16px, 1.4vw, 20px); color:#475569}
 .price-chip{display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:24px; background:#fff; border:1px solid #e2e8f0; color:#1f2937; font-weight:600}
 .stack{display:flex; flex-direction:column; gap:14px}
 .grid{display:grid; gap:14px}
