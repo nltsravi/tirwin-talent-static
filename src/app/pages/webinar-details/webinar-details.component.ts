@@ -119,20 +119,11 @@ export class WebinarDetailsComponent implements OnInit {
 
   /** Redirects to webinar registration page */
   redirectToWebinarRegistration() {
-    // Check if user is logged in
-    if (!this.isLoggedIn) {
-      // Redirect to login with return URL
-      const returnUrl = this.router.url;
-      sessionStorage.setItem('returnUrl', returnUrl);
-      this.router.navigate(['/auth/login']);
-      return;
-    }
-
     // Get webinar details
     const webinarId = this.webinar?.id || '4e86e649-bb3c-45c4-a2ff-be4c625e2ac8';
     const webinarType = this.route.snapshot.paramMap.get('style') || 'masterclass';
     
-    // Redirect to webinar registration page
+    // Redirect to webinar registration page (regardless of login status)
     this.router.navigate(['/auth/register', webinarType, webinarId]);
   }
 

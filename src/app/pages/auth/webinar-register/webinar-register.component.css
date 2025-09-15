@@ -5,6 +5,267 @@
   top: -26px;
 }
 
+/* Main Registration Card */
+.webinar-registration-card {
+  max-width: 700px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin: 20px;
+}
+
+/* Card Banner */
+.card-banner {
+  position: relative;
+  height: 180px;
+  background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.banner-content {
+  position: relative;
+  z-index: 2;
+}
+
+.banner-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.banner-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #ffffff;
+}
+
+.banner-subtitle {
+  font-size: 14px;
+  opacity: 0.9;
+  margin: 0;
+  color: #ffffff;
+}
+
+/* Card Body Content */
+.card-body-content {
+  padding: 30px;
+}
+
+/* Webinar Title Section */
+.webinar-title-section {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.webinar-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* Date and Time Section */
+.datetime-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.datetime-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.datetime-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #1e3a8a, #7c3aed);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.datetime-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.datetime-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.datetime-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+.price-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #28a745;
+}
+
+/* Registration Form Section */
+.registration-form-section {
+  margin-bottom: 24px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 6px;
+}
+
+.section-subtitle {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Form Actions */
+.form-actions {
+  margin-top: 24px;
+}
+
+.btn-register {
+  width: 100%;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Payment Section Styles */
+.payment-section {
+  margin-top: 24px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  border: 2px solid #dee2e6;
+}
+
+.payment-title {
+  color: #1e3a8a;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.payment-title i {
+  color: #28a745;
+  font-size: 20px;
+}
+
+.payment-info {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  margin-bottom: 20px;
+}
+
+.amount-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.amount-label {
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: 600;
+}
+
+.amount-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #28a745;
+}
+
+.qr-code-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.qr-code-container {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.qr-code-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+}
+
+.qr-note {
+  color: #6c757d;
+  font-size: 14px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.qr-note i {
+  color: #3b82f6;
+  font-size: 16px;
+}
+
 .register-card {
   width: 100%;
   padding: 20px;
@@ -176,6 +437,58 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .webinar-registration-card {
+    margin: 10px;
+    border-radius: 16px;
+  }
+
+  .card-body-content {
+    padding: 20px;
+  }
+
+  .banner-title {
+    font-size: 20px;
+  }
+
+  .banner-subtitle {
+    font-size: 12px;
+  }
+
+  .webinar-title {
+    font-size: 18px;
+  }
+
+  .datetime-section {
+    padding: 16px;
+  }
+
+  .datetime-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .datetime-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .payment-section {
+    padding: 16px;
+  }
+
+  .qr-code-image {
+    width: 180px;
+    height: 180px;
+  }
+
+  .amount-display {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+
   .register-card {
     margin: 1rem;
   }

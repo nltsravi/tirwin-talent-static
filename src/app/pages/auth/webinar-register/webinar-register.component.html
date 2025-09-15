@@ -3,244 +3,269 @@
     <div class="container-fluid">
       <div class="row align-items-center min-vh-100" style="padding-top: 50px;">
         
-        <!-- Top: Webinar Details (if available) -->
-        <div class="col-12 mb-0" *ngIf="showPaymentSection && webinarDetails">
-          <div class="webinar-info-section d-flex justify-content-center">
-            <!-- Webinar Details Banner -->
-            <div class="webinar-details-banner" style="max-width: 900px; width: 100%;">
-              <div class="card border-0 shadow-none">
-                <div class="card-body p-0">
-                  <div class="row align-items-center">
-                    <!-- Left Column: Image -->
-                    <div class="col-md-4 p-0">
-                      <div class="webinar-image">
-                        <img [src]="webinarDetails.media[0]?.media_url || 'https://tirwin-media-storage.s3.us-east-1.amazonaws.com/static-images/digipin.png'" 
-                             alt="Webinar" 
-                             class="img-fluid"
-                             style="max-height: 300px; width: 100%; object-fit: cover;">
+        <!-- Webinar Registration Card -->
+        <div class="col-12 d-flex justify-content-center">
+          <div class="webinar-registration-card">
+            
+            <!-- Card Banner -->
+            <div class="card-banner">
+              <div class="banner-overlay"></div>
+              <div class="banner-content">
+                <div class="banner-icon">📦</div>
+                <h1 class="banner-title">Webinar Registration</h1>
+                <p class="banner-subtitle">Secure your spot for this exclusive session</p>
+              </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="card-body-content">
+              
+              <!-- Webinar Title Section -->
+              <div class="webinar-title-section" *ngIf="showPaymentSection && webinarDetails">
+                <h2 class="webinar-title">{{ webinarDetails.title }}</h2>
+              </div>
+
+              <!-- Date and Time Section -->
+              <div class="datetime-section" *ngIf="showPaymentSection && webinarDetails">
+                <div class="datetime-item">
+                  <div class="datetime-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                  </div>
+                  <div class="datetime-content">
+                    <span class="datetime-label">Date</span>
+                    <span class="datetime-value">
+                      {{ webinarDetails.start_time | date:'fullDate' }}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="datetime-item">
+                  <div class="datetime-icon">
+                    <i class="fas fa-clock"></i>
+                  </div>
+                  <div class="datetime-content">
+                    <span class="datetime-label">Time</span>
+                    <span class="datetime-value">
+                      {{ webinarDetails.start_time | date:'shortTime' }} - {{ webinarDetails.end_time | date:'shortTime' }} IST
+                    </span>
+                  </div>
+                </div>
+
+                <div class="datetime-item">
+                  <div class="datetime-icon">
+                    <i class="fas fa-rupee-sign"></i>
+                  </div>
+                  <div class="datetime-content">
+                    <span class="datetime-label">Price</span>
+                    <span class="datetime-value price-value">
+                      <ng-container *ngIf="webinarDetails.price === 0; else paidWebinar">
+                        FREE
+                      </ng-container>
+                      <ng-template #paidWebinar>
+                        ₹{{ webinarDetails.price }}
+                      </ng-template>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Registration Form Section -->
+              <div class="registration-form-section">
+                <div class="section-header">
+                  <h3 class="section-title">Complete Your Registration</h3>
+                  <p class="section-subtitle" *ngIf="!isOtpVerified">Enter your email to get started.</p>
+                  <p class="section-subtitle" *ngIf="isOtpVerified">Complete your registration details.</p>
+                </div>
+
+                <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+                <form #registerForm="ngForm" (ngSubmit)="registerTrainee(registerForm)" novalidate>
+                  <!-- Email Field - Always Visible -->
+                  <div class="form-group">
+                    <label for="email">Email Address<span class="req-astrix">*</span></label>
+                    <div class="input-group">
+                      <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email"
+                        required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #emailRef="ngModel" 
+                        placeholder="Enter your email address" />
+                      <button type="button" 
+                              class="btn btn-primary" 
+                              (click)="verifyUserEmail()" 
+                              [disabled]="!email || emailRef.invalid || isEmailVerified || isVerifyingEmail"
+                              title="Verify Email">
+                        <span *ngIf="isVerifyingEmail">
+                          <i class="fas fa-spinner fa-spin"></i> Verifying...
+                        </span>
+                        <span *ngIf="!isVerifyingEmail">
+                          <i class="fas" [class.fa-check]="isEmailVerified" [class.fa-envelope]="!isEmailVerified"></i>
+                          {{ isEmailVerified ? 'Verified' : 'Verify' }}
+                        </span>
+                      </button>
+                    </div>
+                    <div class="text-danger" *ngIf="emailRef.invalid && emailRef.touched">
+                      <small *ngIf="emailRef.errors?.['required']">Email is required.</small>
+                      <small *ngIf="emailRef.errors?.['pattern']">Enter a valid email address.</small>
+                    </div>
+                    <small class="text-success" *ngIf="isEmailVerified && !isOtpVerified">
+                      <i class="fas fa-check-circle"></i>OTP sent to your email id for validation.
+                    </small>
+                  </div>
+
+                  <!-- OTP Validation Field -->
+                  <div class="form-group" *ngIf="isEmailVerified && !isOtpVerified">
+                    <label for="otp">Enter OTP<span class="req-astrix">*</span></label>
+                    <div class="input-group">
+                      <input type="text" 
+                             class="form-control" 
+                             id="otp" 
+                             [(ngModel)]="otpCode" 
+                             name="otpCode"
+                             placeholder="Enter 6-digit OTP" 
+                             maxlength="6"
+                             [disabled]="isVerifyingOtp" />
+                      <button type="button" 
+                              class="btn btn-primary" 
+                              (click)="validateUsersOtp()" 
+                              [disabled]="!otpCode || otpCode.length !== 6 || isVerifyingOtp">
+                        <span *ngIf="isVerifyingOtp">
+                          <i class="fas fa-spinner fa-spin"></i> Verifying...
+                        </span>
+                        <span *ngIf="!isVerifyingOtp">
+                          <i class="fas fa-check"></i> Validate OTP
+                        </span>
+                      </button>
+                    </div>
+                    <small class="text-success" *ngIf="isOtpVerified">
+                      <i class="fas fa-check-circle"></i> OTP verified successfully
+                    </small>
+                  </div>
+
+                  <!-- Other Fields - Only visible after OTP verification -->
+                  <div *ngIf="isOtpVerified">
+                    <div class="form-group">
+                      <label for="firstName">First Name<span class="req-astrix">*</span></label>
+                      <input type="text" class="form-control" id="firstName" [(ngModel)]="firstName" name="firstName"
+                        required maxlength="200" pattern="^[a-zA-Z\s]+$" #firstNameRef="ngModel" 
+                        [disabled]="isFirstNameDisabled" />
+                      <div class="text-danger" *ngIf="firstNameRef.invalid && firstNameRef.touched">
+                        <small *ngIf="firstNameRef.errors?.['required']">First Name is required.</small>
+                        <small *ngIf="firstNameRef.errors?.['pattern']">Only letters are allowed.</small>
+                        <small *ngIf="firstNameRef.errors?.['maxlength']">Max length is 200 characters.</small>
+                      </div>
+                      <small class="text-info" *ngIf="isFirstNameDisabled">
+                        <i class="fas fa-info-circle"></i> Pre-filled from your profile
+                      </small>
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="lastName">Last Name<span class="req-astrix">*</span></label>
+                      <input type="text" class="form-control" id="lastName" [(ngModel)]="lastName" name="lastName"
+                        required maxlength="200" pattern="^[a-zA-Z\s]+$" #lastNameRef="ngModel" 
+                        [disabled]="isLastNameDisabled" />
+                      <div class="text-danger" *ngIf="lastNameRef.invalid && lastNameRef.touched">
+                        <small *ngIf="lastNameRef.errors?.['required']">Last Name is required.</small>
+                        <small *ngIf="lastNameRef.errors?.['pattern']">Only letters are allowed.</small>
+                        <small *ngIf="lastNameRef.errors?.['maxlength']">Max length is 200 characters.</small>
+                      </div>
+                      <small class="text-info" *ngIf="isLastNameDisabled">
+                        <i class="fas fa-info-circle"></i> Pre-filled from your profile
+                      </small>
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="jobTitle">Job Title<span class="req-astrix">*</span></label>
+                      <input type="text" class="form-control" id="jobTitle" [(ngModel)]="jobTitle" name="jobTitle"
+                        required maxlength="200" pattern="^[a-zA-Z\s]+$" #jobTitleRef="ngModel" 
+                        [disabled]="isJobTitleDisabled" />
+                      <div class="text-danger" *ngIf="jobTitleRef.invalid && jobTitleRef.touched">
+                        <small *ngIf="jobTitleRef.errors?.['required']">Job Title is required.</small>
+                        <small *ngIf="jobTitleRef.errors?.['pattern']">Only letters are allowed.</small>
+                        <small *ngIf="jobTitleRef.errors?.['maxlength']">Max length is 200 characters.</small>
+                      </div>
+                      <small class="text-info" *ngIf="isJobTitleDisabled">
+                        <i class="fas fa-info-circle"></i> Pre-filled from your profile
+                      </small>
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="company">Company<span class="req-astrix">*</span></label>
+                      <input type="text" class="form-control" id="company" [(ngModel)]="company" name="company"
+                        required maxlength="200" pattern="^[a-zA-Z\s]+$" #companyRef="ngModel" 
+                        [disabled]="isCompanyDisabled" />
+                      <div class="text-danger" *ngIf="companyRef.invalid && companyRef.touched">
+                        <small *ngIf="companyRef.errors?.['required']">Company is required.</small>
+                        <small *ngIf="companyRef.errors?.['pattern']">Only letters are allowed.</small>
+                        <small *ngIf="companyRef.errors?.['maxlength']">Max length is 200 characters.</small>
+                      </div>
+                      <small class="text-info" *ngIf="isCompanyDisabled">
+                        <i class="fas fa-info-circle"></i> Pre-filled from your profile
+                      </small>
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="phone">Phone Number</label>
+                      <input type="tel" class="form-control" id="phone" [(ngModel)]="phone" name="phone"
+                         pattern="^\d{10}$" #phoneRef="ngModel" 
+                         [disabled]="isPhoneDisabled" />
+                      <div class="text-danger" *ngIf="phoneRef.invalid && phoneRef.touched">
+                        <small *ngIf="phoneRef.errors?.['pattern']">Phone number must be 10 digits.</small>
+                      </div>
+                      <small class="text-info" *ngIf="isPhoneDisabled">
+                        <i class="fas fa-info-circle"></i> Pre-filled from your profile
+                      </small>
+                    </div>
+
+                  <!-- Payment Section -->
+                  <div class="payment-section" *ngIf="isOtpVerified">
+                    <h4 class="payment-title">
+                      <i class="fas fa-credit-card"></i>
+                      Payment Details
+                    </h4>
+                    
+                    <div class="payment-info">
+                      <div class="amount-display">
+                        <span class="amount-label">Amount to Pay:</span>
+                        <span class="amount-value">₹{{ webinarDetails?.price || 99 }}</span>
                       </div>
                     </div>
                     
-                    <!-- Right Column: Webinar Details -->
-                    <div class="col-md-8 p-4">
-                      <h3 class="text-primary fw-bold mb-3">{{ webinarDetails.title }}</h3>
-                      <div *ngIf="webinarDetails.start_time" class="mb-3">
-                        <div class="text-secondary mb-2">
-                          <i class="fas fa-calendar me-2"></i>
-                          <strong>Date:</strong> {{ webinarDetails.start_time | date:'fullDate' }}
-                        </div>
-                        <div class="text-secondary mb-2">
-                          <i class="fas fa-clock me-2"></i>
-                          <strong>Start Time:</strong> {{ webinarDetails.start_time | date:'shortTime' }} IST
-                        </div>
-                        <div class="text-secondary mb-2" *ngIf="webinarDetails.end_time">
-                          <i class="fas fa-clock me-2"></i>
-                          <strong>End Time:</strong> {{ webinarDetails.end_time | date:'shortTime' }} IST
-                        </div>
-                        <div class="text-secondary" *ngIf="webinarDetails.duration">
-                          <i class="fas fa-hourglass-half me-2"></i>
-                          <strong>Duration:</strong> {{ webinarDetails.duration }}
-                        </div>
+                    <div class="qr-code-section">
+                      <div class="qr-code-container">
+                        <img src="assets/images/dummy-qrcode.png" alt="Payment QR Code" class="qr-code-image">
                       </div>
-                      
-                      <!-- Amount Information -->
-                      <div class="amount-section mt-3">
-                        <div class="amount-display">
-                          <span class="amount-badge" style="font-size: 1.5rem; font-weight: bold; color: #28a745; background-color: #d4edda; padding: 0.75rem 1.5rem; border-radius: 8px; border: 2px solid #28a745;">
-                            <ng-container *ngIf="webinarDetails.price === 0; else paidWebinar">
-                              Free Webinar
-                            </ng-container>
-                            <ng-template #paidWebinar>
-                              ₹{{ webinarDetails.price }}
-                            </ng-template>
-                          </span>
-                        </div>
-                        <div class="gst-info mt-2" *ngIf="webinarDetails.price !== 0">
-                          <small class="text-muted" style="font-size: 0.9rem;">
-                            <i class="fas fa-info-circle me-1"></i>
-                            Inclusive of GST
-                          </small>
-                        </div>
-                      </div>
+                      <p class="qr-note">
+                        <i class="fas fa-info-circle"></i>
+                        Scan the QR code above to complete payment
+                      </p>
+                    </div>
 
-                      <!-- Trainer List -->
-                      <div *ngIf="webinarDetails.trainers && webinarDetails.trainers.length > 0" class="mb-3">
-                        <h5 class="fw-bold mb-2">Trainer{{ webinarDetails.trainers.length > 1 ? 's' : '' }}</h5>
-                        <ul class="list-unstyled">
-                          <li *ngFor="let trainer of webinarDetails.trainers" class="d-flex align-items-center mb-2">
-                            <img *ngIf="trainer.photo" [src]="trainer.photo" alt="{{ trainer.name }}" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
-                            <span class="fw-semibold">{{ trainer.name }}</span>
-                            <span *ngIf="trainer.title" class="text-muted ms-2" style="font-size: 0.95em;">{{ trainer.title }}</span>
-                          </li>
-                        </ul>
+                    <!-- Transaction Reference Field -->
+                    <div class="form-group">
+                      <label for="transactionReference">Transaction Reference Number<span class="req-astrix">*</span></label>
+                      <input type="text" 
+                             class="form-control" 
+                             id="transactionReference" 
+                             [(ngModel)]="transactionReference" 
+                             name="transactionReference"
+                             required 
+                             maxlength="50" 
+                             placeholder="Enter your transaction reference number" />
+                      <div class="text-danger" *ngIf="errorMessage && !transactionReference">
+                        <small>{{ errorMessage }}</small>
                       </div>
+                      <small class="text-info">
+                        <i class="fas fa-info-circle"></i> Enter the transaction reference number from your payment
+                      </small>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                  </div>
 
-        <!-- Registration Form -->
-        <div class="col-12 d-flex align-items-center justify-content-center">
-          <div class="card register-card" style="margin-top: 0; max-width: 900px; width: 100%;">
-            <div class="card-body">
-              <div class="mb-3 text-center">
-                <h3>Webinar Registration</h3>
-                <p class="text-muted" *ngIf="!isOtpVerified">Enter your email to get started.</p>
-                <p class="text-muted" *ngIf="isOtpVerified">Complete your registration details.</p>
-              </div>
-              <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
-
-              <form #registerForm="ngForm" (ngSubmit)="registerTrainee(registerForm)" novalidate>
-                <!-- Email Field - Always Visible -->
-                <div class="form-group">
-                  <label for="email">Email Address<span class="req-astrix">*</span></label>
-                  <div class="input-group">
-                    <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email"
-                      required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #emailRef="ngModel" 
-                      placeholder="Enter your email address" />
-                    <button type="button" 
-                            class="btn btn-primary" 
-                            (click)="verifyUserEmail()" 
-                            [disabled]="!email || emailRef.invalid || isEmailVerified || isVerifyingEmail"
-                            title="Verify Email">
-                      <span *ngIf="isVerifyingEmail">
-                        <i class="fas fa-spinner fa-spin"></i> Verifying...
-                      </span>
-                      <span *ngIf="!isVerifyingEmail">
-                        <i class="fas" [class.fa-check]="isEmailVerified" [class.fa-envelope]="!isEmailVerified"></i>
-                        {{ isEmailVerified ? 'Verified' : 'Verify' }}
-                      </span>
+                  <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-register" [disabled]="registerForm.invalid || isSubmitting || !isEmailVerified || !isOtpVerified">
+                      {{ isSubmitting ? 'Processing...' : 'Register' }}
                     </button>
                   </div>
-                  <div class="text-danger" *ngIf="emailRef.invalid && emailRef.touched">
-                    <small *ngIf="emailRef.errors?.['required']">Email is required.</small>
-                    <small *ngIf="emailRef.errors?.['pattern']">Enter a valid email address.</small>
-                  </div>
-                  <small class="text-success" *ngIf="isEmailVerified && !isOtpVerified">
-                    <i class="fas fa-check-circle"></i>OTP sent to your email id for validation.
-                  </small>
-                </div>
-
-                <!-- OTP Validation Field -->
-                <div class="form-group" *ngIf="isEmailVerified && !isOtpVerified">
-                  <label for="otp">Enter OTP<span class="req-astrix">*</span></label>
-                  <div class="input-group">
-                    <input type="text" 
-                           class="form-control" 
-                           id="otp" 
-                           [(ngModel)]="otpCode" 
-                           name="otpCode"
-                           placeholder="Enter 6-digit OTP" 
-                           maxlength="6"
-                           [disabled]="isVerifyingOtp" />
-                    <button type="button" 
-                            class="btn btn-primary" 
-                            (click)="validateUsersOtp()" 
-                            [disabled]="!otpCode || otpCode.length !== 6 || isVerifyingOtp">
-                      <span *ngIf="isVerifyingOtp">
-                        <i class="fas fa-spinner fa-spin"></i> Verifying...
-                      </span>
-                      <span *ngIf="!isVerifyingOtp">
-                        <i class="fas fa-check"></i> Validate OTP
-                      </span>
-                    </button>
-                  </div>
-                  <small class="text-success" *ngIf="isOtpVerified">
-                    <i class="fas fa-check-circle"></i> OTP verified successfully
-                  </small>
-                </div>
-
-                <!-- Other Fields - Only visible after OTP verification -->
-                <div *ngIf="isOtpVerified">
-                  <div class="form-group">
-                    <label for="firstName">First Name<span class="req-astrix">*</span></label>
-                    <input type="text" class="form-control" id="firstName" [(ngModel)]="firstName" name="firstName"
-                      required maxlength="200" pattern="^[a-zA-Z\s]+$" #firstNameRef="ngModel" 
-                      [disabled]="isFirstNameDisabled" />
-                    <div class="text-danger" *ngIf="firstNameRef.invalid && firstNameRef.touched">
-                      <small *ngIf="firstNameRef.errors?.['required']">First Name is required.</small>
-                      <small *ngIf="firstNameRef.errors?.['pattern']">Only letters are allowed.</small>
-                      <small *ngIf="firstNameRef.errors?.['maxlength']">Max length is 200 characters.</small>
-                    </div>
-                    <small class="text-info" *ngIf="isFirstNameDisabled">
-                      <i class="fas fa-info-circle"></i> Pre-filled from your profile
-                    </small>
-                  </div>
-                
-                  <div class="form-group">
-                    <label for="lastName">Last Name<span class="req-astrix">*</span></label>
-                    <input type="text" class="form-control" id="lastName" [(ngModel)]="lastName" name="lastName"
-                      required maxlength="200" pattern="^[a-zA-Z\s]+$" #lastNameRef="ngModel" 
-                      [disabled]="isLastNameDisabled" />
-                    <div class="text-danger" *ngIf="lastNameRef.invalid && lastNameRef.touched">
-                      <small *ngIf="lastNameRef.errors?.['required']">Last Name is required.</small>
-                      <small *ngIf="lastNameRef.errors?.['pattern']">Only letters are allowed.</small>
-                      <small *ngIf="lastNameRef.errors?.['maxlength']">Max length is 200 characters.</small>
-                    </div>
-                    <small class="text-info" *ngIf="isLastNameDisabled">
-                      <i class="fas fa-info-circle"></i> Pre-filled from your profile
-                    </small>
-                  </div>
-                
-                  <div class="form-group">
-                    <label for="jobTitle">Job Title<span class="req-astrix">*</span></label>
-                    <input type="text" class="form-control" id="jobTitle" [(ngModel)]="jobTitle" name="jobTitle"
-                      required maxlength="200" pattern="^[a-zA-Z\s]+$" #jobTitleRef="ngModel" 
-                      [disabled]="isJobTitleDisabled" />
-                    <div class="text-danger" *ngIf="jobTitleRef.invalid && jobTitleRef.touched">
-                      <small *ngIf="jobTitleRef.errors?.['required']">Job Title is required.</small>
-                      <small *ngIf="jobTitleRef.errors?.['pattern']">Only letters are allowed.</small>
-                      <small *ngIf="jobTitleRef.errors?.['maxlength']">Max length is 200 characters.</small>
-                    </div>
-                    <small class="text-info" *ngIf="isJobTitleDisabled">
-                      <i class="fas fa-info-circle"></i> Pre-filled from your profile
-                    </small>
-                  </div>
-                
-                  <div class="form-group">
-                    <label for="company">Company<span class="req-astrix">*</span></label>
-                    <input type="text" class="form-control" id="company" [(ngModel)]="company" name="company"
-                      required maxlength="200" pattern="^[a-zA-Z\s]+$" #companyRef="ngModel" 
-                      [disabled]="isCompanyDisabled" />
-                    <div class="text-danger" *ngIf="companyRef.invalid && companyRef.touched">
-                      <small *ngIf="companyRef.errors?.['required']">Company is required.</small>
-                      <small *ngIf="companyRef.errors?.['pattern']">Only letters are allowed.</small>
-                      <small *ngIf="companyRef.errors?.['maxlength']">Max length is 200 characters.</small>
-                    </div>
-                    <small class="text-info" *ngIf="isCompanyDisabled">
-                      <i class="fas fa-info-circle"></i> Pre-filled from your profile
-                    </small>
-                  </div>
-                
-                  <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" class="form-control" id="phone" [(ngModel)]="phone" name="phone"
-                       pattern="^\d{10}$" #phoneRef="ngModel" 
-                       [disabled]="isPhoneDisabled" />
-                    <div class="text-danger" *ngIf="phoneRef.invalid && phoneRef.touched">
-                      <small *ngIf="phoneRef.errors?.['pattern']">Phone number must be 10 digits.</small>
-                    </div>
-                    <small class="text-info" *ngIf="isPhoneDisabled">
-                      <i class="fas fa-info-circle"></i> Pre-filled from your profile
-                    </small>
-                  </div>
-
-                  <!-- Payment Section -->
-                  <!-- Payment information section removed as per request -->
-
-                  <!-- Transaction ID Field -->
-                  <!-- Transaction ID section removed as per request -->
-                </div>
-
-                <div class="mt-3">
-                  <button type="submit" class="btn btn-primary btn-block w-100" [disabled]="registerForm.invalid || isSubmitting || !isEmailVerified || !isOtpVerified">
-                    {{ isSubmitting ? 'Processing...' : 'Register' }}
-                  </button>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
         </div>

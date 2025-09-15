@@ -19,10 +19,6 @@
         <li *ngFor="let benefit of getDisplayBenefits()">{{ benefit }}</li>
       </ul>
       
-      <button class="btn btn-primary" (click)="openConfirmationModal()" *ngIf="!webinar?.isUserRegistered && isLoggedIn">
-        {{ getCtaPrimaryLabel() }}
-      </button>
-      
       <button class="btn btn-ghost" (click)="scrollToDetails()">
         Register Now at ₹99
       </button>
@@ -50,7 +46,7 @@
         <span>{{ getDisplayPrice() }} only</span>
       </div>
       
-      <button class="btn btn-primary" (click)="openConfirmationModal()" *ngIf="!webinar?.isUserRegistered && isLoggedIn">
+      <button class="btn btn-primary" (click)="redirectToWebinarRegistration()">
         {{ getCtaSecondaryLabel() }}
       </button>
       
@@ -119,10 +115,6 @@
       </button>
       <p class="muted">Seats are limited! Complete your registration to receive the Zoom link.</p>
       
-      <button class="btn btn-primary" (click)="openConfirmationModal()" *ngIf="!webinar?.isUserRegistered && isLoggedIn">
-        {{ getCtaPrimaryLabel() }}
-      </button>
-      
       <button class="btn btn-ghost" *ngIf="getAltRegUrl() !== '#'">
         Alternative Link
       </button>
@@ -137,7 +129,7 @@
   <div class="card p-xl">
     <div class="stack text-center">
       <p class="font-weight-700 margin-0">{{ getFinalCtaText() }}</p>
-      <button class="btn gradient-red" (click)="openConfirmationModal()" *ngIf="!webinar?.isUserRegistered && isLoggedIn">
+      <button class="btn gradient-red" (click)="redirectToWebinarRegistration()">
         {{ getCtaPrimaryLabel() }}
       </button>
     </div>

@@ -47,6 +47,7 @@ export class WebinarRegisterComponent implements OnInit {
   paymentInfo: any = null;
   userTransactionId: string = '';
   webinarDetails: any = null;
+  transactionReference: string = '';
 
   public logoUrl = 'assets/images/logo.png';
 
@@ -260,8 +261,8 @@ export class WebinarRegisterComponent implements OnInit {
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    // Always generate a new transaction ID for this registration
-    const generatedTxnId = this.generateTransactionId();
+    // Use the user input transaction reference
+    const userTransactionId = this.transactionReference.trim();
 
     if (this.isExistingUser) {
       // User already exists, call webinar subscription API
@@ -270,7 +271,7 @@ export class WebinarRegisterComponent implements OnInit {
         webinarId: this.webinarDetails?.id,
         userId: this.userId,
         amount: parseInt(this.webinarDetails?.price),
-        transactionId: generatedTxnId,
+        transactionId: userTransactionId,
       };
 
       this.authService.subscribeToWebinar(subscriptionData).subscribe({
@@ -312,7 +313,7 @@ export class WebinarRegisterComponent implements OnInit {
         phone: this.phone,
         job_title: this.jobTitle,
         company: this.company,
-        transactionId: generatedTxnId,
+        transactionId: userTransactionId,
 
       };
 
@@ -324,7 +325,7 @@ export class WebinarRegisterComponent implements OnInit {
             webinarId: this.webinarDetails?.id,
             userId: response.user.id,
             amount: parseInt(this.webinarDetails?.price),
-            transactionId: generatedTxnId,
+            transactionId: userTransactionId,
           };
           this.authService.subscribeToWebinar(subscriptionData).subscribe({
             next: (response: any) => {
@@ -384,6 +385,11 @@ export class WebinarRegisterComponent implements OnInit {
       return;
     }
 
+    if (!this.transactionReference || this.transactionReference.trim() === '') {
+      this.errorMessage = 'Please enter your transaction reference number.';
+      return;
+    }
+
     // Proceed with registration
     this.completeRegistration();
   }
@@ -396,13 +402,4 @@ export class WebinarRegisterComponent implements OnInit {
     console.log('Social login with:', provider);
   }
 
-  // Utility to generate a unique 10-character alphanumeric transaction ID
-  private generateTransactionId(): string {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    for (let i = 0; i < 10; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
-  }
 } 
