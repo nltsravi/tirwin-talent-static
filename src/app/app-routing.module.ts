@@ -35,7 +35,7 @@ const routes: Routes = [
       { path: 'pricing-policy', component: PricingPolicyComponent, data: { showSlider: false } },
       { path: 'about-us', component: AboutUsComponent, data: { showSlider: false } },
       { path: 'leadership', component: LeadershipComponent, data: { showSlider: false } },
-      { path: 'contact-us', component: ContactUsComponent, data: { showSlider: false } },
+        { path: 'contact-us', component: ContactUsComponent, data: { showSlider: false } },
       { path: 'admin/webinar-management', component: AdminWebinarComponent, data: { showSlider: false }, canActivate: [AdminGuard],
         children: [
           { path: 'create', component: AdminWebinarComponent }

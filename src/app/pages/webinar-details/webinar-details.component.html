@@ -1,366 +1,221 @@
-<div class="inspiro-theme">
-    <!-- Hero Section -->
-    <section class="hero-section text-light py-5" [style.background]="'linear-gradient(to right, #2563eb, #1e40af)'">
-        <div class="container text-left">
-            <span class="badge badge-no-outline">{{ webinar?.category?.name }}</span>
-            <h1 class="display-4 font-weight-bold">{{ webinar?.title }}</h1>
-            <!-- <p class="lead">{{ webinar?.description }}</p> -->
-        </div>
-    </section>
-
-    <!-- Webinar Details -->
-    <section class="container py-5" *ngIf="!isLoading && webinar">
-        <div class="row">
-            <!-- Main Webinar Info -->
-            <div class="col-lg-8">
-                <div class="card shadow-sm p-4">
-                    <h2 class="h3 font-weight-bold">
-                        <!-- @if(webinar?.trainers){
-                            About this Panel Discussion
-                        }
-                        @else {
-                            About This Webinar
-                        } -->
-                        About this {{currentPageType}}
-                    </h2>
-                    <!-- <p class="text-muted">{{ webinar?.description }}</p> -->
-
-                    <div class="row text-center mt-4" *ngIf="currentPageType != 'Training'">
-                        <div class="col-6 col-md-3">
-                            <i class="fas fa-calendar-alt text-primary"></i> 
-                            {{ webinar?.start_time ? (webinar?.start_time | date:'longDate') : 'TBD' }}
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <i class="fas fa-clock text-primary"></i> 
-                            {{ webinar?.start_time && webinar?.end_time 
-                                ? (webinar?.start_time | date:'shortTime') + ' - ' + (webinar?.end_time | date:'shortTime') 
-                                : 'TBD' 
-                            }}
-                        </div>
-                        <div class="col-6 col-md-3"> 
-                            @if(webinar?.trainers){
-                                @for(trainer of webinar?.trainers; track trainer.id){
-                                    <i class="fas fa-user text-primary"></i> {{trainer.user.first_name + ' ' + trainer.user.last_name}}<br>
-                                }
-                            }
-                            @else {
-                                {{webinar?.trainer?.user?.first_name + ' ' +  webinar?.trainer?.user?.last_name || 'TDB'}}
-                            }
-                        </div>
-                        <!-- <div class="col-6 col-md-3"><i class="fas fa-tags text-primary"></i> {{ webinar?.tags?.join(',
-                            ') }}</div> -->
-                    </div>
-
-                    <div class="row text-center mt-4" *ngIf="currentPageType === 'Training'">
-                        <div class="col-6 col-md-3">
-                            <i class="fas fa-calendar-alt text-primary"></i> 
-                            {{webinar?.additional_info?.aboutTraining?.start_date}} - 
-                            {{webinar?.additional_info?.aboutTraining?.end_date}}
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <i class="fas fa-map-marker-alt text-primary"></i> 
-                            {{webinar?.additional_info?.aboutTraining?.location}}
-                        </div>
-                        <div class="col-6 col-md-3"><i class="fas fa-user text-primary"></i> 
-                            {{webinar?.additional_info?.aboutTraining?.training_type}}
-                        </div>
-                        <!-- <div class="col-6 col-md-3"><i class="fas fa-tags text-primary"></i> {{ webinar?.tags?.join(',
-                            ') }}</div> -->
-                    </div>
-                </div>
-
-                <!-- Webinar Details -->
-                <div class="card" *ngIf="webinar?.additional_info?.course_objectives">
-                    <div class="card-header" id="headingDetails3">
-                        <h2 class="mb-0">
-                            <span data-bs-toggle="collapse" data-bs-target="#collapseDetails" aria-expanded="true">
-                                Course Objective
-                            </span>
-                        </h2>
-                    </div>
-                    <div id="collapseDetails" class="collapse show" aria-labelledby="headingDetails3">
-                        <div class="card-body">
-                            <ul>
-                                <li *ngFor="let key of webinar?.additional_info?.course_objectives;let i = index"><strong>{{key.Title}}</strong> {{key.Description}}</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Collapsible Sections for Terms & Details -->
-                <div class="accordion mt-4" id="webinarAccordion">
-                    <!-- Webinar Details -->
-                    <div class="card">
-                        <div class="card-header" id="headingDetails">
-                            <h2 class="mb-0">
-                                <span data-bs-toggle="collapse" data-bs-target="#collapseDetails" aria-expanded="true">
-                                    @if(webinar?.trainers){
-                                        {{currentPageType}} Details
-                                    }
-                                    @else {
-                                        {{currentPageType}} Details
-                                    }
-                                </span>
-                            </h2>
-                        </div>
-                        <div id="collapseDetails" class="collapse show" aria-labelledby="headingDetails" *ngIf="!webinar?.additional_info?.course_structure">
-                            <div class="card-body">
-                                <p>{{ webinar?.description }}</p>
-                                <!-- <ul>
-                                    <li>
-                                        <strong>Start Time:</strong> 
-                                        {{ webinar?.start_time ? (webinar?.start_time | date:'medium') : 'TBD' }}
-                                    </li>
-                                    <li>
-                                        <strong>End Time:</strong> 
-                                        {{ webinar?.end_time ? (webinar?.end_time | date:'medium') : 'TBD' }}
-                                    </li>
-                                    <li>
-                                        <strong>Category:</strong> 
-                                        {{ webinar?.category?.name }}
-                                    </li>
-                                    <li>
-                                        <strong>Subcategory:</strong> 
-                                        {{ webinar?.subcategory?.name }}
-                                    </li>
-                                </ul> -->
-                            </div>
-                        </div>
-                        <div id="collapseDetails" class="collapse show" aria-labelledby="headingDetails" *ngIf="webinar?.additional_info?.course_structure">
-                            <div class="card-body">
-                                <p>{{ webinar?.description }}</p>
-                                <ul>
-                                    <li *ngFor="let key of webinar?.additional_info?.course_structure;let i = index"><strong>{{key.Title}}</strong> {{key.Description}}</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Webinar Details -->
-                    <div class="card" *ngIf="webinar?.additional_info?.key_take_aways">
-                        <div class="card-header" id="headingDetails2">
-                            <h2 class="mb-0">
-                                <span data-bs-toggle="collapse" data-bs-target="#collapseDetails" aria-expanded="true">
-                                    Key Takeaways
-                                </span>
-                            </h2>
-                        </div>
-                        <div id="collapseDetails" class="collapse show" aria-labelledby="headingDetails2">
-                            <div class="card-body">
-                                <ul>
-                                    <li *ngFor="let key of webinar?.additional_info?.key_take_aways;let i = index"><strong>{{key.Title}}</strong> {{key.Description}}</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
 
 
-
-                    <!-- Webinar Details -->
-                    <div class="card" *ngIf="webinar?.additional_info?.target_audience">
-                        <div class="card-header" id="headingDetails4">
-                            <h2 class="mb-0">
-                                <span data-bs-toggle="collapse" data-bs-target="#collapseDetails" aria-expanded="true">
-                                    Target Audience
-                                </span>
-                            </h2>
-                        </div>
-                        <div id="collapseDetails" class="collapse show" aria-labelledby="headingDetails4">
-                            <div class="card-body">
-                                <ul>
-                                    <li *ngFor="let key of webinar?.additional_info?.target_audience;let i = index"><strong>{{key.Title}}</strong> {{key.Description}}</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- Webinar Details -->
-                    <div class="card" *ngIf="webinar?.additional_info?.benefits">
-                        <div class="card-header" id="headingDetails4">
-                            <h2 class="mb-0">
-                                <span data-bs-toggle="collapse" data-bs-target="#collapseDetails" aria-expanded="true">
-                                    Benefits
-                                </span>
-                            </h2>
-                        </div>
-                        <div id="collapseDetails" class="collapse show" aria-labelledby="headingDetails4">
-                            <div class="card-body">
-                                <ul>
-                                    <li *ngFor="let key of webinar?.additional_info?.benefits;let i = index"><strong>{{key.Title}}</strong> {{key.Description}}</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Terms & Conditions -->
-                    <!-- <div class="card">
-                        <div class="card-header" id="headingTerms">
-                            <h2 class="mb-0">
-                                <span class="custom-link" data-bs-toggle="collapse" data-bs-target="#collapseTerms">
-                                    Terms & Conditions
-                                </span>
-                            </h2>
-                        </div>
-                        <div id="collapseTerms" class="collapse in" aria-labelledby="headingTerms">
-                            <div class="card-body">
-                                <p>By registering for this webinar, you agree to the following terms:</p>
-                                <ul>
-                                    <li>All sessions will be recorded and made available to attendees.</li>
-                                    <li>Webinar content is for educational purposes only.</li>
-                                    <li>No refunds are available for paid webinars.</li>
-                                    <li>Participation certificates will be issued post-webinar completion.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div> -->
-                </div>
-
-            </div>
-
-            <!-- Sidebar with Add to Cart & Enrollment -->
-            <div class="col-lg-4">
-                <div class="card shadow-sm p-4 sticky-top">
-                    <div class="text-center" *ngIf="!webinar?.registrationClosed">
-                        <h2 class="h3 font-weight-bold text-dark" *ngIf="!webinar?.isUserRegistered">
-                            {{ webinar?.is_paid ? (webinar?.price | currency:'INR ':'code':'1.2-2') : 'INR 0.00' }}
-                          </h2>
-                          <span *ngIf="currentPageType === 'Training' && webinar?.is_paid && !webinar?.isUserRegistered">&nbsp;(excluding GST)</span>
-            
-                        <!-- Enrolled Button -->
-                        <button *ngIf="webinar?.isUserRegistered && currentPageType != 'Event'" 
-                                class="btn btn-success btn-lg w-100 mt-3" disabled>
-                            Enrolled
-                        </button>
-                        <!-- Enrolled or Join Now or Timer -->
-                        <div *ngIf="webinar?.isUserRegistered && currentPageType === 'Event'">
-                            <button *ngIf="!joinNow" class="btn btn-success btn-lg w-100 mt-3 font-btn" disabled>
-                            Starts in {{ timeLeft }}
-                            </button>
-                            <a *ngIf="joinNow" 
-                            class="btn btn-success btn-lg w-100 mt-3" 
-                            href="https://zoom.us/j/2024140404?pwd=3GmvlEVQ8myG0L87peGTc1KCepLb2T.1&omn=95727757611" 
-                            target="_blank">
-                            Join Now
-                            </a>
-                        </div>
-            
-                        <!-- Show Register Now if logged in -->
-                        <button *ngIf="!webinar?.isUserRegistered && isLoggedIn" 
-                                class="btn btn-primary btn-lg w-100 mt-3" [ngStyle]="!webinar?.start_time ? {'opacity': '0.6', 'cursor': 'not-allowed','background-color': '#d6d6d6', 'border-color': '#b0b0b0', 'color': '#000'} : {}"
-                                (click)="openConfirmationModal()" [disabled]="!webinar?.start_time">
-                            Register Now
-                        </button>
-                        <span *ngIf="!webinar?.isUserRegistered && isLoggedIn && !joinNow && currentPageType === 'Event'">Starts in {{ timeLeft }}</span>
-                        <!-- Show Login Box if not logged in -->
-                        <div *ngIf="!isLoggedIn" class="login-box mt-4">
-                            <h4 class="text-center mb-2">Sign up to Complete Registration</h4> 
-                            <button type="submit" class="btn btn-primary w-100" (click)="socialLogin('self',currentPageType,webinar?.id)">Sign Up</button>        
-            
-
-                        </div>
-            
-                        <!-- Confirmation Modal -->
-                        <div class="modal fade show d-block" *ngIf="showModal" tabindex="-1">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Confirm Registration</h5>
-                                        <button type="button" class="close" (click)="closeModal()">&times;</button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>Are you sure you want to register for "{{ webinar?.title }}"?</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
-                                        <button class="btn btn-primary" (click)="subscribeToWebinar()">Yes, Register</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-backdrop fade show" *ngIf="showModal"></div>
-                    </div>
-
-            
-                    <!-- Show Register Now if logged in -->
-                    <button  *ngIf="webinar?.registrationClosed"
-                            class="btn btn-primary btn-lg w-100 mt-3" [ngStyle]="!webinar?.start_time ? {'opacity': '0.6', 'cursor': 'not-allowed','background-color': '#d6d6d6', 'border-color': '#b0b0b0', 'color': '#000'} : {}"
-                            >
-                        Registration Closed
-                    </button>
-                </div>
-
-                <!-- Trainer Profile Section -->
-                 @if(webinar?.trainers){
-
-                    <h2 class="h4 font-weight-bold text-left">Speaker(s)</h2>
-                    <ul class="list-unstyled mb-4">
-                        <li *ngFor="let trainer of webinar.trainers" class="d-flex align-items-center mb-3">
-                            <img *ngIf="trainer.profile_image" [src]="trainer.profile_image" alt="{{ trainer.user.first_name}}" class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;">
-                            <div>
-                                <div class="fw-semibold">{{ trainer.user.first_name + ' ' + trainer.user.last_name }}</div>
-                                <div *ngIf="trainer.organization" class="text-muted small">{{ trainer.organization }}</div>
-                                <div *ngIf="trainer.title" class="text-muted small">{{ trainer.title }}</div>
-                            </div>
-                        </li>
-                    </ul>
-
-                }
-                @else{
-                    <div class="card trainer-profile-card shadow-sm p-4 mt-4 text-center">
-                        <h2 class="h4 font-weight-bold text-left">Trainer Profile</h2>
-                    
-                        <!-- Profile Image (Centered) -->
-                        <div class="d-flex justify-content-center">
-                            <img [src]="webinar?.trainer?.profile_image || 'https://via.placeholder.com/100'"
-                                class="trainer-profile-img rounded-circle border" alt="Trainer Image">
-                        </div>
-                    
-                        <!-- Trainer Details -->
-                        <div class="trainer-info mt-3">
-                            <h5 class="mb-1 fw-bold text-dark">{{ webinar?.trainer?.user?.first_name + ' ' +  webinar?.trainer?.user?.last_name || 'Ramesh Gupta' }}</h5>
-                            <p class="text-muted mb-1 small">{{ webinar?.trainer?.organization || 'FedEx Logistics' }}</p>
-                    
-                            <!-- Trainer Stats -->
-                            <div class="trainer-stats d-flex justify-content-center">
-                                <span class="badge bg-light text-dark me-2"><i class="fas fa-chalkboard-teacher text-primary"></i> {{
-                                    webinar?.trainer?.experience
-                                    || '5' }}+ years</span>
-                                <!-- <span class="badge bg-light text-dark me-2"><i class="fas fa-video text-danger"></i> {{
-                                    webinar?.trainer?.total_webinars || '10' }} Webinars</span>
-                                <span class="badge bg-light text-dark"><i class="fas fa-users text-success"></i> {{
-                                    webinar?.trainer?.followers || '200' }} Followers</span> -->
-                            </div>
-                    
-                            <!-- Short Trainer Bio -->
-                            <p class="text-muted mt-3 trainer-bio">
-                                {{ webinar?.trainer?.bio }}
-                            </p>
-                    
-                            <!-- LinkedIn Profile -->
-                            <!-- <div class="mt-2">
-                                <a *ngIf="webinar?.trainer?.linkedin_profile" [href]="webinar?.trainer?.linkedin_profile" target="_blank"
-                                    class="btn btn-primary btn-sm">
-                                    <i class="fab fa-linkedin"></i> LinkedIn Profile
-                                </a>
-                            </div> -->
-                        </div>
-                    </div>
-                }
-                
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Loading Spinner -->
-    <div class="text-center" *ngIf="isLoading">
-        <i class="fas fa-spinner fa-spin fa-2x"></i>
-        <p>Loading webinar details...</p>
+<!-- Main container -->
+<div class="container two-column-layout" *ngIf="!isLoading && !errorMessage && webinar">
+  
+  <!-- Left Column -->
+  <div class="left-column">
+    <!-- Key Benefits Card -->
+  <div class="card p-xl">
+    <div class="stack">
+      <h1 class="title">{{ getDisplayTitle() }}</h1>
+      <p class="lead">{{ getDisplayTagline() }}</p>
+      
+      <div class="price-chip">
+        <span>Only {{ getDisplayPrice() }} - Seats Limited</span>
+      </div>
+      
+      <ul class="list">
+        <li *ngFor="let benefit of getDisplayBenefits()">{{ benefit }}</li>
+      </ul>
+      
+      <button class="btn btn-primary" (click)="openConfirmationModal()" *ngIf="!webinar?.isUserRegistered && isLoggedIn">
+        {{ getCtaPrimaryLabel() }}
+      </button>
+      
+      <button class="btn btn-ghost" (click)="scrollToDetails()">
+        Register Now at ₹99
+      </button>
     </div>
+  </div>
 
-    <!-- Error Message -->
-    <div class="alert alert-danger text-center" *ngIf="errorMessage">
-        {{ errorMessage }}
+  <!-- Webinar Details Section -->
+  <div class="section" id="webinar-details">
+    <h2>Webinar Details</h2>
+    <div class="card p-xl">
+      <div class="info-pair">
+        <span class="muted">Date</span>
+        <span>{{ formatDate(webinar.start_time || getFallbackDate()) }}</span>
+      </div>
+      <div class="info-pair">
+        <span class="muted">Time</span>
+        <span>{{ formatTime(webinar.start_time || getFallbackStartTime()) }} - {{ formatTime(webinar.end_time || getFallbackEndTime()) }}</span>
+      </div>
+      <div class="info-pair">
+        <span class="muted">Platform</span>
+        <span>{{ getPlatform() }}</span>
+      </div>
+      <div class="info-pair">
+        <span class="muted">Ticket</span>
+        <span>{{ getDisplayPrice() }} only</span>
+      </div>
+      
+      <button class="btn btn-primary" (click)="openConfirmationModal()" *ngIf="!webinar?.isUserRegistered && isLoggedIn">
+        {{ getCtaSecondaryLabel() }}
+      </button>
+      
+      <p class="muted text-center margin-top-16 font-size-14">
+        All this for less than the price of a coffee — just {{ getDisplayPrice() }}!
+      </p>
     </div>
+  </div>
+
+  <!-- Mini Summary Card -->
+  <div class="card p-xl">
+    <div class="text-center">
+      <div class="font-size-32 margin-bottom-12">📦</div>
+      <h3 class="margin-0 margin-bottom-8">Launchpad to Logistics Leadership</h3>
+      <p class="muted margin-0 margin-bottom-12">Preview workshop of Tirwin's Logistics Career Compass program</p>
+      <div class="pill">Career-focused · Practical · 2 Hours</div>
+    </div>
+  </div>
+
+  <!-- What You'll Learn Section -->
+  <div class="section" *ngIf="getDisplayLearn().length > 0">
+    <h2>What You'll Learn in 2 Hours</h2>
+    <div class="card p-xl">
+      <ul class="list">
+        <li *ngFor="let item of getDisplayLearn()">{{ item }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Who Should Attend Section -->
+  <div class="section" *ngIf="getDisplayAudience().length > 0">
+    <h2>Who Should Attend?</h2>
+    <div class="card p-xl">
+      <ul class="list">
+        <li *ngFor="let item of getDisplayAudience()">{{ item }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Proof Points Section -->
+  <div class="section" *ngIf="getDisplayProof().length > 0">
+    <h2>Proof Points</h2>
+    <div class="card p-xl">
+      <ul class="list">
+        <li *ngFor="let item of getDisplayProof()">{{ item }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FAQs Section -->
+  <div class="section">
+    <h2>FAQs</h2>
+    <div class="card p-xl">
+      <details class="faq" *ngFor="let faq of getDisplayFaqs()">
+        <summary>{{ faq.q }}</summary>
+        <div class="margin-top-12 muted">{{ faq.a }}</div>
+      </details>
+    </div>
+  </div>
+
+  <!-- Secure Your Spot Card -->
+  <div class="card p-xl">
+    <div class="stack">
+      <button class="btn btn-primary secure-spot-btn" (click)="redirectToWebinarRegistration()">
+        Secure Your Spot ({{ getDisplayPrice() }})
+      </button>
+      <p class="muted">Seats are limited! Complete your registration to receive the Zoom link.</p>
+      
+      <button class="btn btn-primary" (click)="openConfirmationModal()" *ngIf="!webinar?.isUserRegistered && isLoggedIn">
+        {{ getCtaPrimaryLabel() }}
+      </button>
+      
+      <button class="btn btn-ghost" *ngIf="getAltRegUrl() !== '#'">
+        Alternative Link
+      </button>
+      
+      <p class="muted text-center font-size-14 margin-0">
+        You'll receive the confirmation email with joining details immediately after payment.
+      </p>
+    </div>
+  </div>
+
+  <!-- Final CTA Card -->
+  <div class="card p-xl">
+    <div class="stack text-center">
+      <p class="font-weight-700 margin-0">{{ getFinalCtaText() }}</p>
+      <button class="btn gradient-red" (click)="openConfirmationModal()" *ngIf="!webinar?.isUserRegistered && isLoggedIn">
+        {{ getCtaPrimaryLabel() }}
+      </button>
+    </div>
+  </div>
+  </div>
+
+  <!-- Right Column -->
+  <div class="right-column">
+    <!-- Webinar Card -->
+    <div class="card webinar-card">
+      <!-- Banner -->
+      <div class="webinar-banner">
+        <div class="banner-content">
+          <div class="banner-text">
+            <h3 class="banner-title">Launchpad to Logistics Leadership</h3>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Card Content -->
+      <div class="card-content p-xl">
+        <div class="webinar-info">
+          <div class="info-row">
+            <span class="info-icon">📅</span>
+            <span class="info-value">{{ formatDate(webinar.start_time || getFallbackDate()) }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-icon">⏰</span>
+            <span class="info-value">{{ formatTime(webinar.start_time || getFallbackStartTime()) }} - {{ formatTime(webinar.end_time || getFallbackEndTime()) }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-icon">💻</span>
+            <span class="info-value">{{ getPlatform() }}</span>
+          </div>
+        </div>
+        
+        <div class="register-section">
+          <button class="btn btn-primary register-btn" (click)="redirectToWebinarRegistration()">
+            Register at ₹99
+          </button>
+          <p class="register-note">Seats are limited! Complete your registration to receive the Zoom link.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
+
+<!-- Loading state -->
+<div class="container" *ngIf="isLoading">
+  <div class="card p-xl text-center">
+    <p>Loading webinar details...</p>
+  </div>
+</div>
+
+<!-- Error state -->
+<div class="container" *ngIf="errorMessage">
+  <div class="card p-xl text-center">
+    <p>{{ errorMessage }}</p>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade show d-block" *ngIf="showModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Registration</h5>
+        <button type="button" class="close" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to register for "{{ getDisplayTitle() }}"?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="subscribeToWebinar()">Yes, Register</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" *ngIf="showModal"></div>

@@ -162,7 +162,8 @@ export class AdminUserComponent implements OnInit {
     this.http.get<any[]>(`${environment.api}/admin/webinars`).subscribe({
       next: (data) => {
         // Filter webinars with price greater than 0
-        this.webinars = (data || []).filter(webinar => webinar.price > 0);
+        //this.webinars = (data || []).filter(webinar => webinar.price > 0);
+        this.webinars = data || [];
         
         // Sort by start date (newest first)
         this.webinars.sort((a, b) => {
