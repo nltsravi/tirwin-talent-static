@@ -60,6 +60,9 @@ export class WebinarRegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Scroll to top when component loads
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     // Extract webinar parameters from URL
     this.route.params.subscribe(params => {
       const webinarType = params['webinarType'];

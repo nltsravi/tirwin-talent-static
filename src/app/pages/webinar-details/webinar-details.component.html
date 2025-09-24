@@ -24,61 +24,32 @@
           <span>Only {{ getDisplayPrice() }} - Seats Limited</span>
         </div>
         
-        <ul class="list">
-          <li *ngFor="let benefit of getDisplayBenefits()">{{ benefit }}</li>
+        <h3 class="benefits-title">Why attend this Webinar?</h3>
+        
+        <ul class="benefits-list">
+          <li *ngFor="let benefit of getDisplayBenefits()" [innerHTML]="formatBenefitText(benefit)"></li>
         </ul>
         
-        <button class="btn btn-ghost" (click)="scrollToDetails()">
+        <p class="pricing-note">
+          <em>All this for less than the price of a coffee — just ₹99!</em>
+        </p>
+        
+        <p class="urgency-note">
+          <strong>Seats are limited!</strong> Secure your spot now.
+        </p>
+        
+        <button class="btn btn-ghost" (click)="redirectToWebinarRegistration()">
           Register Now at ₹99
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Webinar Details Section -->
-  <div class="section" id="webinar-details">
-    <h2>Webinar Details</h2>
-    <div class="card p-xl">
-      <div class="info-pair">
-        <span class="muted">Date</span>
-        <span>{{ formatDate(webinar.start_time || getFallbackDate()) }}</span>
-      </div>
-      <div class="info-pair">
-        <span class="muted">Time</span>
-        <span>{{ formatTime(webinar.start_time || getFallbackStartTime()) }} - {{ formatTime(webinar.end_time || getFallbackEndTime()) }}</span>
-      </div>
-      <div class="info-pair">
-        <span class="muted">Platform</span>
-        <span>{{ getPlatform() }}</span>
-      </div>
-      <div class="info-pair">
-        <span class="muted">Ticket</span>
-        <span>{{ getDisplayPrice() }} only</span>
-      </div>
-      
-      <button class="btn btn-primary" (click)="redirectToWebinarRegistration()">
-        {{ getCtaSecondaryLabel() }}
-      </button>
-      
-      <p class="muted text-center margin-top-16 font-size-14">
-        All this for less than the price of a coffee — just {{ getDisplayPrice() }}!
-      </p>
-    </div>
-  </div>
 
-  <!-- Mini Summary Card -->
-  <div class="card p-xl">
-    <div class="text-center">
-      <div class="font-size-32 margin-bottom-12">📦</div>
-      <h3 class="margin-0 margin-bottom-8">Launchpad to Logistics Leadership</h3>
-      <p class="muted margin-0 margin-bottom-12">Preview workshop of Tirwin's Logistics Career Compass program</p>
-      <div class="pill">Career-focused · Practical · 2 Hours</div>
-    </div>
-  </div>
 
   <!-- What You'll Learn Section -->
   <div class="section" *ngIf="getDisplayLearn().length > 0">
-    <h2>What You'll Learn in 2 Hours</h2>
+    <h2>What You'll Learn</h2>
     <div class="card p-xl">
       <ul class="list">
         <li *ngFor="let item of getDisplayLearn()">{{ item }}</li>
@@ -90,7 +61,7 @@
   <div class="section" *ngIf="getDisplayAudience().length > 0">
     <h2>Who Should Attend?</h2>
     <div class="card p-xl">
-      <ul class="list">
+      <ul class="audience-list">
         <li *ngFor="let item of getDisplayAudience()">{{ item }}</li>
       </ul>
     </div>
@@ -98,11 +69,13 @@
 
   <!-- Proof Points Section -->
   <div class="section" *ngIf="getDisplayProof().length > 0">
-    <h2>Proof Points</h2>
-    <div class="card p-xl">
-      <ul class="list">
-        <li *ngFor="let item of getDisplayProof()">{{ item }}</li>
-      </ul>
+    <div class="proof-points-grid">
+      <div class="proof-point-card" *ngFor="let item of getDisplayProof(); let i = index">
+        <div class="proof-point-content">
+          <div class="proof-point-icon">{{ getProofPointIcon(i) }}</div>
+          <div class="proof-point-text">{{ item }}</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -186,6 +159,13 @@
     </div>
   </div>
 
+</div>
+
+<!-- Mobile CTA Button -->
+<div class="mobile-cta" *ngIf="!isLoading && !errorMessage && webinar">
+  <button class="btn btn-primary mobile-register-btn" (click)="redirectToWebinarRegistration()">
+    Register now at ₹99
+  </button>
 </div>
 
 <!-- Loading state -->

@@ -7,6 +7,8 @@ body{
   color:#0f172a;
   background:#f2f4f7; /* light silver */
   line-height:1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 a{color:inherit}
 .container{max-width:60%; margin:0 auto; padding:28px 20px}
@@ -27,10 +29,10 @@ a{color:inherit}
 
 .banner-text{flex:1; text-align:center}
 
-.banner-title{font-size:24px; font-weight:700; margin:0; color:#ffffff}
-.banner-subtitle{font-size:16px; font-weight:400; margin:8px 0 0; color:#ffffff; opacity:0.9}
+.banner-title{font-size:24px; font-weight:700; margin:0; color:#ffffff; word-wrap: break-word; overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto}
+.banner-subtitle{font-size:16px; font-weight:400; margin:8px 0 0; color:#ffffff; opacity:0.9; word-wrap: break-word; overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto}
 
-.card-content{padding:0}
+.card-content{padding:0; max-width:100%; overflow:hidden; word-wrap: break-word}
 
 .webinar-info{display:flex; flex-direction:column; gap:12px; padding:20px; border-bottom:1px solid #e2e8f0}
 
@@ -65,13 +67,32 @@ a{color:inherit}
 .card{background:#ffffff; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border:1px solid #e2e8f0; border-radius:32px !important; box-shadow:0 8px 24px rgba(2,6,23,.12)}
 .p-xl{padding:28px}
 .price-chip{display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:24px; background:#fff; border:1px solid #e2e8f0; color:#1f2937; font-weight:600}
-.stack{display:flex; flex-direction:column; gap:14px}
+.stack{display:flex; flex-direction:column; gap:14px; max-width:100%; overflow:hidden}
 .grid{display:grid; gap:14px}
 .grid-2,.grid-3,.grid-4{grid-template-columns: 1fr}
 
 .list{display:grid; gap:10px; padding:0; margin:0; list-style:none}
-.list li{display:flex; gap:10px; align-items:flex-start}
+.list li{display:flex; gap:10px; align-items:flex-start; word-wrap: break-word; overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto}
 .list li::before{content:"✔"; opacity:.9; margin-top:2px; color:#10b981}
+
+/* Audience List - Remove tick mark and icon */
+.audience-list{display:grid; gap:10px; padding:0; margin:0; list-style:none}
+.audience-list li{display:flex; gap:10px; align-items:flex-start; word-wrap: break-word; overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto}
+.audience-list li::before{content:none}
+
+/* Benefits List - Use bullets instead of tick marks */
+.benefits-title{font-size:18px; font-weight:700; margin:16px 0 12px; color:#1f2937; word-wrap: break-word; overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto}
+.benefits-list{display:grid; gap:10px; padding:0; margin:0; list-style:none; max-width:100%}
+.benefits-list li{display:flex; gap:10px; align-items:flex-start; word-wrap: break-word; overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto; max-width:100%; flex-wrap:wrap}
+.benefits-list li::before{content:"•"; opacity:.9; margin-top:2px; color:#1e3a8a; font-weight:700; font-size:18px; flex-shrink:0}
+
+/* Benefits section italic notes */
+.pricing-note{margin:16px 0 8px; text-align:left; color:#000000; word-wrap: break-word; overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto; max-width:100%; overflow:hidden}
+.urgency-note{margin:8px 0 20px; text-align:left; color:#000000; font-weight:500; word-wrap: break-word; overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto; max-width:100%; overflow:hidden}
+
+/* Mobile CTA Button */
+.mobile-cta{display:none; position:fixed; bottom:0; left:0; right:0; z-index:1000; background:rgba(255,255,255,0.95); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-top:1px solid #e2e8f0; padding:12px 16px; box-shadow:0 -4px 12px rgba(0,0,0,0.1)}
+.mobile-register-btn{width:100%; padding:16px 20px; font-size:16px; font-weight:700; border-radius:12px; background:linear-gradient(90deg, #1e3a8a, #7c3aed); color:#ffffff; border:none; box-shadow:0 4px 12px rgba(30,58,138,0.3)}
 
 .btn{display:inline-flex; justify-content:center; align-items:center; gap:10px; text-decoration:none; border:none; border-radius:24px; padding:14px 18px; font-weight:700; cursor:pointer; transition: transform .08s ease, box-shadow .2s ease; white-space:nowrap}
 .btn:active{transform: translateY(1px)}
@@ -84,7 +105,7 @@ a{color:inherit}
 .muted{color:#475569}
 
 .section{margin-top:30px}
-.section h2{font-size:clamp(18px,2.2vw,26px); margin:0 0 10px}
+.section h2{font-size:clamp(18px,2.2vw,26px); margin:0 0 10px; word-wrap: break-word; overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto}
 
 /* FAQs */
 details.faq{background:#ffffff; border:1px solid #e2e8f0; border-radius:24px; padding:14px 16px; box-shadow:0 8px 24px rgba(2,6,23,.12)}
@@ -94,6 +115,28 @@ details.faq[open]{box-shadow:0 12px 28px rgba(2,6,23,.15)}
 
 
 .pill{display:inline-flex; align-items:center; gap:8px; border:1px solid #e2e8f0; padding:8px 12px; border-radius:24px; color:#334155}
+
+/* Proof Points Tile Cards */
+.proof-points-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin-top:20px}
+.proof-point-card{position:relative; background:linear-gradient(135deg, #f8fafc, #e2e8f0); border:1px solid rgba(255,255,255,0.2); border-radius:20px; padding:24px; box-shadow:0 8px 32px rgba(2,6,23,.12), 0 2px 8px rgba(2,6,23,.08), inset 0 1px 0 rgba(255,255,255,0.4); transition:all 0.3s ease; overflow:hidden; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
+.proof-point-card::before{content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent)}
+.proof-point-card::after{content:''; position:absolute; top:0; left:0; right:0; bottom:0; background:linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); border-radius:20px; pointer-events:none}
+.proof-point-card:hover{transform:translateY(-4px) scale(1.02); box-shadow:0 12px 40px rgba(2,6,23,.2), 0 4px 16px rgba(2,6,23,.15), inset 0 1px 0 rgba(255,255,255,0.6)}
+.proof-point-card:nth-child(1){background:linear-gradient(135deg, #fef3c7, #fde68a); border-color:rgba(245,158,11,0.3); box-shadow:0 8px 32px rgba(245,158,11,.15), 0 2px 8px rgba(245,158,11,.1), inset 0 1px 0 rgba(255,255,255,0.4)}
+.proof-point-card:nth-child(1):hover{background:linear-gradient(135deg, #fde68a, #fcd34d); box-shadow:0 12px 40px rgba(245,158,11,.25), 0 4px 16px rgba(245,158,11,.2), inset 0 1px 0 rgba(255,255,255,0.6)}
+.proof-point-card:nth-child(2){background:linear-gradient(135deg, #ddd6fe, #c4b5fd); border-color:rgba(139,92,246,0.3); box-shadow:0 8px 32px rgba(139,92,246,.15), 0 2px 8px rgba(139,92,246,.1), inset 0 1px 0 rgba(255,255,255,0.4)}
+.proof-point-card:nth-child(2):hover{background:linear-gradient(135deg, #c4b5fd, #a78bfa); box-shadow:0 12px 40px rgba(139,92,246,.25), 0 4px 16px rgba(139,92,246,.2), inset 0 1px 0 rgba(255,255,255,0.6)}
+.proof-point-card:nth-child(3){background:linear-gradient(135deg, #fed7d7, #fecaca); border-color:rgba(248,113,113,0.3); box-shadow:0 8px 32px rgba(248,113,113,.15), 0 2px 8px rgba(248,113,113,.1), inset 0 1px 0 rgba(255,255,255,0.4)}
+.proof-point-card:nth-child(3):hover{background:linear-gradient(135deg, #fecaca, #fca5a5); box-shadow:0 12px 40px rgba(248,113,113,.25), 0 4px 16px rgba(248,113,113,.2), inset 0 1px 0 rgba(255,255,255,0.6)}
+.proof-point-card:nth-child(4){background:linear-gradient(135deg, #d1fae5, #a7f3d0); border-color:rgba(52,211,153,0.3); box-shadow:0 8px 32px rgba(52,211,153,.15), 0 2px 8px rgba(52,211,153,.1), inset 0 1px 0 rgba(255,255,255,0.4)}
+.proof-point-card:nth-child(4):hover{background:linear-gradient(135deg, #a7f3d0, #6ee7b7); box-shadow:0 12px 40px rgba(52,211,153,.25), 0 4px 16px rgba(52,211,153,.2), inset 0 1px 0 rgba(255,255,255,0.6)}
+.proof-point-card:nth-child(5){background:linear-gradient(135deg, #dbeafe, #bfdbfe); border-color:rgba(96,165,250,0.3); box-shadow:0 8px 32px rgba(96,165,250,.15), 0 2px 8px rgba(96,165,250,.1), inset 0 1px 0 rgba(255,255,255,0.4)}
+.proof-point-card:nth-child(5):hover{background:linear-gradient(135deg, #bfdbfe, #93c5fd); box-shadow:0 12px 40px rgba(96,165,250,.25), 0 4px 16px rgba(96,165,250,.2), inset 0 1px 0 rgba(255,255,255,0.6)}
+.proof-point-card:nth-child(6){background:linear-gradient(135deg, #fce7f3, #fbcfe8); border-color:rgba(244,114,182,0.3); box-shadow:0 8px 32px rgba(244,114,182,.15), 0 2px 8px rgba(244,114,182,.1), inset 0 1px 0 rgba(255,255,255,0.4)}
+.proof-point-card:nth-child(6):hover{background:linear-gradient(135deg, #fbcfe8, #f9a8d4); box-shadow:0 12px 40px rgba(244,114,182,.25), 0 4px 16px rgba(244,114,182,.2), inset 0 1px 0 rgba(255,255,255,0.6)}
+.proof-point-content{display:flex; gap:12px; align-items:flex-start; position:relative; z-index:1}
+.proof-point-icon{flex-shrink:0; width:36px; height:36px; background:rgba(255,255,255,0.95); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:700; box-shadow:0 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8); border:1px solid rgba(255,255,255,0.3)}
+.proof-point-text{flex:1; color:#1f2937; font-size:15px; line-height:1.5; margin:0; font-weight:500; text-shadow:0 1px 2px rgba(0,0,0,0.05)}
 
 .footer{margin:36px 0 10px; text-align:center; color:#64748b; font-size:14px}
 
@@ -128,6 +171,46 @@ details.faq[open]{box-shadow:0 12px 28px rgba(2,6,23,.15)}
     max-width: 95%;
     padding: 8px 15px;
   }
+  .mobile-cta {
+    display: block;
+  }
+  
+  /* Text wrapping improvements */
+  .title, .banner-title {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -webkit-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  }
+  .lead, .banner-subtitle {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -webkit-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  }
+  .benefits-title, .section h2 {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -webkit-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  }
+  .benefits-list li, .list li, .audience-list li {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -webkit-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  }
+  .pricing-note, .urgency-note {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -webkit-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  }
 }
 
 @media (max-width: 480px) {
@@ -152,8 +235,68 @@ details.faq[open]{box-shadow:0 12px 28px rgba(2,6,23,.15)}
   .webinar-banner {
     padding: 15px;
   }
+  .proof-points-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .proof-point-card {
+    padding: 16px;
+  }
   .banner-content {
     gap: 10px;
+  }
+  
+  /* Enhanced text wrapping for small screens */
+  .banner-title {
+    font-size: 18px;
+    line-height: 1.2;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -webkit-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  }
+  .banner-subtitle {
+    font-size: 14px;
+    line-height: 1.3;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -webkit-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  }
+  .benefits-title {
+    font-size: 16px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+  .section h2 {
+    font-size: 20px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+  .benefits-list li, .list li, .audience-list li {
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .pricing-note, .urgency-note {
+    font-size: 14px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    max-width: 100%;
+    overflow: hidden;
   }
   .banner-title {
     font-size: 16px;

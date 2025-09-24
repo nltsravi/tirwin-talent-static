@@ -449,6 +449,21 @@ export class WebinarDetailsComponent implements OnInit {
     }
   }
 
+  formatBenefitText(benefit: string): string {
+    // Make specific words bold
+    return benefit
+      .replace(/\bcareer opportunities\b/gi, '<strong>career opportunities</strong>')
+      .replace(/\bTirwin Management\b/gi, '<strong>Tirwin Management</strong>')
+      .replace(/\bemerging trends, compliance, and technology\b/gi, '<strong>emerging trends, compliance, and technology</strong>')
+      .replace(/\bjob-ready in just 6–8 weeks\b/gi, '<strong>job-ready in just 6–8 weeks</strong>')
+      .replace(/\bexclusive pathway to the Logistics Career Compass Program\b/gi, '<strong>exclusive pathway to the Logistics Career Compass Program</strong>');
+  }
+
+  getProofPointIcon(index: number): string {
+    const icons = ['🎯', '💼', '📈', '🚀', '🏆', '⭐', '💡', '🎓'];
+    return icons[index] || '✓';
+  }
+
   ngOnDestroy(): void {
     if (this.countdownInterval) {
       clearInterval(this.countdownInterval);
