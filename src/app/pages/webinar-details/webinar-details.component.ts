@@ -464,6 +464,31 @@ export class WebinarDetailsComponent implements OnInit {
     return icons[index] || '✓';
   }
 
+  formatProofPointText(text: string): string {
+    if (!text) return text;
+    
+    console.log('formatProofPointText - Original:', text);
+    
+    // Test with hardcoded example first
+    if (text.includes('100+')) {
+      return text.replace('100+', '<span class="highlight-number">100+</span>');
+    }
+    if (text.includes('15+')) {
+      return text.replace('15+', '<span class="highlight-number">15+</span>');
+    }
+    if (text.includes('10+')) {
+      return text.replace('10+', '<span class="highlight-number">10+</span>');
+    }
+    
+    // Original regex approach
+    let formattedText = text
+      .replace(/\b(\d+)\+/g, '<span class="highlight-number">$1+</span>')
+      .replace(/\b(\d+)\s*years?\b/gi, '<span class="highlight-number">$1 years</span>');
+    
+    console.log('formatProofPointText - Formatted:', formattedText);
+    return formattedText;
+  }
+
   ngOnDestroy(): void {
     if (this.countdownInterval) {
       clearInterval(this.countdownInterval);

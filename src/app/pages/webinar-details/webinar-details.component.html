@@ -1,46 +1,109 @@
 
 
-<!-- Main container -->
-<div class="container two-column-layout" *ngIf="!isLoading && !errorMessage && webinar">
+<!-- Hero Section -->
+<div class="hero-section" *ngIf="!isLoading && !errorMessage && webinar">
+  <div class="hero-background"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="price-badge">
+        <span>Only {{ getDisplayPrice() }} - Seats Limited</span>
+      </div>
+      <h1 class="hero-title">{{ getDisplayTitle() }}</h1>
+      <p class="hero-subtitle">{{ getDisplayTagline() }}</p>
+    </div>
+  </div>
   
-  <!-- Left Column -->
-  <div class="left-column">
-    <!-- Key Benefits Card -->
-  <div class="card webinar-card">
-    <!-- Banner -->
-    <div class="webinar-banner">
-      <div class="banner-content">
-        <div class="banner-text">
-          <h1 class="banner-title">{{ getDisplayTitle() }}</h1>
-          <p class="banner-subtitle">{{ getDisplayTagline() }}</p>
+  <!-- Floating Registration Card -->
+  <div class="floating-registration-card">
+    <div class="card webinar-card">
+      <!-- Card Content -->
+      <div class="card-content p-xl">
+        <div class="webinar-info">
+          <div class="info-row">
+            <span class="info-icon">📅</span>
+            <span class="info-value">{{ formatDate(webinar.start_time || getFallbackDate()) }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-icon">⏰</span>
+            <span class="info-value">{{ formatTime(webinar.start_time || getFallbackStartTime()) }} - {{ formatTime(webinar.end_time || getFallbackEndTime()) }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-icon">💻</span>
+            <span class="info-value">{{ getPlatform() }}</span>
+          </div>
+        </div>
+        
+        <div class="register-section">
+          <button class="btn btn-primary register-btn" (click)="redirectToWebinarRegistration()">
+            Register at ₹99
+          </button>
+          <p class="register-note">Seats are limited! Complete your registration to receive the Zoom link.</p>
         </div>
       </div>
     </div>
-    
-    <!-- Card Content -->
-    <div class="card-content p-xl">
-      <div class="stack">
-        <div class="price-chip">
-          <span>Only {{ getDisplayPrice() }} - Seats Limited</span>
+  </div>
+</div>
+
+<!-- Mobile Registration Card Section -->
+<div class="mobile-registration-section" *ngIf="!isLoading && !errorMessage && webinar">
+  <div class="container">
+    <div class="mobile-registration-card">
+      <div class="card webinar-card">
+        <!-- Card Content -->
+        <div class="card-content p-xl">
+          <div class="webinar-info">
+            <div class="info-row">
+              <span class="info-icon">📅</span>
+              <span class="info-value">{{ formatDate(webinar.start_time || getFallbackDate()) }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-icon">⏰</span>
+              <span class="info-value">{{ formatTime(webinar.start_time || getFallbackStartTime()) }} - {{ formatTime(webinar.end_time || getFallbackEndTime()) }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-icon">💻</span>
+              <span class="info-value">{{ getPlatform() }}</span>
+            </div>
+          </div>
+          
+          <div class="register-section">
+            <button class="btn btn-primary register-btn" (click)="redirectToWebinarRegistration()">
+              Register at ₹99
+            </button>
+            <p class="register-note">Seats are limited! Complete your registration to receive the Zoom link.</p>
+          </div>
         </div>
-        
-        <h3 class="benefits-title">Why attend this Webinar?</h3>
-        
-        <ul class="benefits-list">
-          <li *ngFor="let benefit of getDisplayBenefits()" [innerHTML]="formatBenefitText(benefit)"></li>
-        </ul>
-        
-        <p class="pricing-note">
-          <em>All this for less than the price of a coffee — just ₹99!</em>
-        </p>
-        
-        <p class="urgency-note">
-          <strong>Seats are limited!</strong> Secure your spot now.
-        </p>
-        
-        <button class="btn btn-ghost" (click)="redirectToWebinarRegistration()">
-          Register Now at ₹99
-        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="container main-content" *ngIf="!isLoading && !errorMessage && webinar">
+  
+  <!-- Why Attend This Webinar Card -->
+  <div class="section">
+    <div class="card why-attend-card">
+      <div class="card-content p-xl">
+        <div class="stack">
+          <h3 class="benefits-title">Why attend this Webinar?</h3>
+          
+          <ul class="benefits-list">
+            <li *ngFor="let benefit of getDisplayBenefits()" [innerHTML]="formatBenefitText(benefit)"></li>
+          </ul>
+          
+          <p class="pricing-note">
+            <em>All this for less than the price of a coffee — just ₹99!</em>
+          </p>
+          
+          <p class="urgency-note">
+            <strong>Seats are limited!</strong> Secure your spot now.
+          </p>
+          
+          <button class="btn btn-ghost" (click)="redirectToWebinarRegistration()">
+            Register Now at ₹99
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -68,12 +131,24 @@
   </div>
 
   <!-- Proof Points Section -->
-  <div class="section" *ngIf="getDisplayProof().length > 0">
+  <div class="section">
     <div class="proof-points-grid">
-      <div class="proof-point-card" *ngFor="let item of getDisplayProof(); let i = index">
+      <div class="proof-point-card">
         <div class="proof-point-content">
-          <div class="proof-point-icon">{{ getProofPointIcon(i) }}</div>
-          <div class="proof-point-text">{{ item }}</div>
+          <div class="proof-point-number">100+</div>
+          <div class="proof-point-description">students trained through Tirwin Talent programs</div>
+        </div>
+      </div>
+      <div class="proof-point-card">
+        <div class="proof-point-content">
+          <div class="proof-point-number">15+</div>
+          <div class="proof-point-description">years of industry experience</div>
+        </div>
+      </div>
+      <div class="proof-point-card">
+        <div class="proof-point-content">
+          <div class="proof-point-number">10+</div>
+          <div class="proof-point-description">industry experts and mentors</div>
         </div>
       </div>
     </div>
@@ -115,47 +190,6 @@
       <button class="btn gradient-red" (click)="redirectToWebinarRegistration()">
         {{ getCtaPrimaryLabel() }}
       </button>
-    </div>
-  </div>
-  </div>
-
-  <!-- Right Column -->
-  <div class="right-column">
-    <!-- Webinar Card -->
-    <div class="card webinar-card">
-      <!-- Banner -->
-      <div class="webinar-banner">
-        <div class="banner-content">
-          <div class="banner-text">
-            <h3 class="banner-title">Launchpad to Logistics Leadership</h3>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Card Content -->
-      <div class="card-content p-xl">
-        <div class="webinar-info">
-          <div class="info-row">
-            <span class="info-icon">📅</span>
-            <span class="info-value">{{ formatDate(webinar.start_time || getFallbackDate()) }}</span>
-          </div>
-          <div class="info-row">
-            <span class="info-icon">⏰</span>
-            <span class="info-value">{{ formatTime(webinar.start_time || getFallbackStartTime()) }} - {{ formatTime(webinar.end_time || getFallbackEndTime()) }}</span>
-          </div>
-          <div class="info-row">
-            <span class="info-icon">💻</span>
-            <span class="info-value">{{ getPlatform() }}</span>
-          </div>
-        </div>
-        
-        <div class="register-section">
-          <button class="btn btn-primary register-btn" (click)="redirectToWebinarRegistration()">
-            Register at ₹99
-          </button>
-          <p class="register-note">Seats are limited! Complete your registration to receive the Zoom link.</p>
-        </div>
-      </div>
     </div>
   </div>
 

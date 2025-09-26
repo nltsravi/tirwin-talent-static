@@ -10,6 +10,47 @@ body{
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
+
+/* Hero Section */
+.hero-section{position:relative; min-height:60vh; display:flex; align-items:center; justify-content:flex-start; background:linear-gradient(135deg, #1e3a8a, #7c3aed); overflow:hidden}
+.hero-background{position:absolute; top:0; left:0; right:0; bottom:0; background:linear-gradient(135deg, #1e3a8a, #7c3aed); opacity:0.95}
+.hero-content{position:absolute; top:0; left:0; right:0; bottom:0; z-index:2; display:flex; align-items:center; justify-content:center; padding:60px 20px; text-align:left}
+.hero-text{max-width:1000px; margin:0 auto; width:100%}
+.price-badge{display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border-radius:24px; background:#c62828; color:#ffffff; font-weight:700; font-size:14px; margin:0 0 20px 0; border:1px solid rgba(255,255,255,0.3); box-shadow:0 8px 25px rgba(198,40,40,0.4), 0 3px 10px rgba(198,40,40,0.3), inset 0 1px 0 rgba(255,255,255,0.4); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); position:relative; overflow:hidden}
+.price-badge::before{content:''; position:absolute; top:0; left:0; right:0; bottom:0; background:linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1)); border-radius:24px; pointer-events:none}
+.price-badge::after{content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent)}
+.hero-title{font-size:clamp(32px, 5vw, 56px); font-weight:700; color:#ffffff; margin:0 0 16px 0; line-height:1.1; text-shadow:0 2px 4px rgba(0,0,0,0.3)}
+.hero-subtitle{font-size:clamp(18px, 2.5vw, 24px); color:rgba(255,255,255,0.9); margin:0; line-height:1.4; text-shadow:0 1px 2px rgba(0,0,0,0.2)}
+
+/* Floating Registration Card */
+.floating-registration-card{position:fixed; top:100px; right:20px; z-index:1000; max-width:320px; width:100%; transition:all 0.3s ease}
+.floating-registration-card .webinar-card{background:rgba(255,255,255,0.95); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.2); box-shadow:0 8px 32px rgba(0,0,0,0.2); border-radius:16px}
+.floating-registration-card .card-content{padding:20px}
+.floating-registration-card .info-row{padding:8px 0; border-bottom:1px dashed #e2e8f0; font-size:14px; display:flex; align-items:center; gap:8px}
+.floating-registration-card .info-row:last-child{border-bottom:none}
+.floating-registration-card .info-icon{font-size:14px; width:20px; flex-shrink:0}
+.floating-registration-card .info-value{font-size:14px; flex:1}
+.floating-registration-card .register-btn{width:100%; padding:12px; font-size:14px; margin-bottom:8px; background:linear-gradient(135deg, #1e3a8a, #7c3aed); border:none; color:#ffffff; border-radius:8px; font-weight:600; cursor:pointer; transition:all 0.3s ease}
+.floating-registration-card .register-btn:hover{transform:translateY(-2px); box-shadow:0 4px 12px rgba(30,58,138,0.3)}
+.floating-registration-card .register-note{font-size:12px; color:#64748b; margin:0; text-align:center}
+
+/* Mobile Registration Section */
+.mobile-registration-section{display:none; padding:20px 0; background:#f8fafc}
+.mobile-registration-section .container{max-width:800px; margin:0 auto; padding:0 20px}
+.mobile-registration-card{max-width:100%; margin:0 auto}
+.mobile-registration-card .webinar-card{background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; box-shadow:0 8px 24px rgba(2,6,23,.12)}
+.mobile-registration-card .card-content{padding:20px}
+.mobile-registration-card .info-row{padding:8px 0; border-bottom:1px dashed #e2e8f0; font-size:14px; display:flex; align-items:center; gap:8px}
+.mobile-registration-card .info-row:last-child{border-bottom:none}
+.mobile-registration-card .info-icon{font-size:14px; width:20px; flex-shrink:0}
+.mobile-registration-card .info-value{font-size:14px; flex:1}
+.mobile-registration-card .register-btn{width:100%; padding:12px; font-size:14px; margin-bottom:8px; background:linear-gradient(135deg, #1e3a8a, #7c3aed); border:none; color:#ffffff; border-radius:8px; font-weight:600; cursor:pointer; transition:all 0.3s ease}
+.mobile-registration-card .register-btn:hover{transform:translateY(-2px); box-shadow:0 4px 12px rgba(30,58,138,0.3)}
+.mobile-registration-card .register-note{font-size:12px; color:#64748b; margin:0; text-align:center}
+
+/* Main Content */
+.main-content{max-width:800px; margin:0 auto; padding:40px 20px}
+.why-attend-card{background:#ffffff; border:1px solid #e2e8f0; border-radius:20px; box-shadow:0 8px 24px rgba(2,6,23,.12); margin-bottom:40px}
 a{color:inherit}
 .container{max-width:60%; margin:0 auto; padding:28px 20px}
 
@@ -118,25 +159,14 @@ details.faq[open]{box-shadow:0 12px 28px rgba(2,6,23,.15)}
 
 /* Proof Points Tile Cards */
 .proof-points-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin-top:20px}
-.proof-point-card{position:relative; background:linear-gradient(135deg, #f8fafc, #e2e8f0); border:1px solid rgba(255,255,255,0.2); border-radius:20px; padding:24px; box-shadow:0 8px 32px rgba(2,6,23,.12), 0 2px 8px rgba(2,6,23,.08), inset 0 1px 0 rgba(255,255,255,0.4); transition:all 0.3s ease; overflow:hidden; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
-.proof-point-card::before{content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent)}
-.proof-point-card::after{content:''; position:absolute; top:0; left:0; right:0; bottom:0; background:linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); border-radius:20px; pointer-events:none}
-.proof-point-card:hover{transform:translateY(-4px) scale(1.02); box-shadow:0 12px 40px rgba(2,6,23,.2), 0 4px 16px rgba(2,6,23,.15), inset 0 1px 0 rgba(255,255,255,0.6)}
-.proof-point-card:nth-child(1){background:linear-gradient(135deg, #fef3c7, #fde68a); border-color:rgba(245,158,11,0.3); box-shadow:0 8px 32px rgba(245,158,11,.15), 0 2px 8px rgba(245,158,11,.1), inset 0 1px 0 rgba(255,255,255,0.4)}
-.proof-point-card:nth-child(1):hover{background:linear-gradient(135deg, #fde68a, #fcd34d); box-shadow:0 12px 40px rgba(245,158,11,.25), 0 4px 16px rgba(245,158,11,.2), inset 0 1px 0 rgba(255,255,255,0.6)}
-.proof-point-card:nth-child(2){background:linear-gradient(135deg, #ddd6fe, #c4b5fd); border-color:rgba(139,92,246,0.3); box-shadow:0 8px 32px rgba(139,92,246,.15), 0 2px 8px rgba(139,92,246,.1), inset 0 1px 0 rgba(255,255,255,0.4)}
-.proof-point-card:nth-child(2):hover{background:linear-gradient(135deg, #c4b5fd, #a78bfa); box-shadow:0 12px 40px rgba(139,92,246,.25), 0 4px 16px rgba(139,92,246,.2), inset 0 1px 0 rgba(255,255,255,0.6)}
-.proof-point-card:nth-child(3){background:linear-gradient(135deg, #fed7d7, #fecaca); border-color:rgba(248,113,113,0.3); box-shadow:0 8px 32px rgba(248,113,113,.15), 0 2px 8px rgba(248,113,113,.1), inset 0 1px 0 rgba(255,255,255,0.4)}
-.proof-point-card:nth-child(3):hover{background:linear-gradient(135deg, #fecaca, #fca5a5); box-shadow:0 12px 40px rgba(248,113,113,.25), 0 4px 16px rgba(248,113,113,.2), inset 0 1px 0 rgba(255,255,255,0.6)}
-.proof-point-card:nth-child(4){background:linear-gradient(135deg, #d1fae5, #a7f3d0); border-color:rgba(52,211,153,0.3); box-shadow:0 8px 32px rgba(52,211,153,.15), 0 2px 8px rgba(52,211,153,.1), inset 0 1px 0 rgba(255,255,255,0.4)}
-.proof-point-card:nth-child(4):hover{background:linear-gradient(135deg, #a7f3d0, #6ee7b7); box-shadow:0 12px 40px rgba(52,211,153,.25), 0 4px 16px rgba(52,211,153,.2), inset 0 1px 0 rgba(255,255,255,0.6)}
-.proof-point-card:nth-child(5){background:linear-gradient(135deg, #dbeafe, #bfdbfe); border-color:rgba(96,165,250,0.3); box-shadow:0 8px 32px rgba(96,165,250,.15), 0 2px 8px rgba(96,165,250,.1), inset 0 1px 0 rgba(255,255,255,0.4)}
-.proof-point-card:nth-child(5):hover{background:linear-gradient(135deg, #bfdbfe, #93c5fd); box-shadow:0 12px 40px rgba(96,165,250,.25), 0 4px 16px rgba(96,165,250,.2), inset 0 1px 0 rgba(255,255,255,0.6)}
-.proof-point-card:nth-child(6){background:linear-gradient(135deg, #fce7f3, #fbcfe8); border-color:rgba(244,114,182,0.3); box-shadow:0 8px 32px rgba(244,114,182,.15), 0 2px 8px rgba(244,114,182,.1), inset 0 1px 0 rgba(255,255,255,0.4)}
-.proof-point-card:nth-child(6):hover{background:linear-gradient(135deg, #fbcfe8, #f9a8d4); box-shadow:0 12px 40px rgba(244,114,182,.25), 0 4px 16px rgba(244,114,182,.2), inset 0 1px 0 rgba(255,255,255,0.6)}
-.proof-point-content{display:flex; gap:12px; align-items:flex-start; position:relative; z-index:1}
-.proof-point-icon{flex-shrink:0; width:36px; height:36px; background:rgba(255,255,255,0.95); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:700; box-shadow:0 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8); border:1px solid rgba(255,255,255,0.3)}
-.proof-point-text{flex:1; color:#1f2937; font-size:15px; line-height:1.5; margin:0; font-weight:500; text-shadow:0 1px 2px rgba(0,0,0,0.05)}
+.proof-point-card{position:relative; background:linear-gradient(90deg, #c62828, #1e3a8a); border:1px solid rgba(255,255,255,0.2); border-radius:16px; padding:32px 24px; box-shadow:0 4px 12px rgba(198,40,40,0.3), 0 1px 3px rgba(30,58,138,0.2); transition:all 0.3s ease; overflow:hidden}
+.proof-point-card:hover{transform:translateY(-2px); box-shadow:0 8px 25px rgba(198,40,40,0.4), 0 3px 10px rgba(30,58,138,0.3)}
+.proof-point-content{display:flex; flex-direction:column; align-items:center; text-align:center; position:relative; z-index:1; gap:12px}
+.proof-point-number{color:#ffffff !important; font-weight:900 !important; font-size:48px !important; text-shadow:0 4px 8px rgba(0,0,0,0.4) !important; display:inline-block !important; margin:0 !important; line-height:1 !important}
+.proof-point-description{color:#ffffff; font-size:14px; line-height:1.4; margin:0; font-weight:500; text-shadow:0 2px 4px rgba(0,0,0,0.3); max-width:100%; word-wrap:break-word}
+
+/* Global highlight number styling */
+.highlight-number{color:#ffffff !important; font-weight:800 !important; font-size:24px !important; text-shadow:0 2px 4px rgba(0,0,0,0.3) !important; background:linear-gradient(135deg, #1e3a8a, #7c3aed) !important; padding:6px 12px !important; border-radius:10px !important; display:inline-block !important; margin:0 4px !important; box-shadow:0 3px 12px rgba(30,58,138,0.4) !important; border:2px solid rgba(255,255,255,0.3) !important}
 
 .footer{margin:36px 0 10px; text-align:center; color:#64748b; font-size:14px}
 
@@ -156,6 +186,28 @@ details.faq[open]{box-shadow:0 12px 28px rgba(2,6,23,.15)}
     flex: none;
     order: -1;
   }
+  
+  /* Hero responsive */
+  .hero-section {
+    min-height: 50vh;
+    justify-content: flex-start;
+  }
+  .floating-registration-card {
+    position: fixed;
+    top: 80px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+    width: auto;
+    z-index: 1000;
+  }
+  .hero-content {
+    padding: 40px 20px 20px;
+    text-align: left;
+  }
+  .hero-text {
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -173,6 +225,55 @@ details.faq[open]{box-shadow:0 12px 28px rgba(2,6,23,.15)}
   }
   .mobile-cta {
     display: block;
+  }
+  
+  /* Hero mobile */
+  .hero-section {
+    min-height: 40vh;
+    justify-content: flex-start;
+  }
+  .floating-registration-card {
+    display: none;
+  }
+  .mobile-registration-section {
+    display: block;
+  }
+  .mobile-registration-section .container {
+    padding: 0 15px;
+  }
+  .mobile-registration-card .card-content {
+    padding: 16px;
+  }
+  .mobile-registration-card .info-row {
+    padding: 6px 0;
+    font-size: 13px;
+  }
+  .mobile-registration-card .register-btn {
+    padding: 10px;
+    font-size: 13px;
+  }
+  .mobile-registration-card .register-note {
+    font-size: 11px;
+  }
+  .hero-content {
+    padding: 30px 15px 15px;
+    text-align: left;
+  }
+  .hero-text {
+    max-width: 100%;
+  }
+  .price-badge {
+    font-size: 13px;
+    padding: 6px 12px;
+    margin-bottom: 16px;
+  }
+  
+  .proof-point-number {
+    font-size: 36px !important;
+    padding: 12px 18px !important;
+  }
+  .proof-point-description {
+    font-size: 13px;
   }
   
   /* Text wrapping improvements */
