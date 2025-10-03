@@ -25,6 +25,7 @@ const routes: Routes = [
       { path: 'profile', loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule), data: { showSlider: false }  }, // 
       { path: 'webinar/:stype', loadChildren: () => import('./pages/webinar-list/webinar-list.module').then(m => m.WebinarListModule), data: { showSlider: false, account: true }  }, // 
       { path: 'webinar/:style/:id', loadChildren: () => import('./pages/webinar-details/webinar-details.module').then(m => m.CourseDetailsModule), data: { showSlider: false, account: true }  }, // 
+      { path: 'webinar-new/:style/:id', loadChildren: () => import('./pages/webinar-new-details/webinar-new-details.module').then(m => m.WebinarNewDetailsModule), data: { showSlider: false, account: true }  }, // New webinar details
       { path: 'checkout', loadChildren: () => import('./pages/checkout/checkout.module').then(m => m.CheckoutModule), data: { showSlider: false, account: true }  }, // 
       { path: 'myregistration', loadChildren: () => import('./pages/my-courses/my-courses.module').then(m => m.MyCoursesModule), data: { showSlider: false, account: true }  }, // 
       { path: 'admin/user', component: AdminUserComponent, data: { showSlider: false }, canActivate: [AdminGuard] },

@@ -1,30 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { WebinarService } from './webinar-details.service';
 import { AuthService } from '../auth/auth.service';
 import { environment } from '../../../environments/environment';
-
-interface WebinarData {
-  title: string;
-  tagline: string;
-  priceINR: number;
-  regUrl: string;
-  altRegUrl: string;
-  ctaPrimaryLabel: string;
-  ctaSecondaryLabel: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-  timezone: string;
-  platform: string;
-  whyAttend: string[];
-  learn: string[];
-  audience: string[];
-  proof: string[];
-  faqs: { q: string; a: string; }[];
-  finalCtaText: string;
-}
 
 @Component({
   selector: "app-webinar-details",
@@ -33,7 +11,6 @@ interface WebinarData {
 })
 export class WebinarDetailsComponent implements OnInit {
   webinar: any = null;
-  fallbackData: WebinarData | null = null;
   isLoading = true;
   errorMessage = "";
   showModal = false;
@@ -53,8 +30,7 @@ export class WebinarDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private webinarService: WebinarService,
-    private authServices: AuthService,
-    private http: HttpClient
+    private authServices: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -69,10 +45,6 @@ export class WebinarDetailsComponent implements OnInit {
     } else {
       this.currentPageType = 'Training'
     }
-    
-    // Load fallback data
-    this.loadFallbackData();
-    
     if (webinarId) {
       this.fetchWebinarDetails(webinarId);
     } else {
@@ -97,17 +69,8 @@ export class WebinarDetailsComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('API Error for webinar ID:', id, error);
-        
-        // Check if this is the specific webinar ID that should use fallback data
-        if (id === '4e86e649-bb3c-45c4-a2ff-be4c625e2ac8') {
-          console.log('API failed for webinar ID:', id, '- Loading fallback data from JSON file');
-          this.loadFallbackWebinarData();
-        } else {
-          console.log('API failed for webinar ID:', id, '- Showing error message');
-          this.errorMessage = "Failed to load webinar details.";
-          this.isLoading = false;
-        }
+        this.errorMessage = "Failed to load webinar details.";
+        this.isLoading = false;
       },
     });
   }
@@ -115,16 +78,6 @@ export class WebinarDetailsComponent implements OnInit {
   /** Opens the confirmation modal */
   openConfirmationModal() {
     this.showModal = true;
-  }
-
-  /** Redirects to webinar registration page */
-  redirectToWebinarRegistration() {
-    // Get webinar details
-    const webinarId = this.webinar?.id || '4e86e649-bb3c-45c4-a2ff-be4c625e2ac8';
-    const webinarType = this.route.snapshot.paramMap.get('style') || 'masterclass';
-    
-    // Redirect to webinar registration page (regardless of login status)
-    this.router.navigate(['/auth/register', webinarType, webinarId]);
   }
 
   /** Closes the confirmation modal */
@@ -283,210 +236,6 @@ export class WebinarDetailsComponent implements OnInit {
 
   pad(n: number): string {
     return n < 10 ? '0' + n : '' + n;
-  }
-
-  // Load fallback data from JSON file
-  loadFallbackData(): void {
-    this.http.get<WebinarData>('/assets/webinar_data.json').subscribe({
-      next: (data) => {
-        this.fallbackData = data;
-      },
-      error: (error) => {
-        console.error('Error loading fallback data:', error);
-      }
-    });
-  }
-
-  // Load webinar data from fallback when API fails for specific ID
-  loadFallbackWebinarData(): void {
-    this.http.get<WebinarData>('/assets/webinar_data.json').subscribe({
-      next: (data) => {
-        // Create a webinar object from fallback data
-        this.webinar = {
-          id: '4e86e649-bb3c-45c4-a2ff-be4c625e2ac8',
-          title: data.title,
-          description: data.tagline,
-          price: data.priceINR,
-          start_time: data.date + 'T' + data.startTime + ':00',
-          end_time: data.date + 'T' + data.endTime + ':00',
-          category: { name: 'Logistics Leadership' },
-          subcategory: { name: 'Career Development' },
-          is_paid: true,
-          isUserRegistered: false,
-          registrationClosed: false,
-          additional_info: {
-            benefits: data.whyAttend.map(item => ({ Title: '', Description: item })),
-            course_objectives: data.learn.map(item => ({ Title: '', Description: item })),
-            target_audience: data.audience.map(item => ({ Title: '', Description: item })),
-            key_take_aways: data.learn.map(item => ({ Title: '', Description: item }))
-          },
-          trainer: {
-            user: {
-              first_name: 'Tirwin',
-              last_name: 'Management'
-            },
-            organization: 'Tirwin Management Services',
-            profile_image: 'https://via.placeholder.com/100',
-            experience: '15+',
-            bio: 'Leading logistics and supply chain education with 15+ years of industry experience.'
-          }
-        };
-        this.fallbackData = data;
-        this.isLoading = false;
-        console.log('Fallback webinar data loaded successfully');
-      },
-      error: (error) => {
-        console.error('Error loading fallback webinar data:', error);
-        this.errorMessage = "Failed to load webinar details.";
-        this.isLoading = false;
-      }
-    });
-  }
-
-  // Display methods with API data fallback to JSON data
-  getDisplayTitle(): string {
-    return this.webinar?.title || this.fallbackData?.title || 'Webinar Title';
-  }
-
-  getDisplayTagline(): string {
-    return this.webinar?.description || this.fallbackData?.tagline || 'Webinar Description';
-  }
-
-  getDisplayPrice(): string {
-    if (this.webinar?.price) {
-      return `₹${this.webinar.price}`;
-    }
-    return `₹${this.fallbackData?.priceINR || 99}`;
-  }
-
-  getDisplayBenefits(): string[] {
-    if (this.webinar?.additional_info?.benefits) {
-      return this.webinar.additional_info.benefits.map((item: any) => item.Description || item.Title);
-    }
-    return this.fallbackData?.whyAttend || [];
-  }
-
-  getDisplayLearn(): string[] {
-    if (this.webinar?.additional_info?.course_objectives) {
-      return this.webinar.additional_info.course_objectives.map((item: any) => item.Description || item.Title);
-    }
-    return this.fallbackData?.learn || [];
-  }
-
-  getDisplayAudience(): string[] {
-    if (this.webinar?.additional_info?.target_audience) {
-      return this.webinar.additional_info.target_audience.map((item: any) => item.Description || item.Title);
-    }
-    return this.fallbackData?.audience || [];
-  }
-
-  getDisplayProof(): string[] {
-    return this.fallbackData?.proof || [];
-  }
-
-  getDisplayFaqs(): { q: string; a: string; }[] {
-    return this.fallbackData?.faqs || [];
-  }
-
-  getCtaPrimaryLabel(): string {
-    return this.fallbackData?.ctaPrimaryLabel || 'Register Now @ ₹99';
-  }
-
-  getCtaSecondaryLabel(): string {
-    return this.fallbackData?.ctaSecondaryLabel || 'Book My Seat Now @ ₹99';
-  }
-
-  getFinalCtaText(): string {
-    return this.fallbackData?.finalCtaText || 'Your career in Logistics starts here. Learn from industry leaders, gain clarity, and take the first step toward your future with Tirwin.';
-  }
-
-  getAltRegUrl(): string {
-    return this.fallbackData?.altRegUrl || '#';
-  }
-
-  getPlatform(): string {
-    return this.fallbackData?.platform || 'Zoom (link will be shared after registration)';
-  }
-
-  getFallbackDate(): string {
-    return this.fallbackData?.date || '2025-10-02';
-  }
-
-  getFallbackStartTime(): string {
-    return this.fallbackData?.startTime || '16:30';
-  }
-
-  getFallbackEndTime(): string {
-    return this.fallbackData?.endTime || '18:30';
-  }
-
-  formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    const options: Intl.DateTimeFormatOptions = { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    };
-    return date.toLocaleDateString('en-IN', options);
-  }
-
-  formatTime(timeString: string): string {
-    const [hours, minutes] = timeString.split(':');
-    const date = new Date();
-    date.setHours(parseInt(hours), parseInt(minutes));
-    return date.toLocaleTimeString('en-IN', { 
-      hour: 'numeric', 
-      minute: '2-digit',
-      hour12: true 
-    });
-  }
-
-  scrollToDetails(): void {
-    const detailsElement = document.getElementById('webinar-details');
-    if (detailsElement) {
-      detailsElement.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
-
-  formatBenefitText(benefit: string): string {
-    // Make specific words bold
-    return benefit
-      .replace(/\bcareer opportunities\b/gi, '<strong>career opportunities</strong>')
-      .replace(/\bTirwin Management\b/gi, '<strong>Tirwin Management</strong>')
-      .replace(/\bemerging trends, compliance, and technology\b/gi, '<strong>emerging trends, compliance, and technology</strong>')
-      .replace(/\bjob-ready in just 6–8 weeks\b/gi, '<strong>job-ready in just 6–8 weeks</strong>')
-      .replace(/\bexclusive pathway to the Logistics Career Compass Program\b/gi, '<strong>exclusive pathway to the Logistics Career Compass Program</strong>');
-  }
-
-  getProofPointIcon(index: number): string {
-    const icons = ['🎯', '💼', '📈', '🚀', '🏆', '⭐', '💡', '🎓'];
-    return icons[index] || '✓';
-  }
-
-  formatProofPointText(text: string): string {
-    if (!text) return text;
-    
-    console.log('formatProofPointText - Original:', text);
-    
-    // Test with hardcoded example first
-    if (text.includes('100+')) {
-      return text.replace('100+', '<span class="highlight-number">100+</span>');
-    }
-    if (text.includes('15+')) {
-      return text.replace('15+', '<span class="highlight-number">15+</span>');
-    }
-    if (text.includes('10+')) {
-      return text.replace('10+', '<span class="highlight-number">10+</span>');
-    }
-    
-    // Original regex approach
-    let formattedText = text
-      .replace(/\b(\d+)\+/g, '<span class="highlight-number">$1+</span>')
-      .replace(/\b(\d+)\s*years?\b/gi, '<span class="highlight-number">$1 years</span>');
-    
-    console.log('formatProofPointText - Formatted:', formattedText);
-    return formattedText;
   }
 
   ngOnDestroy(): void {
