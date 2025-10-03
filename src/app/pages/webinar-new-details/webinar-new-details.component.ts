@@ -91,9 +91,14 @@ export class WebinarNewDetailsComponent implements OnInit {
 
   /** Redirects to webinar registration page */
   redirectToWebinarRegistration() {
-    // Get webinar details
-    const webinarId = this.webinar?.id || '4e86e649-bb3c-45c4-a2ff-be4c625e2ac8';
+    // Get webinar ID from route parameters
+    const webinarId = this.route.snapshot.paramMap.get('id');
     const webinarType = this.route.snapshot.paramMap.get('style') || 'masterclass';
+    
+    if (!webinarId) {
+      console.error('Webinar ID not found in route parameters');
+      return;
+    }
     
     // Redirect to webinar registration page (regardless of login status)
     this.router.navigate(['/auth/register', webinarType, webinarId]);
@@ -118,8 +123,6 @@ export class WebinarNewDetailsComponent implements OnInit {
       this.router.navigate(["/auth/login"], { state: { returnUrl } });
       return;
     }
-
-    if (!this.webinar || !this.userId) return;
 
     // For new version, we'll redirect to registration instead
     this.redirectToWebinarRegistration();
@@ -178,7 +181,13 @@ export class WebinarNewDetailsComponent implements OnInit {
     if (provider === 'google') {
       window.location.href = `${environment.api}/auth/google`;
     } else {
-      this.router.navigate(['/auth/register',type,id])
+      // Use route parameters instead of passed parameters
+      const webinarId = this.route.snapshot.paramMap.get('id');
+      const webinarType = this.route.snapshot.paramMap.get('style') || 'masterclass';
+      
+      if (webinarId) {
+        this.router.navigate(['/auth/register', webinarType, webinarId]);
+      }
     }
   }
 
