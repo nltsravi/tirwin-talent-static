@@ -183,3 +183,299 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
 .font-btn {
   font-size: 15px !important;
 }
+
+/* Key takeaways list without bullets */
+.key-takeaways-list {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin: 0 !important;
+}
+
+.key-takeaways-list li {
+  list-style: none !important;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  border-left: 4px solid #1e3a8a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #1e293b;
+}
+
+.key-takeaways-list li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border-left-color: #3b82f6;
+}
+
+.key-takeaways-list li strong {
+  color: #1e3a8a;
+  font-size: 1.15rem;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.key-takeaways-list li span {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #374151;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  /* Container and layout adjustments */
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  /* Hero section mobile adjustments */
+  .hero-section {
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+
+  .hero-section h1 {
+    font-size: 1.8rem;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+
+  /* About Master Class section mobile fixes */
+  .card {
+    margin-bottom: 1rem;
+    padding: 1rem;
+  }
+
+  .card h2.h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  /* Row adjustments for mobile */
+  .row {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+
+  .row > [class*="col-"] {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  /* Info row styling for mobile - stack vertically */
+  .row.text-center {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .row.text-center > div {
+    width: 100% !important;
+    margin-bottom: 1rem;
+    text-align: left !important;
+    padding: 0.75rem;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .row.text-center > div i {
+    margin-right: 0.75rem;
+    margin-top: 0.2rem;
+    color: #6c757d;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  /* Training section mobile adjustments - also stack vertically */
+  .row.text-center.mt-4 {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .row.text-center.mt-4 > div {
+    width: 100% !important;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+  }
+
+  .row.text-center.mt-4 > div i {
+    margin-right: 0.75rem;
+    margin-top: 0.2rem;
+    color: #6c757d;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  /* Accordion and card adjustments */
+  .accordion .card {
+    margin-bottom: 0.5rem;
+  }
+
+  .card-header {
+    padding: 1rem;
+  }
+
+  .card-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  /* List styling for mobile */
+  .card-body ul {
+    padding-left: 1rem;
+  }
+
+  .card-body ul li {
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+  }
+
+  /* Key takeaways mobile styling */
+  .key-takeaways-list {
+    padding-left: 0;
+  }
+
+  .key-takeaways-list li {
+    padding: 1rem 0.75rem;
+    margin-bottom: 1.25rem;
+    background: #f8fafc;
+    border-radius: 10px;
+    border-left: 3px solid #1e3a8a;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .key-takeaways-list li strong {
+    font-size: 1.05rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .key-takeaways-list li span {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  /* Sidebar mobile adjustments */
+  .col-lg-4 {
+    margin-top: 2rem;
+  }
+
+  .sticky-top {
+    position: static !important;
+  }
+
+  /* Button adjustments */
+  .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+
+  /* Modal adjustments */
+  .modal-dialog {
+    margin: 1rem;
+  }
+
+  .modal-content {
+    border-radius: 8px;
+  }
+}
+
+/* Extra small devices (phones, 576px and down) */
+@media (max-width: 576px) {
+  .hero-section h1 {
+    font-size: 1.5rem;
+  }
+
+  .card h2.h3 {
+    font-size: 1.3rem;
+  }
+
+  .row.text-center.mt-4 > div {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .card-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Desktop/Full screen mode fixes */
+@media (min-width: 769px) {
+  /* Fix time wrapping in full screen mode */
+  .row.text-center > div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .row.text-center > div i {
+    white-space: nowrap;
+  }
+
+  /* Ensure proper spacing in desktop mode */
+  .row.text-center > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .row.text-center.mt-4 > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Icon spacing and styling for desktop */
+  .row.text-center > div i,
+  .row.text-center.mt-4 > div i {
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-right: 0.75rem;
+    color: #2250fc;
+    font-size: 1.1rem;
+  }
+
+  /* Prevent text wrapping in time display */
+  .row.text-center > div:has(i.fa-clock),
+  .row.text-center.mt-4 > div:has(i.fa-clock) {
+    white-space: nowrap;
+    min-width: fit-content;
+  }
+
+  /* Additional padding for better visual separation */
+  .row.text-center > div:not(:last-child),
+  .row.text-center.mt-4 > div:not(:last-child) {
+    margin-bottom: 0.75rem;
+  }
+
+  /* Enhanced spacing for better readability */
+  .row.text-center > div span,
+  .row.text-center.mt-4 > div span {
+    flex: 1;
+    text-align: center;
+  }
+}

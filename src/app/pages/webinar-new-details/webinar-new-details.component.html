@@ -88,7 +88,7 @@
           <h3 class="benefits-title">Why attend this Webinar?</h3>
           
           <ul class="benefits-list">
-            <li *ngFor="let benefit of getDisplayBenefits()" [innerHTML]="formatBenefitText(benefit)"></li>
+            <li *ngFor="let benefit of getDisplayBenefits()" [innerHTML]="containsHtml(benefit) ? sanitizeHtml(benefit) : formatBenefitText(benefit)"></li>
           </ul>
           
           <p class="pricing-note">
@@ -110,11 +110,29 @@
 
 
   <!-- What You'll Learn Section -->
-  <div class="section" *ngIf="getDisplayLearn().length > 0">
+  <div class="section" *ngIf="getCourseObjectives().length > 0">
     <h2>What You'll Learn</h2>
     <div class="card p-xl">
       <ul class="list">
-        <li *ngFor="let item of getDisplayLearn()">{{ item }}</li>
+        <li *ngFor="let item of getCourseObjectives()">
+          <strong>{{item.Title}}</strong>
+          <span *ngIf="!containsHtml(item.Description)">{{item.Description}}</span>
+          <span *ngIf="containsHtml(item.Description)" [innerHTML]="sanitizeHtml(item.Description)"></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Key Takeaways Section -->
+  <div class="section" *ngIf="getKeyTakeaways().length > 0">
+    <h2>Key Takeaways</h2>
+    <div class="card p-xl">
+      <ul class="key-takeaways-list">
+        <li *ngFor="let item of getKeyTakeaways()">
+          <strong>{{item.Title}}</strong>
+          <span *ngIf="!containsHtml(item.Description)">{{item.Description}}</span>
+          <span *ngIf="containsHtml(item.Description)" [innerHTML]="sanitizeHtml(item.Description)"></span>
+        </li>
       </ul>
     </div>
   </div>
@@ -124,7 +142,10 @@
     <h2>Who Should Attend?</h2>
     <div class="card p-xl">
       <ul class="audience-list">
-        <li *ngFor="let item of getDisplayAudience()">{{ item }}</li>
+        <li *ngFor="let item of getDisplayAudience()">
+          <span *ngIf="!containsHtml(item)">{{ item }}</span>
+          <span *ngIf="containsHtml(item)" [innerHTML]="sanitizeHtml(item)"></span>
+        </li>
       </ul>
     </div>
   </div>

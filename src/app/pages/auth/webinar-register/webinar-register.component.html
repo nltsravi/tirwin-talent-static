@@ -58,12 +58,7 @@
                   <div class="datetime-content">
                     <span class="datetime-label">Price</span>
                     <span class="datetime-value price-value">
-                      <ng-container *ngIf="webinarDetails.price === 0; else paidWebinar">
-                        FREE
-                      </ng-container>
-                      <ng-template #paidWebinar>
-                        ₹{{ webinarDetails.price }}
-                      </ng-template>
+                      {{ getDisplayPrice() }}
                     </span>
                   </div>
                 </div>
@@ -214,8 +209,8 @@
                       </small>
                     </div>
 
-                  <!-- Payment Section -->
-                  <div class="payment-section" *ngIf="isOtpVerified">
+                  <!-- Payment Section - Only for Paid Webinars -->
+                  <div class="payment-section" *ngIf="isOtpVerified && !isFreeWebinar()">
                     <h4 class="payment-title">
                       <i class="fas fa-credit-card"></i>
                       Payment Details
@@ -224,7 +219,7 @@
                     <div class="payment-info">
                       <div class="amount-display">
                         <span class="amount-label">Amount to Pay:</span>
-                        <span class="amount-value">₹{{ webinarDetails?.price || 99 }}</span>
+                        <span class="amount-value">{{ getDisplayPrice() }}</span>
                       </div>
                     </div>
                     
@@ -255,6 +250,22 @@
                       <small class="text-info">
                         <i class="fas fa-info-circle"></i> Enter the transaction reference number from your payment
                       </small>
+                    </div>
+                  </div>
+
+                  <!-- Free Webinar Notice -->
+                  <div class="free-webinar-notice" *ngIf="isOtpVerified && isFreeWebinar()">
+                    <div class="notice-card">
+                      <div class="notice-icon">
+                        <i class="fas fa-gift"></i>
+                      </div>
+                      <div class="notice-content">
+                        <h4 class="notice-title">Free Webinar Registration</h4>
+                        <p class="notice-text">
+                          <i class="fas fa-check-circle text-success"></i>
+                          No payment required for this webinar. You can proceed directly to registration.
+                        </p>
+                      </div>
                     </div>
                   </div>
                   </div>

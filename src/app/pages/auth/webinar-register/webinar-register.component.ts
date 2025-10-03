@@ -51,6 +51,24 @@ export class WebinarRegisterComponent implements OnInit {
 
   public logoUrl = 'assets/images/logo.png';
 
+  /**
+   * Check if webinar is free
+   */
+  isFreeWebinar(): boolean {
+    const price = parseFloat(this.webinarDetails?.price || '0');
+    return price === 0 || price === 0.00;
+  }
+
+  /**
+   * Get display price for webinar
+   */
+  getDisplayPrice(): string {
+    if (this.isFreeWebinar()) {
+      return 'FREE';
+    }
+    return `₹${this.webinarDetails?.price || 99}`;
+  }
+
   constructor(
     private authService: AuthService,
     private paymentService: PaymentService,
@@ -264,8 +282,8 @@ export class WebinarRegisterComponent implements OnInit {
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    // Use the user input transaction reference
-    const userTransactionId = this.transactionReference.trim();
+    // Use the user input transaction reference (empty for free webinars)
+    const userTransactionId = this.isFreeWebinar() ? 'FREE_WEBINAR' : this.transactionReference.trim();
 
     if (this.isExistingUser) {
       // User already exists, call webinar subscription API
@@ -388,7 +406,8 @@ export class WebinarRegisterComponent implements OnInit {
       return;
     }
 
-    if (!this.transactionReference || this.transactionReference.trim() === '') {
+    // Only require transaction reference for paid webinars
+    if (!this.isFreeWebinar() && (!this.transactionReference || this.transactionReference.trim() === '')) {
       this.errorMessage = 'Please enter your transaction reference number.';
       return;
     }

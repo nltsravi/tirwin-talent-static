@@ -298,10 +298,19 @@ export class WebinarNewDetailsComponent implements OnInit {
   }
 
   getDisplayPrice(): string {
+    let price = 0;
     if (this.webinar?.price) {
-      return `₹${this.webinar.price}`;
+      price = parseFloat(this.webinar.price);
+    } else {
+      price = this.fallbackData?.priceINR || 99;
     }
-    return `₹${this.fallbackData?.priceINR || 99}`;
+    
+    // Display "Free" if price is 0 or 0.00
+    if (price === 0 || price === 0.00) {
+      return 'Free';
+    }
+    
+    return `₹${price}`;
   }
 
   getDisplayBenefits(): string[] {
@@ -316,6 +325,30 @@ export class WebinarNewDetailsComponent implements OnInit {
       return this.webinar.additional_info.course_objectives.map((item: any) => item.Description || item.Title);
     }
     return this.fallbackData?.learn || [];
+  }
+
+  /** Get course objectives with HTML support */
+  getCourseObjectives(): any[] {
+    if (this.webinar?.additional_info?.course_objectives) {
+      return this.webinar.additional_info.course_objectives;
+    }
+    // Convert fallback data to the same structure
+    return this.fallbackData?.learn?.map(item => ({
+      Title: '',
+      Description: item
+    })) || [];
+  }
+
+  /** Get key takeaways with HTML support */
+  getKeyTakeaways(): any[] {
+    if (this.webinar?.additional_info?.key_take_aways) {
+      return this.webinar.additional_info.key_take_aways;
+    }
+    // Convert fallback data to the same structure if available
+    return this.fallbackData?.learn?.map(item => ({
+      Title: '',
+      Description: item
+    })) || [];
   }
 
   getDisplayAudience(): string[] {
@@ -432,6 +465,26 @@ export class WebinarNewDetailsComponent implements OnInit {
     
     console.log('formatProofPointText - Formatted:', formattedText);
     return formattedText;
+  }
+
+  /** Check if content contains HTML tags */
+  containsHtml(content: string): boolean {
+    if (!content) return false;
+    const htmlTagRegex = /<[^>]*>/;
+    return htmlTagRegex.test(content);
+  }
+
+  /** Safely render HTML content */
+  sanitizeHtml(content: string): string {
+    if (!content) return '';
+    
+    // If content doesn't contain HTML, return as is
+    if (!this.containsHtml(content)) {
+      return content;
+    }
+    
+    // Return HTML content for rendering with [innerHTML]
+    return content;
   }
 
   ngOnDestroy(): void {

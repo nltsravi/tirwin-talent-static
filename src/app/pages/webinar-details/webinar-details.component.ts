@@ -238,6 +238,35 @@ export class WebinarDetailsComponent implements OnInit {
     return n < 10 ? '0' + n : '' + n;
   }
 
+  /** Get display price with Free label for zero amount */
+  getDisplayPrice(): string {
+    const price = parseFloat(this.webinar?.price);
+    if (price === 0 || price === 0.00) {
+      return 'Free';
+    }
+    return `₹${price}`;
+  }
+
+  /** Check if content contains HTML tags */
+  containsHtml(content: string): boolean {
+    if (!content) return false;
+    const htmlTagRegex = /<[^>]*>/;
+    return htmlTagRegex.test(content);
+  }
+
+  /** Safely render HTML content */
+  sanitizeHtml(content: string): string {
+    if (!content) return '';
+    
+    // If content doesn't contain HTML, return as is
+    if (!this.containsHtml(content)) {
+      return content;
+    }
+    
+    // Return HTML content for rendering with [innerHTML]
+    return content;
+  }
+
   ngOnDestroy(): void {
     if (this.countdownInterval) {
       clearInterval(this.countdownInterval);

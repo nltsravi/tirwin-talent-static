@@ -147,3 +147,244 @@
 .inspiro-theme {
   display: none;
 }
+
+/* Key takeaways list without bullets */
+.key-takeaways-list {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin: 0 !important;
+}
+
+.key-takeaways-list li {
+  list-style: none !important;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  border-left: 4px solid #1e3a8a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #1e293b;
+}
+
+.key-takeaways-list li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border-left-color: #3b82f6;
+}
+
+.key-takeaways-list li strong {
+  color: #1e3a8a;
+  font-size: 1.15rem;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.key-takeaways-list li span {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #374151;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  /* Container and layout adjustments */
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  /* Main content mobile adjustments */
+  .main-content {
+    padding: 1rem 0;
+  }
+
+  /* Section spacing */
+  .section {
+    margin-bottom: 2rem;
+  }
+
+  .section h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Card adjustments */
+  .card {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .card-content {
+    padding: 1rem;
+  }
+
+  /* Why attend card mobile styling */
+  .why-attend-card {
+    padding: 1rem;
+  }
+
+  .benefits-title {
+    font-size: 1.4rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .benefits-list {
+    padding-left: 0;
+    margin: 0;
+  }
+
+  .benefits-list li {
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+  }
+
+  /* List styling for mobile */
+  .list, .audience-list {
+    padding-left: 0;
+  }
+
+  .list li, .audience-list li {
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+  }
+
+  /* Key takeaways mobile styling */
+  .key-takeaways-list {
+    padding-left: 0;
+  }
+
+  .key-takeaways-list li {
+    padding: 1rem 0.75rem;
+    margin-bottom: 1.25rem;
+    background: #f8fafc;
+    border-radius: 10px;
+    border-left: 3px solid #1e3a8a;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .key-takeaways-list li strong {
+    font-size: 1.05rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .key-takeaways-list li span {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  /* Proof points mobile adjustments */
+  .proof-points-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .proof-point-card {
+    padding: 1.5rem 1rem;
+    text-align: center;
+  }
+
+  .proof-point-number {
+    font-size: 2.5rem !important;
+    margin-bottom: 0.5rem;
+  }
+
+  .proof-point-description {
+    font-size: 0.9rem;
+  }
+
+  /* Button adjustments */
+  .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border-radius: 6px;
+  }
+
+  .mobile-register-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  /* FAQ mobile adjustments */
+  .faq {
+    margin-bottom: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .faq summary {
+    padding: 1rem;
+    background: #f8f9fa;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .faq div {
+    padding: 1rem;
+    background: white;
+    line-height: 1.5;
+  }
+
+  /* Pricing and urgency notes */
+  .pricing-note, .urgency-note {
+    text-align: center;
+    margin: 1rem 0;
+    padding: 0.75rem;
+  }
+}
+
+/* Extra small devices (phones, 576px and down) */
+@media (max-width: 576px) {
+  .section h2 {
+    font-size: 1.3rem;
+  }
+
+  .benefits-title {
+    font-size: 1.2rem;
+  }
+
+  .card {
+    padding: 0.75rem;
+  }
+
+  .card-content {
+    padding: 0.75rem;
+  }
+
+  .benefits-list li,
+  .list li,
+  .audience-list li,
+  .key-takeaways-list li {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .proof-point-number {
+    font-size: 2rem !important;
+  }
+
+  .proof-point-description {
+    font-size: 0.8rem;
+  }
+
+  .btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
