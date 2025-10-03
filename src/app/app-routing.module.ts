@@ -24,6 +24,7 @@ const routes: Routes = [
       { path: 'auth', loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule), data: { showSlider: false }  }, // 
       { path: 'profile', loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule), data: { showSlider: false }  }, // 
       { path: 'webinar/:stype', loadChildren: () => import('./pages/webinar-list/webinar-list.module').then(m => m.WebinarListModule), data: { showSlider: false, account: true }  }, // 
+      { path: 'webinar/:style/4e86e649-bb3c-45c4-a2ff-be4c625e2ac8', redirectTo: 'webinar-new/:style/4e86e649-bb3c-45c4-a2ff-be4c625e2ac8' }, // Redirect specific webinar to static page
       { path: 'webinar/:style/:id', loadChildren: () => import('./pages/webinar-details/webinar-details.module').then(m => m.CourseDetailsModule), data: { showSlider: false, account: true }  }, // 
       { path: 'webinar-new/:style/:id', loadChildren: () => import('./pages/webinar-new-details/webinar-new-details.module').then(m => m.WebinarNewDetailsModule), data: { showSlider: false, account: true }  }, // New webinar details
       { path: 'checkout', loadChildren: () => import('./pages/checkout/checkout.module').then(m => m.CheckoutModule), data: { showSlider: false, account: true }  }, // 

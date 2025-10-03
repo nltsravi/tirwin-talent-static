@@ -189,6 +189,24 @@
   color: #374151;
 }
 
+/* Benefits list styling for desktop - similar to mobile view */
+.benefits-list {
+  padding-left: 1rem;
+  margin: 0;
+}
+
+.benefits-list li {
+  padding: 0.25rem 0;
+  margin-bottom: 0.25rem;
+  line-height: 1.5;
+  list-style-type: disc;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+
 /* Mobile Responsive Styles */
 @media (max-width: 768px) {
   /* Container and layout adjustments */
@@ -236,14 +254,15 @@
   }
 
   .benefits-list {
-    padding-left: 0;
+    padding-left: 1rem;
     margin: 0;
   }
 
   .benefits-list li {
-    padding: 0.75rem;
-    margin-bottom: 0.75rem;
+    padding: 0.25rem 0;
+    margin-bottom: 0.5rem;
     line-height: 1.5;
+    list-style-type: disc;
   }
 
   /* List styling for mobile */
@@ -311,13 +330,38 @@
     border-radius: 6px;
   }
 
+  /* Fix CTA button alignment in mobile view */
+  .why-attend-card .btn {
+    width: 100% !important;
+    margin: 1rem 0 0 0 !important;
+    display: block !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+
   .mobile-register-btn {
     position: fixed;
     bottom: 20px;
-    left: 20px;
-    right: 20px;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
     z-index: 1000;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    width: calc(100vw - 32px) !important;
+    max-width: 400px !important;
+    display: block !important;
+    text-align: center !important;
+    margin: 0 !important;
+  }
+
+  /* Center the button within the container's content area */
+  @media (max-width: 768px) {
+    .mobile-register-btn {
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      width: calc(100vw - 32px) !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
   }
 
   /* FAQ mobile adjustments */
