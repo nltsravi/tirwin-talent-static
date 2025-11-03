@@ -28,23 +28,20 @@
                   <div class="row text-center mt-4" *ngIf="currentPageType != 'Training'">
                       <div class="col-6 col-md-3">
                           <i class="fas fa-calendar-alt text-primary"></i> 
-                          {{ webinar?.start_time ? (webinar?.start_time | date:'longDate') : 'TBD' }}
+                          {{ formatDisplayDate(webinar?.start_time, 'date') }}
     </div>
                       <div class="col-6 col-md-3">
                           <i class="fas fa-clock text-primary"></i> 
-                          {{ webinar?.start_time && webinar?.end_time 
-                              ? (webinar?.start_time | date:'shortTime') + ' - ' + (webinar?.end_time | date:'shortTime') 
-                              : 'TBD' 
-                          }}
+                          {{ formatDisplayDate(webinar?.start_time, 'time') }} - {{ formatDisplayDate(webinar?.end_time, 'time') }}
   </div>
                       <div class="col-6 col-md-3"> 
                           @if(webinar?.trainers){
                               @for(trainer of webinar?.trainers; track trainer.id){
-                                  <i class="fas fa-user text-primary"></i> {{trainer.user.first_name + ' ' + trainer.user.last_name}}<br>
+                                  <i class="fas fa-user text-primary"></i> {{formatTrainerName(trainer.user.first_name, trainer.user.last_name)}}<br>
                               }
                           }
                           @else {
-                              {{webinar?.trainer?.user?.first_name + ' ' +  webinar?.trainer?.user?.last_name || 'TDB'}}
+                              <i class="fas fa-user text-primary"></i> {{formatTrainerName(webinar?.trainer?.user?.first_name, webinar?.trainer?.user?.last_name)}}
                           }
       </div>
                       <!-- <div class="col-6 col-md-3"><i class="fas fa-tags text-primary"></i> {{ webinar?.tags?.join(',
@@ -309,12 +306,12 @@
               <!-- Trainer Profile Section -->
                @if(webinar?.trainers){
 
-                  <h2 class="h4 font-weight-bold text-left">Trainer Profiles</h2>
+                  <h2 class="h4 font-weight-bold text-left">Trainer Profile(s)</h2>
                   <ul class="list-unstyled mb-4">
                       <li *ngFor="let trainer of webinar.trainers" class="d-flex align-items-center mb-3">
                           <img *ngIf="trainer.profile_image" [src]="trainer.profile_image" alt="{{ trainer.user.first_name}}" class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;">
                           <div>
-                              <div class="fw-semibold">{{ trainer.user.first_name + ' ' + trainer.user.last_name }}</div>
+                              <div class="fw-semibold">{{ formatTrainerName(trainer.user.first_name, trainer.user.last_name) }}</div>
                               <div *ngIf="trainer.organization" class="text-muted small">{{ trainer.organization }}</div>
                               <div *ngIf="trainer.title" class="text-muted small">{{ trainer.title }}</div>
                           </div>
@@ -334,7 +331,7 @@
                   
                       <!-- Trainer Details -->
                       <div class="trainer-info mt-3">
-                          <h5 class="mb-1 fw-bold text-dark">{{ webinar?.trainer?.user?.first_name + ' ' +  webinar?.trainer?.user?.last_name || 'Ramesh Gupta' }}</h5>
+                          <h5 class="mb-1 fw-bold text-dark">{{ formatTrainerName(webinar?.trainer?.user?.first_name, webinar?.trainer?.user?.last_name) }}</h5>
                           <p class="text-muted mb-1 small">{{ webinar?.trainer?.organization || 'FedEx Logistics' }}</p>
                   
                           <!-- Trainer Stats -->

@@ -3,8 +3,34 @@
     <div class="container-fluid">
       <div class="row align-items-center min-vh-100" style="padding-top: 50px;">
         
+        <!-- Thank You Page -->
+        <div class="col-12 d-flex justify-content-center" *ngIf="showThankYouPage">
+          <div class="thank-you-card">
+            <div class="success-animation">
+              <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+              </svg>
+            </div>
+            
+            <div class="thank-you-content">
+              <h1 class="thank-you-title">Registration Successful!</h1>
+              <p class="thank-you-message">
+                Thank you for registering for the webinar. You will receive a confirmation email shortly with all the details.
+              </p>
+              <p class="thank-you-submessage">
+                We're excited to have you join us!
+              </p>
+              
+              <button type="button" class="btn btn-primary btn-home" (click)="goToHome()">
+                <i class="fas fa-home"></i> Go to Home
+              </button>
+            </div>
+          </div>
+        </div>
+        
         <!-- Webinar Registration Card -->
-        <div class="col-12 d-flex justify-content-center">
+        <div class="col-12 d-flex justify-content-center" *ngIf="!showThankYouPage">
           <div class="webinar-registration-card">
             
             <!-- Card Banner -->

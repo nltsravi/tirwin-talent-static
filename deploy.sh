@@ -3,10 +3,11 @@
 # Exit on any error
 set -e
 
-export AWS_DEFAULT_PROFILE=dev.tirwin.fe
+export AWS_DEFAULT_PROFILE=dev.tirwin.fe.new
 # Configuration
 
 set -o allexport
+#source .env.production 
 source .env.development
 set +o allexport
 
@@ -57,32 +58,45 @@ fi
 
 echo "Build successful. Deploying to S3..."
 
-# Sync the dist folder with S3 bucket
-echo "Uploading files to S3..."
-if ! aws s3 sync $DIST_FOLDER/ s3://$S3_BUCKET/ --delete --exclude "assets/*" --exclude "media/*"; then
-    handle_error "Failed to sync files with S3 bucket"
+# Sync all files except index.html, assets, and media
+# AWS CLI auto-detects MIME types based on file extensions
+echo "Uploading static assets to S3 (excluding assets and media folders)..."
+if ! aws s3 sync "$DIST_FOLDER/" "s3://$S3_BUCKET/" \
+  --delete \
+  --exclude "index.html" \
+  --exclude "assets/*" \
+  --exclude "media/*" \
+  --cache-control "max-age=31536000,public,immutable"; then
+    handle_error "Failed to sync static assets with S3 bucket"
 fi
 
-# Set proper cache control headers
-echo "Setting cache control headers..."
-if ! aws s3 cp s3://$S3_BUCKET/ s3://$S3_BUCKET/ \
-    --content-type text/html \
-    --recursive \
-    --metadata-directive REPLACE \
-    --cache-control max-age=31536000,public \
-    --exclude "index.html" --exclude "assets/*" --exclude "media/*"; then
-    handle_error "Failed to set cache control headers for static assets"
+# Upload index.html separately with no-cache and explicit content type
+echo "Uploading index.html with no-cache..."
+if ! aws s3 cp "$DIST_FOLDER/index.html" "s3://$S3_BUCKET/index.html" \
+  --content-type "text/html; charset=utf-8" \
+  --cache-control "no-cache,no-store,must-revalidate"; then
+    handle_error "Failed to upload index.html"
 fi
 
-# Set no-cache for index.html
-echo "Setting cache control for index.html..."
-if ! aws s3 cp s3://$S3_BUCKET/index.html s3://$S3_BUCKET/index.html \
-    --content-type text/html \
-    --metadata-directive REPLACE \
-    --cache-control no-cache,no-store,must-revalidate \
-    --exclude "assets/*" --exclude "media/*"; then
-    handle_error "Failed to set cache control for index.html"
-fi
+# Verify and fix MIME types for JavaScript files
+echo "Setting correct MIME types for JS files..."
+aws s3 cp "s3://$S3_BUCKET/" "s3://$S3_BUCKET/" \
+  --recursive \
+  --exclude "*" \
+  --include "*.js" \
+  --content-type "application/javascript" \
+  --metadata-directive REPLACE \
+  --cache-control "max-age=31536000,public,immutable" || echo "Warning: Could not update JS MIME types"
+
+# Verify and fix MIME types for CSS files
+echo "Setting correct MIME types for CSS files..."
+aws s3 cp "s3://$S3_BUCKET/" "s3://$S3_BUCKET/" \
+  --recursive \
+  --exclude "*" \
+  --include "*.css" \
+  --content-type "text/css" \
+  --metadata-directive REPLACE \
+  --cache-control "max-age=31536000,public,immutable" || echo "Warning: Could not update CSS MIME types"
 
 # Create CloudFront invalidation
 echo "Creating CloudFront invalidation..."

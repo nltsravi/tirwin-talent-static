@@ -7,38 +7,8 @@
       <h1 class="hero-title">{{ getDisplayTitle() }}</h1>
       <p class="hero-subtitle">{{ getDisplayTagline() }}</p>
       <br>
-      <div class="price-badge">
+      <div class="price-badge price-badge-clickable" (click)="redirectToWebinarRegistration()">
         <span>Only {{ getDisplayPrice() }} - Seats Limited</span>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Floating Registration Card -->
-  <div class="floating-registration-card">
-    <div class="card webinar-card">
-      <!-- Card Content -->
-      <div class="card-content p-xl">
-        <div class="webinar-info">
-          <div class="info-row">
-            <span class="info-icon">📅</span>
-            <span class="info-value">{{ formatDate(webinar.start_time || getFallbackDate()) }}</span>
-          </div>
-          <div class="info-row">
-            <span class="info-icon">⏰</span>
-            <span class="info-value">{{ formatTime(webinar.start_time || getFallbackStartTime()) }} - {{ formatTime(webinar.end_time || getFallbackEndTime()) }}</span>
-          </div>
-          <div class="info-row">
-            <span class="info-icon">💻</span>
-            <span class="info-value">{{ getPlatform() }}</span>
-          </div>
-        </div>
-        
-        <div class="register-section">
-          <button class="btn btn-primary register-btn" (click)="redirectToWebinarRegistration()">
-            Register at ₹99
-          </button>
-          <p class="register-note">Seats are limited! Complete your registration to receive the Zoom link.</p>
-        </div>
       </div>
     </div>
   </div>
@@ -78,125 +48,162 @@
   </div>
 </div>
 
-<!-- Main Content -->
-<div class="container main-content" *ngIf="!isLoading && !errorMessage && webinar">
+<!-- Main Content with Two Column Layout -->
+<div class="container main-content two-column-layout" *ngIf="!isLoading && !errorMessage && webinar">
   
-  <!-- Why Attend This Webinar Card -->
-  <div class="section">
-    <div class="card why-attend-card">
-      <div class="card-content p-xl">
-        <div class="stack">
-          <h3 class="benefits-title">Why attend this Webinar?</h3>
-          
-          <p class="benefits-list">
-            <label *ngFor="let benefit of getDisplayBenefits()" [innerHTML]="benefit"></label>
-          </p>
-          
-          <p class="pricing-note">
-            <em>All this for less than the price of a coffee — just ₹99!</em>
-          </p>
-          
-          <p class="urgency-note">
-            <strong>Seats are limited!</strong> Secure your spot now.
-          </p>
-          
-          <button class="btn btn-ghost" (click)="redirectToWebinarRegistration()">
-            Register Now at ₹99
-          </button>
+  <!-- Left Column - Content -->
+  <div class="left-column">
+    
+    <!-- Why Attend This Webinar Card -->
+    <div class="section">
+      <div class="card why-attend-card">
+        <div class="card-content p-xl">
+          <div class="stack">
+            <h3 class="benefits-title">Why attend this Webinar?</h3>
+            
+            <p class="benefits-list">
+              <label *ngFor="let benefit of getDisplayBenefits()" [innerHTML]="benefit"></label>
+            </p>
+            
+            <p class="pricing-note">
+              <em>All this for less than the price of a coffee — just ₹99!</em>
+            </p>
+            
+            <p class="urgency-note">
+              <strong>Seats are limited!</strong> Secure your spot now.
+            </p>
+            
+            <button class="btn btn-ghost" (click)="redirectToWebinarRegistration()">
+              Register Now at ₹99
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
 
 
-  <!-- What You'll Learn Section -->
-  <div class="section" *ngIf="getCourseObjectives().length > 0">
-    <h2>What You'll Learn</h2>
+    <!-- What You'll Learn Section -->
+    <div class="section" *ngIf="getCourseObjectives().length > 0">
+      <h2>What You'll Learn</h2>
+      <div class="card p-xl">
+        <ul class="list">
+          <li *ngFor="let item of getCourseObjectives()">
+            <strong>{{item.Title}}</strong>
+            <span *ngIf="!containsHtml(item.Description)">{{item.Description}}</span>
+            <span *ngIf="containsHtml(item.Description)" [innerHTML]="sanitizeHtml(item.Description)"></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Who Should Attend Section -->
+    <div class="section" *ngIf="getDisplayAudience().length > 0">
+      <h2>Who Should Attend?</h2>
+      <div class="card p-xl">
+        <ul class="audience-list">
+          <li *ngFor="let item of getDisplayAudience()">
+            <span *ngIf="!containsHtml(item)">{{ item }}</span>
+            <span *ngIf="containsHtml(item)" [innerHTML]="sanitizeHtml(item)"></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Proof Points Section -->
+    <div class="section">
+      <div class="proof-points-grid">
+        <div class="proof-point-card">
+          <div class="proof-point-content">
+            <div class="proof-point-number">100+</div>
+            <div class="proof-point-description">students trained through Tirwin Talent programs</div>
+          </div>
+        </div>
+        <div class="proof-point-card">
+          <div class="proof-point-content">
+            <div class="proof-point-number">15+</div>
+            <div class="proof-point-description">years of industry experience</div>
+          </div>
+        </div>
+        <div class="proof-point-card">
+          <div class="proof-point-content">
+            <div class="proof-point-number">10+</div>
+            <div class="proof-point-description">industry experts and mentors</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQs Section -->
+    <div class="section">
+      <h2>FAQs</h2>
+      <div class="card p-xl">
+        <details class="faq" *ngFor="let faq of getDisplayFaqs()">
+          <summary>{{ faq.q }}</summary>
+          <div class="margin-top-12 muted">{{ faq.a }}</div>
+        </details>
+      </div>
+    </div>
+
+    <!-- Secure Your Spot Card -->
     <div class="card p-xl">
-      <ul class="list">
-        <li *ngFor="let item of getCourseObjectives()">
-          <strong>{{item.Title}}</strong>
-          <span *ngIf="!containsHtml(item.Description)">{{item.Description}}</span>
-          <span *ngIf="containsHtml(item.Description)" [innerHTML]="sanitizeHtml(item.Description)"></span>
-        </li>
-      </ul>
+      <div class="stack">
+        <button class="btn btn-primary secure-spot-btn" (click)="redirectToWebinarRegistration()">
+          Secure Your Spot ({{ getDisplayPrice() }})
+        </button>
+        <p class="muted">Seats are limited! Complete your registration to receive the Zoom link.</p>
+        
+        <button class="btn btn-ghost" *ngIf="getAltRegUrl() !== '#'">
+          Alternative Link
+        </button>
+        
+        <p class="muted text-center font-size-14 margin-0">
+          You'll receive the confirmation email with joining details immediately after payment.
+        </p>
+      </div>
     </div>
-  </div>
 
-  <!-- Who Should Attend Section -->
-  <div class="section" *ngIf="getDisplayAudience().length > 0">
-    <h2>Who Should Attend?</h2>
+    <!-- Final CTA Card -->
     <div class="card p-xl">
-      <ul class="audience-list">
-        <li *ngFor="let item of getDisplayAudience()">
-          <span *ngIf="!containsHtml(item)">{{ item }}</span>
-          <span *ngIf="containsHtml(item)" [innerHTML]="sanitizeHtml(item)"></span>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- Proof Points Section -->
-  <div class="section">
-    <div class="proof-points-grid">
-      <div class="proof-point-card">
-        <div class="proof-point-content">
-          <div class="proof-point-number">100+</div>
-          <div class="proof-point-description">students trained through Tirwin Talent programs</div>
-        </div>
-      </div>
-      <div class="proof-point-card">
-        <div class="proof-point-content">
-          <div class="proof-point-number">15+</div>
-          <div class="proof-point-description">years of industry experience</div>
-        </div>
-      </div>
-      <div class="proof-point-card">
-        <div class="proof-point-content">
-          <div class="proof-point-number">10+</div>
-          <div class="proof-point-description">industry experts and mentors</div>
-        </div>
+      <div class="stack text-center">
+        <p class="font-weight-700 margin-0">{{ getFinalCtaText() }}</p>
+        <button class="btn gradient-red" (click)="redirectToWebinarRegistration()">
+          {{ getCtaPrimaryLabel() }}
+        </button>
       </div>
     </div>
+
   </div>
 
-  <!-- FAQs Section -->
-  <div class="section">
-    <h2>FAQs</h2>
-    <div class="card p-xl">
-      <details class="faq" *ngFor="let faq of getDisplayFaqs()">
-        <summary>{{ faq.q }}</summary>
-        <div class="margin-top-12 muted">{{ faq.a }}</div>
-      </details>
-    </div>
-  </div>
-
-  <!-- Secure Your Spot Card -->
-  <div class="card p-xl">
-    <div class="stack">
-      <button class="btn btn-primary secure-spot-btn" (click)="redirectToWebinarRegistration()">
-        Secure Your Spot ({{ getDisplayPrice() }})
-      </button>
-      <p class="muted">Seats are limited! Complete your registration to receive the Zoom link.</p>
-      
-      <button class="btn btn-ghost" *ngIf="getAltRegUrl() !== '#'">
-        Alternative Link
-      </button>
-      
-      <p class="muted text-center font-size-14 margin-0">
-        You'll receive the confirmation email with joining details immediately after payment.
-      </p>
-    </div>
-  </div>
-
-  <!-- Final CTA Card -->
-  <div class="card p-xl">
-    <div class="stack text-center">
-      <p class="font-weight-700 margin-0">{{ getFinalCtaText() }}</p>
-      <button class="btn gradient-red" (click)="redirectToWebinarRegistration()">
-        {{ getCtaPrimaryLabel() }}
-      </button>
+  <!-- Right Column - Registration Card -->
+  <div class="right-column">
+    <div class="sticky-registration-card">
+      <div class="card webinar-card">
+        <!-- Card Content -->
+        <div class="card-content p-xl">
+          <div class="webinar-info">
+            <div class="info-row">
+              <span class="info-icon">📅</span>
+              <span class="info-value">{{ formatDate(webinar.start_time || getFallbackDate()) }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-icon">⏰</span>
+              <span class="info-value">{{ formatTime(webinar.start_time || getFallbackStartTime()) }} - {{ formatTime(webinar.end_time || getFallbackEndTime()) }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-icon">💻</span>
+              <span class="info-value">{{ getPlatform() }}</span>
+            </div>
+          </div>
+          
+          <div class="register-section">
+            <button class="btn btn-primary register-btn" (click)="redirectToWebinarRegistration()">
+              Register at ₹99
+            </button>
+            <p class="register-note">Seats are limited! Complete your registration to receive the Zoom link.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

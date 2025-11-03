@@ -407,7 +407,19 @@ export class WebinarNewDetailsComponent implements OnInit {
     return this.fallbackData?.endTime || '18:30';
   }
 
+  /**
+   * Check if date is 01 Jan 2000 (placeholder date for TBD)
+   */
+  isTBDDate(dateString: string): boolean {
+    if (!dateString) return true;
+    const date = new Date(dateString);
+    return date.getFullYear() === 2000 && date.getMonth() === 0 && date.getDate() === 1;
+  }
+
   formatDate(dateString: string): string {
+    if (!dateString || this.isTBDDate(dateString)) {
+      return 'TBD';
+    }
     const date = new Date(dateString);
     const options: Intl.DateTimeFormatOptions = { 
       weekday: 'long', 
@@ -419,6 +431,9 @@ export class WebinarNewDetailsComponent implements OnInit {
   }
 
   formatTime(timeString: string): string {
+    if (!timeString || this.isTBDDate(timeString)) {
+      return 'TBD';
+    }
     const [hours, minutes] = timeString.split(':');
     const date = new Date();
     date.setHours(parseInt(hours), parseInt(minutes));

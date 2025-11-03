@@ -8,6 +8,109 @@
   background: #f2f4f7;
 }
 
+/* Two Column Layout */
+.two-column-layout {
+  display: flex;
+  gap: 24px;
+  max-width: 1200px !important;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.left-column {
+  flex: 1;
+  max-width: 70%;
+}
+
+.right-column {
+  flex: 0 0 300px;
+  position: sticky;
+  top: 140px;
+  height: fit-content;
+  align-self: flex-start;
+}
+
+.sticky-registration-card {
+  position: sticky;
+  top: 140px;
+  z-index: 100;
+}
+
+.sticky-registration-card .webinar-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(2,6,23,.12);
+  position: sticky;
+  margin-top:30px;
+}
+
+.sticky-registration-card .card-content {
+  padding: 20px;
+}
+
+.sticky-registration-card .info-row {
+  padding: 8px 0;
+  border-bottom: 1px dashed #e2e8f0;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sticky-registration-card .info-row:last-child {
+  border-bottom: none;
+}
+
+.sticky-registration-card .info-icon {
+  font-size: 14px;
+  width: 20px;
+  flex-shrink: 0;
+}
+
+.sticky-registration-card .info-value {
+  font-size: 14px;
+  flex: 1;
+}
+
+.sticky-registration-card .register-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #1e3a8a, #7c3aed);
+  border: none;
+  color: #ffffff;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sticky-registration-card .register-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(30,58,138,0.3);
+}
+
+.sticky-registration-card .register-note {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+  text-align: center;
+}
+
+/* Override proof points grid to show 3 columns */
+.proof-points-grid {
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* Price badge clickable - minimal styling to preserve original appearance */
+.price-badge-clickable {
+  cursor: pointer !important;
+}
+
 /* Override any Angular-specific styling */
 ::ng-deep {
   /* Ensure the component takes full height */
@@ -207,12 +310,71 @@
 }
 
 
+/* Responsive adjustments for two-column layout */
+@media (max-width: 1024px) {
+  .two-column-layout {
+    flex-direction: column;
+    max-width: 90% !important;
+    gap: 20px;
+  }
+  
+  .left-column {
+    max-width: 100%;
+  }
+  
+  .right-column {
+    flex: none;
+    position: relative;
+    top: auto;
+    order: -1;
+  }
+  
+  .sticky-registration-card {
+    position: relative;
+    top: auto;
+  }
+  
+  .sticky-registration-card .webinar-card {
+    position: relative;
+    top: auto;
+  }
+}
+
 /* Mobile Responsive Styles */
 @media (max-width: 768px) {
   /* Container and layout adjustments */
   .container {
     padding-left: 15px;
     padding-right: 15px;
+  }
+  
+  /* Two column layout mobile adjustments */
+  .two-column-layout {
+    flex-direction: column;
+    max-width: 100% !important;
+    gap: 15px;
+    padding: 20px 15px;
+  }
+  
+  .left-column {
+    max-width: 100%;
+  }
+  
+  .right-column {
+    flex: none;
+    position: relative;
+    top: auto;
+    order: -1;
+  }
+  
+  .sticky-registration-card {
+    position: relative;
+    top: auto;
+  }
+  
+  .sticky-registration-card .webinar-card {
+    position: relative;
+    top: auto;
   }
 
   /* Main content mobile adjustments */
@@ -430,5 +592,10 @@
   .btn {
     padding: 0.6rem 0.8rem;
     font-size: 0.9rem;
+  }
+
+  /* Hide right column registration card in mobile view */
+  .right-column {
+    display: none !important;
   }
 }

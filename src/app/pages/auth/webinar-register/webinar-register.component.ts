@@ -49,6 +49,9 @@ export class WebinarRegisterComponent implements OnInit {
   webinarDetails: any = null;
   transactionReference: string = '';
 
+  // Thank you page state
+  showThankYouPage: boolean = false;
+
   public logoUrl = 'assets/images/logo.png';
 
   /**
@@ -276,14 +279,28 @@ export class WebinarRegisterComponent implements OnInit {
     });
   }
   /**
+   * Generate random transaction ID based on date and timestamp
+   */
+  generateRandomTransactionId(): string {
+    const now = new Date();
+    const timestamp = now.getTime();
+    const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
+    const randomSuffix = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const retTxnId = `FREE_${dateStr}_${timestamp}_${randomSuffix}`;
+    
+    return `FREE_${dateStr}_${timestamp}_${randomSuffix}`;
+  }
+
+  /**
    * Complete registration after OTP verification
    */
   completeRegistration(): void {
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    // Use the user input transaction reference (empty for free webinars)
-    const userTransactionId = this.isFreeWebinar() ? 'FREE_WEBINAR' : this.transactionReference.trim();
+    // Generate random transaction ID for free webinars, otherwise use user input
+    const userTransactionId = this.isFreeWebinar() ? this.generateRandomTransactionId() : this.transactionReference.trim();
+  
 
     if (this.isExistingUser) {
       // User already exists, call webinar subscription API
@@ -299,15 +316,9 @@ export class WebinarRegisterComponent implements OnInit {
         next: (response: any) => {
           this.isSubmitting = false;
           console.log('Webinar subscription successful:', response);
-          // Show success toast message and redirect
-          this.toastr.success('Webinar subscription successful! You will receive a confirmation email shortly.', '', {
-            positionClass: 'toast-center-center',
-            timeOut: 3500
-          });
-          // Navigate to home page after showing the toast
-          setTimeout(() => {
-            this.router.navigate(['/home']);
-          }, 2000);
+          // Show thank you page
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          this.showThankYouPage = true;
         },
         error: (error: any) => {
           this.isSubmitting = false;
@@ -352,15 +363,9 @@ export class WebinarRegisterComponent implements OnInit {
             next: (response: any) => {
               this.isSubmitting = false;
               console.log('Webinar subscription successful:', response);
-              // Show success toast message and redirect
-              this.toastr.success('Webinar subscription successful! You will receive a confirmation email shortly.', '', {
-                positionClass: 'toast-center-center',
-                timeOut: 3500
-              });
-              // Navigate to home page after showing the toast
-              setTimeout(() => {
-                this.router.navigate(['/home']);
-              }, 2000);
+              // Show thank you page
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              this.showThankYouPage = true;
             },
             error: (error: any) => {
               this.isSubmitting = false;
@@ -422,6 +427,13 @@ export class WebinarRegisterComponent implements OnInit {
   socialLogin(provider: string): void {
     // Implement social login functionality
     console.log('Social login with:', provider);
+  }
+
+  /**
+   * Navigate to home page
+   */
+  goToHome(): void {
+    this.router.navigate(['/home']);
   }
 
 } 

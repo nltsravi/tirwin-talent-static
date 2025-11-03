@@ -247,6 +247,50 @@ export class WebinarDetailsComponent implements OnInit {
     return `₹${price}`;
   }
 
+  /**
+   * Check if date is 01 Jan 2000 (placeholder date for TBD)
+   */
+  isTBDDate(dateString: string): boolean {
+    if (!dateString) return true;
+    const date = new Date(dateString);
+    return date.getFullYear() === 2000 && date.getMonth() === 0 && date.getDate() === 1;
+  }
+
+  /**
+   * Format date for display or return TBD
+   */
+  formatDisplayDate(dateString: string, format: string = 'date'): string {
+    if (!dateString || this.isTBDDate(dateString)) {
+      return 'TBD';
+    }
+    const date = new Date(dateString);
+    if (format === 'date') {
+      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    } else if (format === 'time') {
+      return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+    }
+    return date.toString();
+  }
+
+  /**
+   * Format trainer name or return single TBD
+   */
+  formatTrainerName(firstName: string, lastName: string): string {
+    // Check if both names are TBD or missing
+    if ((!firstName || firstName === 'TBD') && (!lastName || lastName === 'TBD')) {
+      return 'TBD';
+    }
+    // Check if either name is missing or TBD
+    if (!firstName || firstName === 'TBD') {
+      return lastName || 'TBD';
+    }
+    if (!lastName || lastName === 'TBD') {
+      return firstName || 'TBD';
+    }
+    // Both names are valid
+    return `${firstName} ${lastName}`;
+  }
+
   /** Check if content contains HTML tags */
   containsHtml(content: string): boolean {
     if (!content) return false;
