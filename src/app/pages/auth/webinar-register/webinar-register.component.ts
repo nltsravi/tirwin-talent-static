@@ -53,11 +53,12 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
   // Thank you page state
   showThankYouPage: boolean = false;
 
-  // Payment modal state
+  // Payment modal state (deprecated - now using window)
   showPaymentModal: boolean = false;
   paymentRedirectUrl: any = null;
   isPaymentProcessing: boolean = false;
   iframeMonitorInterval: any = null;
+  paymentWindow: Window | null = null;
 
   public logoUrl = 'assets/images/logo.png';
 
@@ -121,9 +122,15 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
     // Clean up event listener
     window.removeEventListener('message', this.handlePaymentMessage.bind(this));
     
-    // Clear iframe monitoring interval
+    // Clear monitoring interval
     if (this.iframeMonitorInterval) {
       clearInterval(this.iframeMonitorInterval);
+    }
+    
+    // Close payment window if open
+    if (this.paymentWindow && !this.paymentWindow.closed) {
+      this.paymentWindow.close();
+      this.paymentWindow = null;
     }
   }
 
@@ -515,17 +522,16 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         console.log('Payment initiation response:', response);
         
         if (response && response.redirectUrl) {
-          // Sanitize the URL for iframe
-          this.paymentRedirectUrl = this.sanitizer.bypassSecurityTrustResourceUrl(response.redirectUrl);
+          // Open payment gateway in new window (400x600)
+          const windowFeatures = 'width=400,height=600,left=100,top=100,resizable=yes,scrollbars=yes';
+          this.paymentWindow = window.open(response.redirectUrl, 'PaymentGateway', windowFeatures);
           
-          // Show modal
-          this.showPaymentModal = true;
           this.isPaymentProcessing = false;
           
           this.toastr.success('Redirecting to payment gateway...');
           
-          // Start monitoring iframe for success page
-          this.startIframeMonitoring();
+          // Start monitoring payment window for success
+          this.startWindowMonitoring();
         } else {
           this.toastr.error('Failed to get payment redirect URL');
           this.isPaymentProcessing = false;
@@ -540,44 +546,68 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Start monitoring iframe for success page
+   * Start monitoring payment window for success page
    */
-  startIframeMonitoring(): void {
+  startWindowMonitoring(): void {
     // Clear any existing interval
     if (this.iframeMonitorInterval) {
       clearInterval(this.iframeMonitorInterval);
     }
 
-    // Check iframe URL every 2 seconds
+    // Check payment window URL every 2 seconds
     this.iframeMonitorInterval = setInterval(() => {
       try {
-        const iframe = document.querySelector('.payment-iframe') as HTMLIFrameElement;
-        if (iframe && iframe.contentWindow) {
-          const iframeUrl = iframe.contentWindow.location.href;
-          console.log('Monitoring iframe URL:', iframeUrl);
+        // Check if window is closed
+        if (this.paymentWindow && this.paymentWindow.closed) {
+          console.log('Payment window closed by user');
+          clearInterval(this.iframeMonitorInterval);
+          this.isPaymentProcessing = false;
+          this.paymentWindow = null;
+          return;
+        }
+
+        // Try to access window URL
+        if (this.paymentWindow && this.paymentWindow.location) {
+          const windowUrl = this.paymentWindow.location.href;
+          console.log('Monitoring payment window URL:', windowUrl);
           
           // Check if the URL contains success indicators
-          if (this.isSuccessUrl(iframeUrl)) {
+          if (this.isSuccessUrl(windowUrl)) {
+            console.log('Success URL detected in payment window');
             clearInterval(this.iframeMonitorInterval);
-            this.handlePaymentSuccess({ url: iframeUrl });
+            
+            // Close payment window
+            if (this.paymentWindow) {
+              this.paymentWindow.close();
+              this.paymentWindow = null;
+            }
+            
+            this.handlePaymentSuccess({ url: windowUrl });
           }
         }
       } catch (error) {
-        // Cross-origin restrictions - cannot access iframe URL
+        // Cross-origin restrictions - cannot access window URL
         // This is normal for external payment gateways
         // We'll rely on postMessage instead
+        // Silent fail, continue monitoring for window close or postMessage
       }
     }, 2000); // Check every 2 seconds
   }
 
   /**
-   * Close payment modal
+   * Close payment modal (deprecated - now closes payment window)
    */
   closePaymentModal(): void {
     this.showPaymentModal = false;
     this.paymentRedirectUrl = null;
     
-    // Stop monitoring iframe
+    // Close payment window if open
+    if (this.paymentWindow && !this.paymentWindow.closed) {
+      this.paymentWindow.close();
+      this.paymentWindow = null;
+    }
+    
+    // Stop monitoring
     if (this.iframeMonitorInterval) {
       clearInterval(this.iframeMonitorInterval);
       this.iframeMonitorInterval = null;
@@ -630,22 +660,85 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
    * Handle successful payment
    */
   handlePaymentSuccess(data: any): void {
-    console.log('Payment successful, closing modal and showing success page', data);
+    console.log('Payment successful, processing registration', data);
     
-    // Close the modal
+    // Close the payment window if it's still open
+    if (this.paymentWindow && !this.paymentWindow.closed) {
+      this.paymentWindow.close();
+      this.paymentWindow = null;
+    }
+    
+    // Stop monitoring
+    if (this.iframeMonitorInterval) {
+      clearInterval(this.iframeMonitorInterval);
+      this.iframeMonitorInterval = null;
+    }
+    
+    // Close the modal (legacy)
     this.showPaymentModal = false;
     this.paymentRedirectUrl = null;
     
-    // Show thank you page
-    this.showThankYouPage = true;
+    // Extract transaction ID from URL or data
+    let transactionId = null;
     
-    // Show success message
-    this.toastr.success('Payment completed successfully! Your registration is confirmed.');
+    // Try to extract from URL parameter
+    if (data.url) {
+      transactionId = this.extractTransactionIdFromUrl(data.url);
+    }
     
-    // Optionally complete the registration on the backend
-    // if you have a transaction ID from the payment gateway
-    if (data.transactionId || data.txnId) {
-      this.completeRegistrationAfterPayment(data.transactionId || data.txnId);
+    // Fallback to data properties
+    if (!transactionId && (data.transactionId || data.txnId)) {
+      transactionId = data.transactionId || data.txnId;
+    }
+    
+    console.log('Extracted transaction ID:', transactionId);
+    
+    // Call subscribe API before showing success page
+    if (transactionId) {
+      this.completeRegistrationAfterPayment(transactionId);
+    } else {
+      // If no transaction ID, still navigate to success page but log warning
+      console.warn('No transaction ID found, navigating to success page anyway');
+      this.router.navigate(['/auth/webinar-registration-success']).then(() => {
+        this.toastr.warning('Payment completed, but transaction ID not found. Please contact support if you don\'t receive confirmation.');
+      });
+    }
+  }
+
+  /**
+   * Extract transaction ID from URL parameters
+   */
+  extractTransactionIdFromUrl(url: string): string | null {
+    try {
+      const urlObj = new URL(url);
+      
+      // Check common parameter names for transaction ID
+      const paramNames = [
+        'txnId',
+        'transactionId',
+        'transaction_id',
+        'txn_id',
+        'orderId',
+        'order_id',
+        'paymentId',
+        'payment_id',
+        'refId',
+        'ref_id'
+      ];
+      
+      for (const paramName of paramNames) {
+        const value = urlObj.searchParams.get(paramName);
+        if (value) {
+          console.log(`Found transaction ID in URL parameter '${paramName}':`, value);
+          return value;
+        }
+      }
+      
+      console.log('No transaction ID found in URL parameters');
+      return null;
+    } catch (error) {
+      console.error('Error parsing URL:', error);
+      return null;
     }
   }
 
@@ -669,16 +762,31 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       transaction_id: transactionId
     };
 
-    console.log('Completing registration with transaction:', transactionId);
+    console.log('Calling webinar subscribe API with transaction:', transactionId);
+    console.log('Subscription data:', subscriptionData);
 
-    // Call the backend API to complete registration
+    // Show processing message
+    this.toastr.info('Processing your registration...');
+
+    // Call the backend API to complete registration BEFORE showing success page
     this.authService.subscribeToWebinar(subscriptionData).subscribe({
       next: (response: any) => {
-        console.log('Registration completed successfully:', response);
+        console.log('Registration API completed successfully:', response);
+        
+        // Navigate to webinar registration success page
+        this.router.navigate(['/auth/webinar-registration-success']).then(() => {
+          console.log('Navigated to success page');
+          this.toastr.success('Payment completed successfully! Your registration is confirmed.');
+        });
       },
       error: (error: any) => {
-        console.error('Error completing registration:', error);
-        // Still show success to user since payment was successful
+        console.error('Error completing registration API:', error);
+        
+        // Still navigate to success page since payment was successful
+        this.router.navigate(['/auth/webinar-registration-success']).then(() => {
+          console.log('Navigated to success page (with warning)');
+          this.toastr.warning('Payment successful, but registration confirmation pending. Please contact support if needed.');
+        });
       }
     });
   }

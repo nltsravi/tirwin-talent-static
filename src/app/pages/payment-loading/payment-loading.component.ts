@@ -21,32 +21,55 @@ export class PaymentLoadingComponent implements OnInit, OnDestroy {
     const queryParams = this.route.snapshot.queryParams;
     const webinarId = queryParams['webinarId'];
     const webinarType = queryParams['type'] || 'masterclass';
-    const txnId = queryParams['txnId'];
+    const txnId = queryParams['txnId'] || queryParams['transactionId'] || queryParams['transaction_id'];
+    const success = queryParams['success'];
 
     console.log('Loading payment confirmation for:', {
       webinarId,
       webinarType,
-      txnId
+      txnId,
+      success
     });
 
-    // Auto-redirect after 5 seconds
-    this.redirectTimer = setTimeout(() => {
-      console.log('Redirecting to registration success page...');
+    // Check if this is a popup window (has opener)
+    if (window.opener && !window.opener.closed) {
+      console.log('Detected popup window, sending postMessage to parent');
       
-      // Redirect to webinar registration page with success state
-      if (webinarId && webinarType) {
-        // Redirect to specific webinar registration with success
-        this.router.navigate(['/auth/register', webinarType, webinarId], {
-          queryParams: { 
-            success: 'true',
-            txnId: txnId 
-          }
-        });
-      } else {
-        // Default redirect to home
-        this.router.navigate(['/home']);
-      }
-    }, 5000); // 5 seconds
+      // Send success message to parent window
+      window.opener.postMessage({
+        status: 'success',
+        transactionId: txnId,
+        txnId: txnId,
+        webinarId: webinarId,
+        webinarType: webinarType,
+        url: window.location.href
+      }, '*');
+
+      // Close this popup window after a short delay
+      setTimeout(() => {
+        console.log('Closing popup window');
+        window.close();
+      }, 1000); // 1 second delay to ensure message is received
+    } else {
+      // Not a popup, redirect after delay
+      this.redirectTimer = setTimeout(() => {
+        console.log('Redirecting to registration success page...');
+        
+        // Redirect to webinar registration page with success state
+        if (webinarId && webinarType) {
+          // Redirect to specific webinar registration with success
+          this.router.navigate(['/auth/register', webinarType, webinarId], {
+            queryParams: { 
+              success: 'true',
+              txnId: txnId 
+            }
+          });
+        } else {
+          // Default redirect to home
+          this.router.navigate(['/home']);
+        }
+      }, 5000); // 5 seconds
+    }
   }
 
   ngOnDestroy(): void {
