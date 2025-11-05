@@ -21,7 +21,7 @@ export class PaymentLoadingComponent implements OnInit, OnDestroy {
     const queryParams = this.route.snapshot.queryParams;
     const webinarId = queryParams['webinarId'];
     const webinarType = queryParams['type'] || 'masterclass';
-    const txnId = queryParams['txnId'] || queryParams['transactionId'] || queryParams['transaction_id'];
+    const txnId = queryParams['txnId'] || queryParams['transactionId'] || queryParams['transaction_id'] || queryParams['merchantTxnId'];
     const success = queryParams['success'];
 
     console.log('Loading payment confirmation for:', {

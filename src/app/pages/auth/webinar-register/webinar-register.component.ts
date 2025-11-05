@@ -750,23 +750,17 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
     const webinarType = this.route.snapshot.paramMap.get('webinarType') || 'masterclass';
     
     const subscriptionData = {
-      webinar_id: webinarId,
-      type: webinarType,
-      first_name: this.firstName,
-      last_name: this.lastName,
-      email: this.email,
-      phone_number: this.phone,
-      job_title: this.jobTitle,
-      company: this.company,
-      user_id: this.userId || null,
-      transaction_id: transactionId
+      webinarId: webinarId,
+      userId: this.userId || null,
+      transactionId: transactionId,
+      amount: parseInt(this.webinarDetails?.price),
     };
 
     console.log('Calling webinar subscribe API with transaction:', transactionId);
     console.log('Subscription data:', subscriptionData);
 
     // Show processing message
-    this.toastr.info('Processing your registration...');
+    //this.toastr.info('Processing your registration...');
 
     // Call the backend API to complete registration BEFORE showing success page
     this.authService.subscribeToWebinar(subscriptionData).subscribe({
@@ -774,9 +768,10 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         console.log('Registration API completed successfully:', response);
         
         // Navigate to webinar registration success page
-        this.router.navigate(['/auth/webinar-registration-success']).then(() => {
+        this.router.navigate(['/auth/register', webinarType, webinarId], { queryParams: { success: 'true', txnId: transactionId } }).then(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
           console.log('Navigated to success page');
-          this.toastr.success('Payment completed successfully! Your registration is confirmed.');
+          //this.toastr.success('Payment completed successfully! Your registration is confirmed.');
         });
       },
       error: (error: any) => {
