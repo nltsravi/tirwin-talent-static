@@ -370,41 +370,67 @@
   color: #28a745;
 }
 
-.qr-code-section {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.qr-code-container {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  display: inline-block;
-  margin-bottom: 12px;
-}
-
-.qr-code-image {
-  width: 200px;
-  height: 200px;
+/* Pay Now & Register Buttons */
+.btn-pay-register,
+.btn-register {
+  width: 100%;
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
   border-radius: 8px;
-  border: 2px solid #e9ecef;
-}
-
-.qr-note {
-  color: #6c757d;
-  font-size: 14px;
-  margin: 0;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  font-weight: 500;
+  gap: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin-top: 20px;
 }
 
-.qr-note i {
-  color: #3b82f6;
-  font-size: 16px;
+.btn-pay-register {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-pay-register:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  background: linear-gradient(135deg, #7b8eec 0%, #8659b3 100%);
+}
+
+.btn-pay-register:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+}
+
+.btn-pay-register:disabled,
+.btn-register:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-pay-register i,
+.btn-register i {
+  font-size: 20px;
+}
+
+.btn-register {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.btn-register:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+  background: linear-gradient(135deg, #2dbc4e 0%, #24d9a8 100%);
+}
+
+.btn-register:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
 }
 
 .register-card {
@@ -1118,5 +1144,127 @@ button.btn.btn-primary, .btn:not(.close):not(.mfp-close).btn-primary, a.btn:not(
     min-width: 100vw;
     max-width: 100vw;
     padding: 1.5rem 0.5rem !important;
+  }
+}
+
+/* Payment Modal Styles */
+.payment-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.payment-modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 900px;
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.payment-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e0e0e0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px 12px 0 0;
+}
+
+.payment-modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 18px;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.payment-modal-body {
+  flex: 1;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  background: #f5f5f5;
+  border-radius: 0 0 12px 12px;
+}
+
+.payment-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 0 0 12px 12px;
+}
+
+/* Mobile responsive for modal */
+@media (max-width: 768px) {
+  .payment-modal-content {
+    width: 95%;
+    height: 90vh;
+  }
+
+  .payment-modal-header {
+    padding: 16px 20px;
+  }
+
+  .payment-modal-header h3 {
+    font-size: 18px;
+  }
+
+  .close-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
   }
 } 

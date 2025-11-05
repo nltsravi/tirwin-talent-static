@@ -46,6 +46,7 @@ const routes: Routes = [
       { path: 'trainer/details/:id', component: TrainerDetailsPublicComponent, data: { showSlider: false } },
     ]
   },
+  { path: 'payment/loading', loadChildren: () => import('./pages/payment-loading/payment-loading.module').then(m => m.PaymentLoadingModule) }, // Payment loading page
   { path: '**', redirectTo: 'home' } // Catch-all route
 ];
 

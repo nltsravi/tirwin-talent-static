@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from '../auth.service';
 import { PaymentService } from '../payment.service';
 import { ToastrService } from 'ngx-toastr';
@@ -9,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './webinar-register.component.html',
   styleUrls: ['./webinar-register.component.css']
 })
-export class WebinarRegisterComponent implements OnInit {
+export class WebinarRegisterComponent implements OnInit, OnDestroy {
   // Form fields
   firstName: string = '';
   lastName: string = '';
@@ -52,6 +53,12 @@ export class WebinarRegisterComponent implements OnInit {
   // Thank you page state
   showThankYouPage: boolean = false;
 
+  // Payment modal state
+  showPaymentModal: boolean = false;
+  paymentRedirectUrl: any = null;
+  isPaymentProcessing: boolean = false;
+  iframeMonitorInterval: any = null;
+
   public logoUrl = 'assets/images/logo.png';
 
   /**
@@ -77,12 +84,22 @@ export class WebinarRegisterComponent implements OnInit {
     private paymentService: PaymentService,
     private route: ActivatedRoute,
     public router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
     // Scroll to top when component loads
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Check if redirected from payment loading page with success
+    this.route.queryParams.subscribe(queryParams => {
+      if (queryParams['success'] === 'true') {
+        // Show thank you page directly
+        this.showThankYouPage = true;
+        console.log('Payment successful, showing thank you page');
+      }
+    });
     
     // Extract webinar parameters from URL
     this.route.params.subscribe(params => {
@@ -95,6 +112,34 @@ export class WebinarRegisterComponent implements OnInit {
         this.generatePaymentInfo(webinarType, webinarId);
       }
     });
+
+    // Listen for messages from payment iframe
+    window.addEventListener('message', this.handlePaymentMessage.bind(this));
+  }
+
+  ngOnDestroy(): void {
+    // Clean up event listener
+    window.removeEventListener('message', this.handlePaymentMessage.bind(this));
+    
+    // Clear iframe monitoring interval
+    if (this.iframeMonitorInterval) {
+      clearInterval(this.iframeMonitorInterval);
+    }
+  }
+
+  /**
+   * Handle messages from payment gateway iframe
+   */
+  handlePaymentMessage(event: MessageEvent): void {
+    // For security, verify the origin if you know the payment gateway domain
+    // if (event.origin !== 'https://payment-gateway.com') return;
+    
+    console.log('Received message from iframe:', event.data);
+    
+    // Check if payment is successful
+    if (event.data && event.data.status === 'success') {
+      this.handlePaymentSuccess(event.data);
+    }
   }
 
   /**
@@ -434,6 +479,208 @@ export class WebinarRegisterComponent implements OnInit {
    */
   goToHome(): void {
     this.router.navigate(['/home']);
+  }
+
+  /**
+   * Initiate payment process
+   */
+  initiatePayment(): void {
+    // Validate form
+    if (!this.email || !this.phone) {
+      this.toastr.error('Please fill in all required fields');
+      return;
+    }
+
+    // Set processing state
+    this.isPaymentProcessing = true;
+
+    // Prepare payment request
+    // Convert amount to integer (remove decimals)
+    const amountValue = parseFloat(this.webinarDetails?.price || '99');
+    const amountInteger = Math.floor(amountValue);
+
+    const paymentRequest = {
+      amount: amountInteger,
+      currencyCode: '356',
+      customerEmailID: this.email,
+      customerMobileNo: this.phone,
+      payType: '0'
+    };
+
+    console.log('Initiating payment with request:', paymentRequest);
+
+    // Call payment initiate API
+    this.paymentService.initiatePayment(paymentRequest).subscribe({
+      next: (response: any) => {
+        console.log('Payment initiation response:', response);
+        
+        if (response && response.redirectUrl) {
+          // Sanitize the URL for iframe
+          this.paymentRedirectUrl = this.sanitizer.bypassSecurityTrustResourceUrl(response.redirectUrl);
+          
+          // Show modal
+          this.showPaymentModal = true;
+          this.isPaymentProcessing = false;
+          
+          this.toastr.success('Redirecting to payment gateway...');
+          
+          // Start monitoring iframe for success page
+          this.startIframeMonitoring();
+        } else {
+          this.toastr.error('Failed to get payment redirect URL');
+          this.isPaymentProcessing = false;
+        }
+      },
+      error: (error: any) => {
+        console.error('Payment initiation error:', error);
+        this.toastr.error(error.error?.message || 'Failed to initiate payment. Please try again.');
+        this.isPaymentProcessing = false;
+      }
+    });
+  }
+
+  /**
+   * Start monitoring iframe for success page
+   */
+  startIframeMonitoring(): void {
+    // Clear any existing interval
+    if (this.iframeMonitorInterval) {
+      clearInterval(this.iframeMonitorInterval);
+    }
+
+    // Check iframe URL every 2 seconds
+    this.iframeMonitorInterval = setInterval(() => {
+      try {
+        const iframe = document.querySelector('.payment-iframe') as HTMLIFrameElement;
+        if (iframe && iframe.contentWindow) {
+          const iframeUrl = iframe.contentWindow.location.href;
+          console.log('Monitoring iframe URL:', iframeUrl);
+          
+          // Check if the URL contains success indicators
+          if (this.isSuccessUrl(iframeUrl)) {
+            clearInterval(this.iframeMonitorInterval);
+            this.handlePaymentSuccess({ url: iframeUrl });
+          }
+        }
+      } catch (error) {
+        // Cross-origin restrictions - cannot access iframe URL
+        // This is normal for external payment gateways
+        // We'll rely on postMessage instead
+      }
+    }, 2000); // Check every 2 seconds
+  }
+
+  /**
+   * Close payment modal
+   */
+  closePaymentModal(): void {
+    this.showPaymentModal = false;
+    this.paymentRedirectUrl = null;
+    
+    // Stop monitoring iframe
+    if (this.iframeMonitorInterval) {
+      clearInterval(this.iframeMonitorInterval);
+      this.iframeMonitorInterval = null;
+    }
+  }
+
+  /**
+   * Handle payment iframe load event
+   */
+  onPaymentIframeLoad(): void {
+    console.log('Payment iframe loaded');
+    
+    // Try to monitor iframe URL changes to detect success page
+    try {
+      const iframe = document.querySelector('.payment-iframe') as HTMLIFrameElement;
+      if (iframe && iframe.contentWindow) {
+        const iframeUrl = iframe.contentWindow.location.href;
+        console.log('Iframe URL:', iframeUrl);
+        
+        // Check if the URL contains success indicators
+        if (this.isSuccessUrl(iframeUrl)) {
+          this.handlePaymentSuccess({ url: iframeUrl });
+        }
+      }
+    } catch (error) {
+      // Cross-origin restrictions prevent accessing iframe content
+      // This is expected for external payment gateways
+      console.log('Cannot access iframe URL (cross-origin restriction)');
+    }
+  }
+
+  /**
+   * Check if URL indicates successful payment
+   */
+  isSuccessUrl(url: string): boolean {
+    const successIndicators = [
+      '/auth/register',
+      'success=true',
+      '/webinar-registration-success',
+      'payment-success',
+      'registration-success'
+    ];
+    
+    return successIndicators.some(indicator => 
+      url.toLowerCase().includes(indicator.toLowerCase())
+    );
+  }
+
+  /**
+   * Handle successful payment
+   */
+  handlePaymentSuccess(data: any): void {
+    console.log('Payment successful, closing modal and showing success page', data);
+    
+    // Close the modal
+    this.showPaymentModal = false;
+    this.paymentRedirectUrl = null;
+    
+    // Show thank you page
+    this.showThankYouPage = true;
+    
+    // Show success message
+    this.toastr.success('Payment completed successfully! Your registration is confirmed.');
+    
+    // Optionally complete the registration on the backend
+    // if you have a transaction ID from the payment gateway
+    if (data.transactionId || data.txnId) {
+      this.completeRegistrationAfterPayment(data.transactionId || data.txnId);
+    }
+  }
+
+  /**
+   * Complete registration after successful payment
+   */
+  completeRegistrationAfterPayment(transactionId: string): void {
+    const webinarId = this.route.snapshot.paramMap.get('webinarId');
+    const webinarType = this.route.snapshot.paramMap.get('webinarType') || 'masterclass';
+    
+    const subscriptionData = {
+      webinar_id: webinarId,
+      type: webinarType,
+      first_name: this.firstName,
+      last_name: this.lastName,
+      email: this.email,
+      phone_number: this.phone,
+      job_title: this.jobTitle,
+      company: this.company,
+      user_id: this.userId || null,
+      transaction_id: transactionId
+    };
+
+    console.log('Completing registration with transaction:', transactionId);
+
+    // Call the backend API to complete registration
+    this.authService.subscribeToWebinar(subscriptionData).subscribe({
+      next: (response: any) => {
+        console.log('Registration completed successfully:', response);
+      },
+      error: (error: any) => {
+        console.error('Error completing registration:', error);
+        // Still show success to user since payment was successful
+      }
+    });
   }
 
 } 

@@ -62,4 +62,11 @@ export class PaymentService {
   getWebinarDetails(webinarId: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/webinars/get-webinar-public/${webinarId}`);
   }
+
+  /**
+   * Initiate payment with payment gateway
+   */
+  initiatePayment(paymentRequest: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/payment/initiate`, paymentRequest);
+  }
 } 

@@ -235,69 +235,26 @@
                       </small>
                     </div>
 
-                  <!-- Payment Section - Only for Paid Webinars -->
-                  <div class="payment-section" *ngIf="isOtpVerified && !isFreeWebinar()">
-                    <h4 class="payment-title">
+                  </div>
+
+                  <!-- Action Buttons -->
+                  <div class="form-actions" *ngIf="isOtpVerified">
+                    <!-- Pay Now Button for Paid Webinars -->
+                    <button type="button" 
+                            class="btn btn-primary btn-pay-register" 
+                            *ngIf="!isFreeWebinar()"
+                            (click)="initiatePayment()"
+                            [disabled]="registerForm.invalid || isPaymentProcessing">
                       <i class="fas fa-credit-card"></i>
-                      Payment Details
-                    </h4>
-                    
-                    <div class="payment-info">
-                      <div class="amount-display">
-                        <span class="amount-label">Amount to Pay:</span>
-                        <span class="amount-value">{{ getDisplayPrice() }}</span>
-                      </div>
-                    </div>
-                    
-                    <div class="qr-code-section">
-                      <div class="qr-code-container">
-                        <img src="assets/images/payment-qr-code.png" alt="Payment QR Code" class="qr-code-image">
-                      </div>
-                      <p class="qr-note">
-                        <i class="fas fa-info-circle"></i>
-                        Scan the QR code above to complete payment
-                      </p>
-                    </div>
+                      {{ isPaymentProcessing ? 'Processing...' : 'Pay Now ' + getDisplayPrice() }}
+                    </button>
 
-                    <!-- Transaction Reference Field -->
-                    <div class="form-group">
-                      <label for="transactionReference">Transaction Reference Number<span class="req-astrix">*</span></label>
-                      <input type="text" 
-                             class="form-control" 
-                             id="transactionReference" 
-                             [(ngModel)]="transactionReference" 
-                             name="transactionReference"
-                             required 
-                             maxlength="50" 
-                             placeholder="Enter your transaction reference number" />
-                      <div class="text-danger" *ngIf="errorMessage && !transactionReference">
-                        <small>{{ errorMessage }}</small>
-                      </div>
-                      <small class="text-info">
-                        <i class="fas fa-info-circle"></i> Enter the transaction reference number from your payment
-                      </small>
-                    </div>
-                  </div>
-
-                  <!-- Free Webinar Notice -->
-                  <div class="free-webinar-notice" *ngIf="isOtpVerified && isFreeWebinar()">
-                    <div class="notice-card">
-                      <div class="notice-icon">
-                        <i class="fas fa-gift"></i>
-                      </div>
-                      <div class="notice-content">
-                        <h4 class="notice-title">Free Webinar Registration</h4>
-                        <p class="notice-text">
-                          <i class="fas fa-check-circle text-success"></i>
-                          No payment required for this webinar. You can proceed directly to registration.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  </div>
-
-                  <div class="form-actions">
-                    <button type="submit" class="btn btn-primary btn-register" [disabled]="registerForm.invalid || isSubmitting || !isEmailVerified || !isOtpVerified">
+                    <!-- Register Button for Free Webinars -->
+                    <button type="submit" 
+                            class="btn btn-primary btn-register" 
+                            *ngIf="isFreeWebinar()"
+                            [disabled]="registerForm.invalid || isSubmitting">
+                      <i class="fas fa-user-check"></i>
                       {{ isSubmitting ? 'Processing...' : 'Register' }}
                     </button>
                   </div>
@@ -307,6 +264,25 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Payment Gateway Modal -->
+<div class="payment-modal" *ngIf="showPaymentModal" (click)="closePaymentModal()">
+  <div class="payment-modal-content" (click)="$event.stopPropagation()">
+    <div class="payment-modal-header">
+      <h3>Complete Your Payment</h3>
+      <button class="close-btn" (click)="closePaymentModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="payment-modal-body">
+      <iframe [src]="paymentRedirectUrl" 
+              frameborder="0" 
+              class="payment-iframe"
+              (load)="onPaymentIframeLoad()">
+      </iframe>
     </div>
   </div>
 </div>

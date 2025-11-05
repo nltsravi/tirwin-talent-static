@@ -4,7 +4,7 @@
 
 export const environment = {
     production: false,
-    api:'https://api.tirwintalent.com/api',
+    api:'https://dev.api.tirwintalent.com/api',
   };
   
   /*
