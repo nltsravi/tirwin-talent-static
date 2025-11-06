@@ -140,8 +140,12 @@
                              id="otp" 
                              [(ngModel)]="otpCode" 
                              name="otpCode"
-                             placeholder="Enter 6-digit OTP" 
+                             required
+                             pattern="^\d{6}$"
+                             minlength="6"
                              maxlength="6"
+                             placeholder="Enter 6-digit OTP"
+                             #otpRef="ngModel"
                              [disabled]="isVerifyingOtp" />
                       <button type="button" 
                               class="btn btn-primary" 
@@ -155,6 +159,11 @@
                         </span>
                       </button>
                     </div>
+                    <div class="text-danger" *ngIf="otpRef.invalid && otpRef.touched">
+                      <small *ngIf="otpRef.errors?.['required']">OTP is required.</small>
+                      <small *ngIf="otpRef.errors?.['pattern']">OTP must be 6 digits.</small>
+                      <small *ngIf="otpRef.errors?.['minlength']">OTP must be 6 digits.</small>
+                    </div>
                     <small class="text-success" *ngIf="isOtpVerified">
                       <i class="fas fa-check-circle"></i> OTP verified successfully
                     </small>
@@ -165,10 +174,12 @@
                     <div class="form-group">
                       <label for="firstName">First Name<span class="req-astrix">*</span></label>
                       <input type="text" class="form-control" id="firstName" [(ngModel)]="firstName" name="firstName"
-                        required maxlength="200" pattern="^[a-zA-Z\s]+$" #firstNameRef="ngModel" 
+                        required minlength="2" maxlength="200" pattern="^[a-zA-Z\s]+$" #firstNameRef="ngModel" 
+                        placeholder="Enter your first name"
                         [disabled]="isFirstNameDisabled" />
                       <div class="text-danger" *ngIf="firstNameRef.invalid && firstNameRef.touched">
                         <small *ngIf="firstNameRef.errors?.['required']">First Name is required.</small>
+                        <small *ngIf="firstNameRef.errors?.['minlength']">First Name must be at least 2 characters.</small>
                         <small *ngIf="firstNameRef.errors?.['pattern']">Only letters are allowed.</small>
                         <small *ngIf="firstNameRef.errors?.['maxlength']">Max length is 200 characters.</small>
                       </div>
@@ -180,10 +191,12 @@
                     <div class="form-group">
                       <label for="lastName">Last Name<span class="req-astrix">*</span></label>
                       <input type="text" class="form-control" id="lastName" [(ngModel)]="lastName" name="lastName"
-                        required maxlength="200" pattern="^[a-zA-Z\s]+$" #lastNameRef="ngModel" 
+                        required minlength="2" maxlength="200" pattern="^[a-zA-Z\s]+$" #lastNameRef="ngModel" 
+                        placeholder="Enter your last name"
                         [disabled]="isLastNameDisabled" />
                       <div class="text-danger" *ngIf="lastNameRef.invalid && lastNameRef.touched">
                         <small *ngIf="lastNameRef.errors?.['required']">Last Name is required.</small>
+                        <small *ngIf="lastNameRef.errors?.['minlength']">Last Name must be at least 2 characters.</small>
                         <small *ngIf="lastNameRef.errors?.['pattern']">Only letters are allowed.</small>
                         <small *ngIf="lastNameRef.errors?.['maxlength']">Max length is 200 characters.</small>
                       </div>
@@ -195,11 +208,13 @@
                     <div class="form-group">
                       <label for="jobTitle">Job Title<span class="req-astrix">*</span></label>
                       <input type="text" class="form-control" id="jobTitle" [(ngModel)]="jobTitle" name="jobTitle"
-                        required maxlength="200" pattern="^[a-zA-Z\s]+$" #jobTitleRef="ngModel" 
+                        required minlength="2" maxlength="200" pattern="^[a-zA-Z0-9\s\-\.\,]+$" #jobTitleRef="ngModel" 
+                        placeholder="Enter your job title"
                         [disabled]="isJobTitleDisabled" />
                       <div class="text-danger" *ngIf="jobTitleRef.invalid && jobTitleRef.touched">
                         <small *ngIf="jobTitleRef.errors?.['required']">Job Title is required.</small>
-                        <small *ngIf="jobTitleRef.errors?.['pattern']">Only letters are allowed.</small>
+                        <small *ngIf="jobTitleRef.errors?.['minlength']">Job Title must be at least 2 characters.</small>
+                        <small *ngIf="jobTitleRef.errors?.['pattern']">Only letters, numbers, and common punctuation allowed.</small>
                         <small *ngIf="jobTitleRef.errors?.['maxlength']">Max length is 200 characters.</small>
                       </div>
                       <small class="text-info" *ngIf="isJobTitleDisabled">
@@ -210,11 +225,13 @@
                     <div class="form-group">
                       <label for="company">Company<span class="req-astrix">*</span></label>
                       <input type="text" class="form-control" id="company" [(ngModel)]="company" name="company"
-                        required maxlength="200" pattern="^[a-zA-Z\s]+$" #companyRef="ngModel" 
+                        required minlength="2" maxlength="200" pattern="^[a-zA-Z0-9\s\-\.\,\&]+$" #companyRef="ngModel" 
+                        placeholder="Enter your company name"
                         [disabled]="isCompanyDisabled" />
                       <div class="text-danger" *ngIf="companyRef.invalid && companyRef.touched">
                         <small *ngIf="companyRef.errors?.['required']">Company is required.</small>
-                        <small *ngIf="companyRef.errors?.['pattern']">Only letters are allowed.</small>
+                        <small *ngIf="companyRef.errors?.['minlength']">Company must be at least 2 characters.</small>
+                        <small *ngIf="companyRef.errors?.['pattern']">Only letters, numbers, and common punctuation allowed.</small>
                         <small *ngIf="companyRef.errors?.['maxlength']">Max length is 200 characters.</small>
                       </div>
                       <small class="text-info" *ngIf="isCompanyDisabled">
@@ -223,11 +240,13 @@
                     </div>
                   
                     <div class="form-group">
-                      <label for="phone">Phone Number</label>
+                      <label for="phone">Phone Number<span class="req-astrix">*</span></label>
                       <input type="tel" class="form-control" id="phone" [(ngModel)]="phone" name="phone"
-                         pattern="^\d{10}$" #phoneRef="ngModel" 
+                         required pattern="^\d{10}$" #phoneRef="ngModel" 
+                         placeholder="Enter your 10-digit phone number"
                          [disabled]="isPhoneDisabled" />
                       <div class="text-danger" *ngIf="phoneRef.invalid && phoneRef.touched">
+                        <small *ngIf="phoneRef.errors?.['required']">Phone number is required.</small>
                         <small *ngIf="phoneRef.errors?.['pattern']">Phone number must be 10 digits.</small>
                       </div>
                       <small class="text-info" *ngIf="isPhoneDisabled">

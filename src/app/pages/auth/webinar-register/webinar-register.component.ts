@@ -749,41 +749,110 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
     const webinarId = this.route.snapshot.paramMap.get('webinarId');
     const webinarType = this.route.snapshot.paramMap.get('webinarType') || 'masterclass';
     
-    const subscriptionData = {
-      webinarId: webinarId,
-      userId: this.userId || null,
-      transactionId: transactionId,
-      amount: parseInt(this.webinarDetails?.price),
-    };
+    console.log('Completing registration after payment with transaction:', transactionId);
+    console.log('User ID:', this.userId);
 
-    console.log('Calling webinar subscribe API with transaction:', transactionId);
-    console.log('Subscription data:', subscriptionData);
+    // Check if user exists (userId is present)
+    if (this.userId) {
+      // Existing user - directly subscribe to webinar
+      const subscriptionData = {
+        webinarId: webinarId,
+        userId: this.userId,
+        transactionId: transactionId,
+        amount: parseInt(this.webinarDetails?.price),
+      };
 
-    // Show processing message
-    //this.toastr.info('Processing your registration...');
+      console.log('Existing user - Calling webinar subscribe API');
+      console.log('Subscription data:', subscriptionData);
 
-    // Call the backend API to complete registration BEFORE showing success page
-    this.authService.subscribeToWebinar(subscriptionData).subscribe({
-      next: (response: any) => {
-        console.log('Registration API completed successfully:', response);
-        
-        // Navigate to webinar registration success page
-        this.router.navigate(['/auth/register', webinarType, webinarId], { queryParams: { success: 'true', txnId: transactionId } }).then(() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-          console.log('Navigated to success page');
-          //this.toastr.success('Payment completed successfully! Your registration is confirmed.');
-        });
-      },
-      error: (error: any) => {
-        console.error('Error completing registration API:', error);
-        
-        // Still navigate to success page since payment was successful
-        this.router.navigate(['/auth/webinar-registration-success']).then(() => {
-          console.log('Navigated to success page (with warning)');
-          this.toastr.warning('Payment successful, but registration confirmation pending. Please contact support if needed.');
-        });
-      }
-    });
+      this.authService.subscribeToWebinar(subscriptionData).subscribe({
+        next: (response: any) => {
+          console.log('Registration API completed successfully:', response);
+          
+          // Navigate to webinar registration success page
+          this.router.navigate(['/auth/register', webinarType, webinarId], { queryParams: { success: 'true', txnId: transactionId } }).then(() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            console.log('Navigated to success page');
+          });
+        },
+        error: (error: any) => {
+          console.error('Error completing registration API:', error);
+          
+          // Still navigate to success page since payment was successful
+          this.router.navigate(['/auth/webinar-registration-success']).then(() => {
+            console.log('Navigated to success page (with warning)');
+            this.toastr.warning('Payment successful, but registration confirmation pending. Please contact support if needed.');
+          });
+        }
+      });
+    } else {
+      // New user - register user first, then subscribe to webinar
+      console.log('New user - Registering user first');
+      
+      const registrationData = {
+        first_name: this.firstName,
+        user_type: 'trainee',
+        is_verified: false,
+        is_first_time_login: true,
+        subscriptionId: '06fff7d5-00b6-4679-afd8-d3dd4ae3beda',
+        is_active: true,
+        last_name: this.lastName,
+        email: this.email,
+        phone: this.phone,
+        job_title: this.jobTitle,
+        company: this.company,
+        transactionId: transactionId,
+      };
+
+      console.log('Registration data:', registrationData);
+
+      this.authService.registerWebinarWithUser(registrationData).subscribe({
+        next: (response) => {
+          console.log('User registration successful:', response);
+          
+          // Now subscribe to webinar with the newly created user ID
+          const subscriptionData = {
+            webinarId: webinarId,
+            userId: response.user.id,
+            amount: parseInt(this.webinarDetails?.price),
+            transactionId: transactionId,
+          };
+
+          console.log('Subscribing to webinar with new user ID:', response.user.id);
+          console.log('Subscription data:', subscriptionData);
+
+          this.authService.subscribeToWebinar(subscriptionData).subscribe({
+            next: (subscriptionResponse: any) => {
+              console.log('Webinar subscription successful:', subscriptionResponse);
+              
+              // Navigate to webinar registration success page
+              this.router.navigate(['/auth/register', webinarType, webinarId], { queryParams: { success: 'true', txnId: transactionId } }).then(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                console.log('Navigated to success page');
+              });
+            },
+            error: (error: any) => {
+              console.error('Webinar subscription error:', error);
+              
+              // Still navigate to success page since payment was successful
+              this.router.navigate(['/auth/webinar-registration-success']).then(() => {
+                console.log('Navigated to success page (with warning)');
+                this.toastr.warning('Payment successful, but registration confirmation pending. Please contact support if needed.');
+              });
+            }
+          });
+        },
+        error: (error) => {
+          console.error('User registration error:', error);
+          
+          // Still navigate to success page since payment was successful
+          this.router.navigate(['/auth/webinar-registration-success']).then(() => {
+            console.log('Navigated to success page (with warning)');
+            this.toastr.warning('Payment successful, but registration confirmation pending. Please contact support if needed.');
+          });
+        }
+      });
+    }
   }
 
 } 
