@@ -92,7 +92,11 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Scroll to top when component loads
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    
+
+    // Skip email/OTP verification gating
+    this.isEmailVerified = true;
+    this.isOtpVerified = true;
+
     // Check if redirected from payment loading page with success
     this.route.queryParams.subscribe(queryParams => {
       if (queryParams['success'] === 'true') {
@@ -339,16 +343,66 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
    * Complete registration after OTP verification
    */
   completeRegistration(): void {
+    if (!this.email) {
+      this.errorMessage = 'Please enter your email address.';
+      return;
+    }
+
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    // Generate random transaction ID for free webinars, otherwise use user input
     const userTransactionId = this.isFreeWebinar() ? this.generateRandomTransactionId() : this.transactionReference.trim();
-  
 
-    if (this.isExistingUser) {
-      // User already exists, call webinar subscription API
-      const isFreeWebinar = this.webinarDetails?.price === 0 || this.webinarDetails?.price === '0' || this.webinarDetails?.price === '0.00';
+    this.authService.checkIfUserExists(this.email.trim()).subscribe({
+      next: (response) => {
+        this.handleUserExistenceResponse(response);
+        this.finalizeRegistration(userTransactionId);
+      },
+      error: (error) => {
+        console.error('Error checking user existence:', error);
+        this.isExistingUser = false;
+        this.userId = '';
+        this.finalizeRegistration(userTransactionId);
+      }
+    });
+  }
+
+  private handleUserExistenceResponse(response: any): void {
+    const user = response?.user || response?.data?.user || response?.data || null;
+    const exists = response?.exists ?? !!user;
+
+    if (exists && user) {
+      this.isExistingUser = true;
+      this.userId = user.id || user.userId || '';
+
+      if (!this.firstName && user.first_name) {
+        this.firstName = user.first_name;
+        this.isFirstNameDisabled = true;
+      }
+      if (!this.lastName && user.last_name) {
+        this.lastName = user.last_name;
+        this.isLastNameDisabled = true;
+      }
+      if (!this.jobTitle && user.job_title) {
+        this.jobTitle = user.job_title;
+        this.isJobTitleDisabled = true;
+      }
+      if (!this.company && (user.company || user.organization)) {
+        this.company = user.company || user.organization;
+        this.isCompanyDisabled = true;
+      }
+      if (!this.phone && user.phone) {
+        this.phone = user.phone;
+        this.isPhoneDisabled = true;
+      }
+    } else {
+      this.isExistingUser = false;
+      this.userId = '';
+    }
+  }
+
+  private finalizeRegistration(userTransactionId: string): void {
+    if (this.isExistingUser && this.userId) {
       const subscriptionData = {
         webinarId: this.webinarDetails?.id,
         userId: this.userId,
@@ -357,16 +411,15 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       };
 
       this.authService.subscribeToWebinar(subscriptionData).subscribe({
-        next: (response: any) => {
+        next: () => {
           this.isSubmitting = false;
-          // Show thank you page
           window.scrollTo({ top: 0, behavior: 'smooth' });
           this.showThankYouPage = true;
         },
         error: (error: any) => {
           this.isSubmitting = false;
           console.error('Webinar subscription error:', error);
-          
+
           if (error.error && error.error.message) {
             this.errorMessage = error.error.message;
           } else {
@@ -375,7 +428,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      // New user, call user registration API
       const registrationData = {
         first_name: this.firstName,
         user_type: 'trainee',
@@ -389,30 +441,27 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         job_title: this.jobTitle,
         company: this.company,
         transactionId: userTransactionId,
-
       };
 
       this.authService.registerWebinarWithUser(registrationData).subscribe({
         next: (response) => {
-          this.isSubmitting = false;
-          const isFreeWebinar = this.webinarDetails?.price === 0 || this.webinarDetails?.price === '0' || this.webinarDetails?.price === '0.00';
           const subscriptionData = {
             webinarId: this.webinarDetails?.id,
             userId: response.user.id,
             amount: parseInt(this.webinarDetails?.price),
             transactionId: userTransactionId,
           };
+
           this.authService.subscribeToWebinar(subscriptionData).subscribe({
-            next: (response: any) => {
+            next: () => {
               this.isSubmitting = false;
-              // Show thank you page
               window.scrollTo({ top: 0, behavior: 'smooth' });
               this.showThankYouPage = true;
             },
             error: (error: any) => {
               this.isSubmitting = false;
               console.error('Webinar subscription error:', error);
-              
+
               if (error.error && error.error.message) {
                 this.errorMessage = error.error.message;
               } else {
@@ -424,7 +473,7 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         error: (error) => {
           this.isSubmitting = false;
           console.error('Registration error:', error);
-          
+
           if (error.error && error.error.message) {
             this.errorMessage = error.error.message;
           } else {
