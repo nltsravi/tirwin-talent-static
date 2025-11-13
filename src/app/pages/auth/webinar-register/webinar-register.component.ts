@@ -93,10 +93,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
     // Scroll to top when component loads
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Skip email/OTP verification gating
-    this.isEmailVerified = true;
-    this.isOtpVerified = true;
-
     // Check if redirected from payment loading page with success
     this.route.queryParams.subscribe(queryParams => {
       if (queryParams['success'] === 'true') {
@@ -196,7 +192,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
     this.isVerifyingEmail = true;
     this.errorMessage = '';
 
-    // First verify email (like trainer onboarding)
     const userData = {
       first_name: this.firstName,
       last_name: this.lastName,
@@ -209,15 +204,26 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
     };
 
     this.authService.verifyUserEmail(userData).subscribe({
-      next: (response) => {
+      next: () => {
         this.isEmailVerified = true;
+        this.isOtpVerified = true;
         this.isVerifyingEmail = false;
         this.isOtpSent = true;
+
+        this.authService.checkIfUserExists(this.email.trim()).subscribe({
+          next: (response) => {
+            this.handleUserExistenceResponse(response);
+          },
+          error: (error) => {
+            console.error('Error checking user existence:', error);
+            this.handleUserExistenceResponse(null);
+          }
+        });
       },
       error: (error) => {
         this.isVerifyingEmail = false;
         console.error('Email verification error:', error);
-        
+
         if (error.error && error.error.message) {
           this.errorMessage = error.error.message;
         } else {
@@ -368,36 +374,47 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
   }
 
   private handleUserExistenceResponse(response: any): void {
-    const user = response?.user || response?.data?.user || response?.data || null;
+    const user = response?.existingUser || response?.user || response?.data?.user || response?.data || null;
     const exists = response?.exists ?? !!user;
 
     if (exists && user) {
       this.isExistingUser = true;
-      this.userId = user.id || user.userId || '';
+      this.userId = user.id || user.userId || user.user_id || '';
 
-      if (!this.firstName && user.first_name) {
-        this.firstName = user.first_name;
+      const firstName = user.first_name || user.firstName || user.firstname;
+      const lastName = user.last_name || user.lastName || user.lastname;
+      const jobTitle = user.job_title || user.jobTitle || user.jobtitle;
+      const company = user.company || user.organization || user.organisation;
+      const phone = user.phone || user.phone_number || user.mobile || user.mobileNumber;
+
+      if (firstName) {
+        this.firstName = firstName;
         this.isFirstNameDisabled = true;
       }
-      if (!this.lastName && user.last_name) {
-        this.lastName = user.last_name;
+      if (lastName) {
+        this.lastName = lastName;
         this.isLastNameDisabled = true;
       }
-      if (!this.jobTitle && user.job_title) {
-        this.jobTitle = user.job_title;
+      if (jobTitle) {
+        this.jobTitle = jobTitle;
         this.isJobTitleDisabled = true;
       }
-      if (!this.company && (user.company || user.organization)) {
-        this.company = user.company || user.organization;
+      if (company) {
+        this.company = company;
         this.isCompanyDisabled = true;
       }
-      if (!this.phone && user.phone) {
-        this.phone = user.phone;
+      if (phone) {
+        this.phone = phone;
         this.isPhoneDisabled = true;
       }
     } else {
       this.isExistingUser = false;
       this.userId = '';
+      this.isFirstNameDisabled = false;
+      this.isLastNameDisabled = false;
+      this.isJobTitleDisabled = false;
+      this.isCompanyDisabled = false;
+      this.isPhoneDisabled = false;
     }
   }
 
@@ -746,7 +763,9 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         'paymentId',
         'payment_id',
         'refId',
-        'ref_id'
+        'ref_id',
+        'merchantTxnId',
+       'merchant_txn_id',
       ];
       
       for (const paramName of paramNames) {
@@ -766,7 +785,7 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
   /**
    * Complete registration after successful payment
    */
-  completeRegistrationAfterPayment(transactionId: string): void {
+  async completeRegistrationAfterPayment(transactionId: string): Promise<void> {
     const webinarId = this.route.snapshot.paramMap.get('webinarId');
     const webinarType = this.route.snapshot.paramMap.get('webinarType') || 'masterclass';
 
