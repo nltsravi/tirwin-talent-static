@@ -98,7 +98,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       if (queryParams['success'] === 'true') {
         // Show thank you page directly
         this.showThankYouPage = true;
-        console.log('Payment successful, showing thank you page');
       }
     });
     
@@ -141,8 +140,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
     // For security, verify the origin if you know the payment gateway domain
     // if (event.origin !== 'https://payment-gateway.com') return;
     
-    console.log('Received message from iframe:', event.data);
-    
     // Check if payment is successful
     if (event.data && event.data.status === 'success') {
       this.handlePaymentSuccess(event.data);
@@ -156,7 +153,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
     this.paymentService.getWebinarDetails(webinarId).subscribe({
       next: (response) => {
         this.webinarDetails = response;
-        console.log('Webinar details loaded:', this.webinarDetails);
       },
       error: (error) => {
         console.error('Error loading webinar details:', error);
@@ -175,7 +171,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       next: (paymentInfo) => {
         this.paymentInfo = paymentInfo;
         this.isLoadingPayment = false;
-        console.log('Payment info generated:', paymentInfo);
       },
       error: (error) => {
         console.error('Error generating payment info:', error);
@@ -214,7 +209,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         this.isEmailVerified = true;
         this.isVerifyingEmail = false;
         this.isOtpSent = true;
-        console.log('Email verified successfully:', response);
       },
       error: (error) => {
         this.isVerifyingEmail = false;
@@ -245,7 +239,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       next: (response: any) => {
         this.isOtpVerified = true;
         this.isVerifyingOtp = false;
-        console.log('OTP verified successfully:', response);
       },
       error: (error: any) => {
         this.isVerifyingOtp = false;
@@ -272,7 +265,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       next: (response: any) => {
         this.isOtpVerified = true;
         this.isVerifyingOtp = false;
-        console.log('OTP verified successfully:', response);
         
         // Check if user already exists and populate details
         if (response && response.user) {
@@ -367,7 +359,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       this.authService.subscribeToWebinar(subscriptionData).subscribe({
         next: (response: any) => {
           this.isSubmitting = false;
-          console.log('Webinar subscription successful:', response);
           // Show thank you page
           window.scrollTo({ top: 0, behavior: 'smooth' });
           this.showThankYouPage = true;
@@ -414,7 +405,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
           this.authService.subscribeToWebinar(subscriptionData).subscribe({
             next: (response: any) => {
               this.isSubmitting = false;
-              console.log('Webinar subscription successful:', response);
               // Show thank you page
               window.scrollTo({ top: 0, behavior: 'smooth' });
               this.showThankYouPage = true;
@@ -478,7 +468,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
    */
   socialLogin(provider: string): void {
     // Implement social login functionality
-    console.log('Social login with:', provider);
   }
 
   /**
@@ -514,13 +503,9 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       payType: '0'
     };
 
-    console.log('Initiating payment with request:', paymentRequest);
-
     // Call payment initiate API
     this.paymentService.initiatePayment(paymentRequest).subscribe({
       next: (response: any) => {
-        console.log('Payment initiation response:', response);
-        
         if (response && response.redirectUrl) {
           // Open payment gateway in new window (400x600)
           const windowFeatures = 'width=400,height=600,left=100,top=100,resizable=yes,scrollbars=yes';
@@ -559,7 +544,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       try {
         // Check if window is closed
         if (this.paymentWindow && this.paymentWindow.closed) {
-          console.log('Payment window closed by user');
           clearInterval(this.iframeMonitorInterval);
           this.isPaymentProcessing = false;
           this.paymentWindow = null;
@@ -569,11 +553,9 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         // Try to access window URL
         if (this.paymentWindow && this.paymentWindow.location) {
           const windowUrl = this.paymentWindow.location.href;
-          console.log('Monitoring payment window URL:', windowUrl);
           
           // Check if the URL contains success indicators
           if (this.isSuccessUrl(windowUrl)) {
-            console.log('Success URL detected in payment window');
             clearInterval(this.iframeMonitorInterval);
             
             // Close payment window
@@ -618,14 +600,11 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
    * Handle payment iframe load event
    */
   onPaymentIframeLoad(): void {
-    console.log('Payment iframe loaded');
-    
     // Try to monitor iframe URL changes to detect success page
     try {
       const iframe = document.querySelector('.payment-iframe') as HTMLIFrameElement;
       if (iframe && iframe.contentWindow) {
         const iframeUrl = iframe.contentWindow.location.href;
-        console.log('Iframe URL:', iframeUrl);
         
         // Check if the URL contains success indicators
         if (this.isSuccessUrl(iframeUrl)) {
@@ -635,7 +614,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
     } catch (error) {
       // Cross-origin restrictions prevent accessing iframe content
       // This is expected for external payment gateways
-      console.log('Cannot access iframe URL (cross-origin restriction)');
     }
   }
 
@@ -660,8 +638,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
    * Handle successful payment
    */
   handlePaymentSuccess(data: any): void {
-    console.log('Payment successful, processing registration', data);
-    
     // Close the payment window if it's still open
     if (this.paymentWindow && !this.paymentWindow.closed) {
       this.paymentWindow.close();
@@ -690,8 +666,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
     if (!transactionId && (data.transactionId || data.txnId)) {
       transactionId = data.transactionId || data.txnId;
     }
-    
-    console.log('Extracted transaction ID:', transactionId);
     
     // Call subscribe API before showing success page
     if (transactionId) {
@@ -729,12 +703,10 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       for (const paramName of paramNames) {
         const value = urlObj.searchParams.get(paramName);
         if (value) {
-          console.log(`Found transaction ID in URL parameter '${paramName}':`, value);
           return value;
         }
       }
       
-      console.log('No transaction ID found in URL parameters');
       return null;
     } catch (error) {
       console.error('Error parsing URL:', error);
@@ -748,9 +720,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
   completeRegistrationAfterPayment(transactionId: string): void {
     const webinarId = this.route.snapshot.paramMap.get('webinarId');
     const webinarType = this.route.snapshot.paramMap.get('webinarType') || 'masterclass';
-    
-    console.log('Completing registration after payment with transaction:', transactionId);
-    console.log('User ID:', this.userId);
 
     // Check if user exists (userId is present)
     if (this.userId) {
@@ -762,17 +731,11 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         amount: parseInt(this.webinarDetails?.price),
       };
 
-      console.log('Existing user - Calling webinar subscribe API');
-      console.log('Subscription data:', subscriptionData);
-
       this.authService.subscribeToWebinar(subscriptionData).subscribe({
         next: (response: any) => {
-          console.log('Registration API completed successfully:', response);
-          
           // Navigate to webinar registration success page
           this.router.navigate(['/auth/register', webinarType, webinarId], { queryParams: { success: 'true', txnId: transactionId } }).then(() => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            console.log('Navigated to success page');
           });
         },
         error: (error: any) => {
@@ -780,15 +743,12 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
           
           // Still navigate to success page since payment was successful
           this.router.navigate(['/auth/webinar-registration-success']).then(() => {
-            console.log('Navigated to success page (with warning)');
             this.toastr.warning('Payment successful, but registration confirmation pending. Please contact support if needed.');
           });
         }
       });
     } else {
       // New user - register user first, then subscribe to webinar
-      console.log('New user - Registering user first');
-      
       const registrationData = {
         first_name: this.firstName,
         user_type: 'trainee',
@@ -804,12 +764,8 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         transactionId: transactionId,
       };
 
-      console.log('Registration data:', registrationData);
-
       this.authService.registerWebinarWithUser(registrationData).subscribe({
         next: (response) => {
-          console.log('User registration successful:', response);
-          
           // Now subscribe to webinar with the newly created user ID
           const subscriptionData = {
             webinarId: webinarId,
@@ -818,17 +774,11 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
             transactionId: transactionId,
           };
 
-          console.log('Subscribing to webinar with new user ID:', response.user.id);
-          console.log('Subscription data:', subscriptionData);
-
           this.authService.subscribeToWebinar(subscriptionData).subscribe({
             next: (subscriptionResponse: any) => {
-              console.log('Webinar subscription successful:', subscriptionResponse);
-              
               // Navigate to webinar registration success page
               this.router.navigate(['/auth/register', webinarType, webinarId], { queryParams: { success: 'true', txnId: transactionId } }).then(() => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                console.log('Navigated to success page');
               });
             },
             error: (error: any) => {
@@ -836,7 +786,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
               
               // Still navigate to success page since payment was successful
               this.router.navigate(['/auth/webinar-registration-success']).then(() => {
-                console.log('Navigated to success page (with warning)');
                 this.toastr.warning('Payment successful, but registration confirmation pending. Please contact support if needed.');
               });
             }
@@ -847,7 +796,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
           
           // Still navigate to success page since payment was successful
           this.router.navigate(['/auth/webinar-registration-success']).then(() => {
-            console.log('Navigated to success page (with warning)');
             this.toastr.warning('Payment successful, but registration confirmation pending. Please contact support if needed.');
           });
         }

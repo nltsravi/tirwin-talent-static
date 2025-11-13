@@ -7,8 +7,8 @@ export AWS_DEFAULT_PROFILE=dev.tirwin.fe.new
 # Configuration
 
 set -o allexport
-source .env.production 
-#source .env.development
+#source .env.production 
+source .env.development
 set +o allexport
 
 
@@ -64,7 +64,7 @@ echo "Uploading static assets to S3 (excluding assets and media folders)..."
 if ! aws s3 sync "$DIST_FOLDER/" "s3://$S3_BUCKET/" \
   --delete \
   --exclude "index.html" \
-  --exclude "assets/*" \
+  --exclude "assets/plugins/*" \
   --exclude "media/*" \
   --cache-control "max-age=31536000,public,immutable"; then
     handle_error "Failed to sync static assets with S3 bucket"

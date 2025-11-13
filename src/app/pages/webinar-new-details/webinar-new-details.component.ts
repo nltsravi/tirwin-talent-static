@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
 import { environment } from '../../../environments/environment';
 
@@ -91,16 +91,15 @@ export class WebinarNewDetailsComponent implements OnInit {
 
   /** Redirects to webinar registration page */
   redirectToWebinarRegistration() {
-    // Get webinar ID from route parameters
     const webinarId = this.route.snapshot.paramMap.get('id');
     const webinarType = this.route.snapshot.paramMap.get('style') || 'masterclass';
-    
+
     if (!webinarId) {
       console.error('Webinar ID not found in route parameters');
+      this.router.navigate(['/auth/register']);
       return;
     }
-    
-    // Redirect to webinar registration page (regardless of login status)
+
     this.router.navigate(['/auth/register', webinarType, webinarId]);
   }
 
@@ -241,7 +240,7 @@ export class WebinarNewDetailsComponent implements OnInit {
 
   // Load fallback data from JSON file
   loadFallbackData(): void {
-    this.http.get<WebinarData>('/assets/webinar_data.json').subscribe({
+    this.http.get<WebinarData>('/assets/webinar_data.json', this.getNoCacheHttpOptions()).subscribe({
       next: (data) => {
         this.fallbackData = data;
       },
@@ -253,7 +252,7 @@ export class WebinarNewDetailsComponent implements OnInit {
 
   // Load new webinar data from JSON file
   loadNewWebinarData(): void {
-    this.http.get<WebinarData>('/assets/webinar_data.json').subscribe({
+    this.http.get<WebinarData>('/assets/webinar_data.json', this.getNoCacheHttpOptions()).subscribe({
       next: (data) => {
         // Create a webinar object from new data
         this.webinar = {
@@ -295,6 +294,19 @@ export class WebinarNewDetailsComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  private getNoCacheHttpOptions() {
+    const noCacheHeaders = new HttpHeaders({
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    });
+
+    return {
+      headers: noCacheHeaders,
+      params: { _ts: Date.now().toString() }
+    };
   }
 
   // Display methods with API data fallback to JSON data
@@ -434,13 +446,28 @@ export class WebinarNewDetailsComponent implements OnInit {
     if (!timeString || this.isTBDDate(timeString)) {
       return 'TBD';
     }
-    const [hours, minutes] = timeString.split(':');
-    const date = new Date();
-    date.setHours(parseInt(hours), parseInt(minutes));
-    return date.toLocaleTimeString('en-IN', { 
-      hour: 'numeric', 
+
+    let date: Date;
+
+    if (timeString.includes('T')) {
+      const parsedDate = new Date(timeString);
+      if (!isNaN(parsedDate.getTime())) {
+        date = parsedDate;
+      } else {
+        const [hours, minutes] = timeString.split(':');
+        date = new Date();
+        date.setHours(parseInt(hours, 10) || 0, parseInt(minutes, 10) || 0, 0, 0);
+      }
+    } else {
+      const [hours, minutes] = timeString.split(':');
+      date = new Date();
+      date.setHours(parseInt(hours, 10) || 0, parseInt(minutes, 10) || 0, 0, 0);
+    }
+
+    return date.toLocaleTimeString('en-IN', {
+      hour: 'numeric',
       minute: '2-digit',
-      hour12: true 
+      hour12: true,
     });
   }
 
