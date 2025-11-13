@@ -789,34 +789,31 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
     const webinarId = this.route.snapshot.paramMap.get('webinarId');
     const webinarType = this.route.snapshot.paramMap.get('webinarType') || 'masterclass';
 
-    // Check if user exists (userId is present)
-    if (this.userId) {
-      // Existing user - directly subscribe to webinar
+    const subscribeAndNavigate = (userId: string) => {
       const subscriptionData = {
         webinarId: webinarId,
-        userId: this.userId,
+        userId: userId,
         transactionId: transactionId,
         amount: parseInt(this.webinarDetails?.price),
       };
 
       this.authService.subscribeToWebinar(subscriptionData).subscribe({
-        next: (response: any) => {
-          // Navigate to webinar registration success page
+        next: () => {
           this.router.navigate(['/auth/register', webinarType, webinarId], { queryParams: { success: 'true', txnId: transactionId } }).then(() => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           });
         },
         error: (error: any) => {
           console.error('Error completing registration API:', error);
-          
-          // Still navigate to success page since payment was successful
+
           this.router.navigate(['/auth/webinar-registration-success']).then(() => {
             this.toastr.warning('Payment successful, but registration confirmation pending. Please contact support if needed.');
           });
         }
       });
-    } else {
-      // New user - register user first, then subscribe to webinar
+    };
+
+    const registerAndSubscribe = () => {
       const registrationData = {
         first_name: this.firstName,
         user_type: 'trainee',
@@ -834,40 +831,49 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
 
       this.authService.registerWebinarWithUser(registrationData).subscribe({
         next: (response) => {
-          // Now subscribe to webinar with the newly created user ID
-          const subscriptionData = {
-            webinarId: webinarId,
-            userId: response.user.id,
-            amount: parseInt(this.webinarDetails?.price),
-            transactionId: transactionId,
-          };
-
-          this.authService.subscribeToWebinar(subscriptionData).subscribe({
-            next: (subscriptionResponse: any) => {
-              // Navigate to webinar registration success page
-              this.router.navigate(['/auth/register', webinarType, webinarId], { queryParams: { success: 'true', txnId: transactionId } }).then(() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              });
-            },
-            error: (error: any) => {
-              console.error('Webinar subscription error:', error);
-              
-              // Still navigate to success page since payment was successful
-              this.router.navigate(['/auth/webinar-registration-success']).then(() => {
-                this.toastr.warning('Payment successful, but registration confirmation pending. Please contact support if needed.');
-              });
-            }
-          });
+          const createdUserId = response?.user?.id;
+          if (createdUserId) {
+            this.userId = createdUserId;
+            subscribeAndNavigate(createdUserId);
+          } else {
+            console.warn('Registration succeeded but no user id returned.');
+            this.router.navigate(['/auth/webinar-registration-success']).then(() => {
+              this.toastr.warning('Registration completed, but confirmation pending. Please contact support if needed.');
+            });
+          }
         },
         error: (error) => {
           console.error('User registration error:', error);
-          
-          // Still navigate to success page since payment was successful
+
           this.router.navigate(['/auth/webinar-registration-success']).then(() => {
             this.toastr.warning('Payment successful, but registration confirmation pending. Please contact support if needed.');
           });
         }
       });
+    };
+
+    if (this.userId) {
+      subscribeAndNavigate(this.userId);
+      return;
+    }
+
+    if (this.email) {
+      this.authService.checkIfUserExists(this.email.trim()).subscribe({
+        next: (response) => {
+          this.handleUserExistenceResponse(response);
+          if (this.userId) {
+            subscribeAndNavigate(this.userId);
+          } else {
+            registerAndSubscribe();
+          }
+        },
+        error: (error) => {
+          console.error('Error checking user existence after payment:', error);
+          registerAndSubscribe();
+        }
+      });
+    } else {
+      registerAndSubscribe();
     }
   }
 
