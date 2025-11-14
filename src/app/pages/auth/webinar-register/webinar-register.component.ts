@@ -92,7 +92,7 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Scroll to top when component loads
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    
+
     // Check if redirected from payment loading page with success
     this.route.queryParams.subscribe(queryParams => {
       if (queryParams['success'] === 'true') {
@@ -192,7 +192,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
     this.isVerifyingEmail = true;
     this.errorMessage = '';
 
-    // First verify email (like trainer onboarding)
     const userData = {
       first_name: this.firstName,
       last_name: this.lastName,
@@ -205,15 +204,26 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
     };
 
     this.authService.verifyUserEmail(userData).subscribe({
-      next: (response) => {
+      next: () => {
         this.isEmailVerified = true;
+        this.isOtpVerified = true;
         this.isVerifyingEmail = false;
         this.isOtpSent = true;
+
+        this.authService.checkIfUserExists(this.email.trim()).subscribe({
+          next: (response) => {
+            this.handleUserExistenceResponse(response);
+          },
+          error: (error) => {
+            console.error('Error checking user existence:', error);
+            this.handleUserExistenceResponse(null);
+          }
+        });
       },
       error: (error) => {
         this.isVerifyingEmail = false;
         console.error('Email verification error:', error);
-        
+
         if (error.error && error.error.message) {
           this.errorMessage = error.error.message;
         } else {
@@ -339,16 +349,77 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
    * Complete registration after OTP verification
    */
   completeRegistration(): void {
+    if (!this.email) {
+      this.errorMessage = 'Please enter your email address.';
+      return;
+    }
+
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    // Generate random transaction ID for free webinars, otherwise use user input
     const userTransactionId = this.isFreeWebinar() ? this.generateRandomTransactionId() : this.transactionReference.trim();
-  
 
-    if (this.isExistingUser) {
-      // User already exists, call webinar subscription API
-      const isFreeWebinar = this.webinarDetails?.price === 0 || this.webinarDetails?.price === '0' || this.webinarDetails?.price === '0.00';
+    this.authService.checkIfUserExists(this.email.trim()).subscribe({
+      next: (response) => {
+        this.handleUserExistenceResponse(response);
+        this.finalizeRegistration(userTransactionId);
+      },
+      error: (error) => {
+        console.error('Error checking user existence:', error);
+        this.isExistingUser = false;
+        this.userId = '';
+        this.finalizeRegistration(userTransactionId);
+      }
+    });
+  }
+
+  private handleUserExistenceResponse(response: any): void {
+    const user = response?.existingUser || response?.user || response?.data?.user || response?.data || null;
+    const exists = response?.exists ?? !!user;
+
+    if (exists && user) {
+      this.isExistingUser = true;
+      this.userId = user.id || user.userId || user.user_id || '';
+
+      const firstName = user.first_name || user.firstName || user.firstname;
+      const lastName = user.last_name || user.lastName || user.lastname;
+      const jobTitle = user.job_title || user.jobTitle || user.jobtitle;
+      const company = user.company || user.organization || user.organisation;
+      const phone = user.phone || user.phone_number || user.mobile || user.mobileNumber;
+
+      if (firstName) {
+        this.firstName = firstName;
+        this.isFirstNameDisabled = true;
+      }
+      if (lastName) {
+        this.lastName = lastName;
+        this.isLastNameDisabled = true;
+      }
+      if (jobTitle) {
+        this.jobTitle = jobTitle;
+        this.isJobTitleDisabled = true;
+      }
+      if (company) {
+        this.company = company;
+        this.isCompanyDisabled = true;
+      }
+      if (phone) {
+        this.phone = phone;
+        this.isPhoneDisabled = true;
+      }
+    } else {
+      this.isExistingUser = false;
+      this.userId = '';
+      this.isFirstNameDisabled = false;
+      this.isLastNameDisabled = false;
+      this.isJobTitleDisabled = false;
+      this.isCompanyDisabled = false;
+      this.isPhoneDisabled = false;
+    }
+  }
+
+  private finalizeRegistration(userTransactionId: string): void {
+    if (this.isExistingUser && this.userId) {
       const subscriptionData = {
         webinarId: this.webinarDetails?.id,
         userId: this.userId,
@@ -357,16 +428,15 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       };
 
       this.authService.subscribeToWebinar(subscriptionData).subscribe({
-        next: (response: any) => {
+        next: () => {
           this.isSubmitting = false;
-          // Show thank you page
           window.scrollTo({ top: 0, behavior: 'smooth' });
           this.showThankYouPage = true;
         },
         error: (error: any) => {
           this.isSubmitting = false;
           console.error('Webinar subscription error:', error);
-          
+
           if (error.error && error.error.message) {
             this.errorMessage = error.error.message;
           } else {
@@ -375,7 +445,6 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      // New user, call user registration API
       const registrationData = {
         first_name: this.firstName,
         user_type: 'trainee',
@@ -389,30 +458,27 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         job_title: this.jobTitle,
         company: this.company,
         transactionId: userTransactionId,
-
       };
 
       this.authService.registerWebinarWithUser(registrationData).subscribe({
         next: (response) => {
-          this.isSubmitting = false;
-          const isFreeWebinar = this.webinarDetails?.price === 0 || this.webinarDetails?.price === '0' || this.webinarDetails?.price === '0.00';
           const subscriptionData = {
             webinarId: this.webinarDetails?.id,
             userId: response.user.id,
             amount: parseInt(this.webinarDetails?.price),
             transactionId: userTransactionId,
           };
+
           this.authService.subscribeToWebinar(subscriptionData).subscribe({
-            next: (response: any) => {
+            next: () => {
               this.isSubmitting = false;
-              // Show thank you page
               window.scrollTo({ top: 0, behavior: 'smooth' });
               this.showThankYouPage = true;
             },
             error: (error: any) => {
               this.isSubmitting = false;
               console.error('Webinar subscription error:', error);
-              
+
               if (error.error && error.error.message) {
                 this.errorMessage = error.error.message;
               } else {
@@ -424,7 +490,7 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         error: (error) => {
           this.isSubmitting = false;
           console.error('Registration error:', error);
-          
+
           if (error.error && error.error.message) {
             this.errorMessage = error.error.message;
           } else {
@@ -697,7 +763,9 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         'paymentId',
         'payment_id',
         'refId',
-        'ref_id'
+        'ref_id',
+        'merchantTxnId',
+       'merchant_txn_id',
       ];
       
       for (const paramName of paramNames) {
@@ -717,38 +785,35 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
   /**
    * Complete registration after successful payment
    */
-  completeRegistrationAfterPayment(transactionId: string): void {
+  async completeRegistrationAfterPayment(transactionId: string): Promise<void> {
     const webinarId = this.route.snapshot.paramMap.get('webinarId');
     const webinarType = this.route.snapshot.paramMap.get('webinarType') || 'masterclass';
 
-    // Check if user exists (userId is present)
-    if (this.userId) {
-      // Existing user - directly subscribe to webinar
+    const subscribeAndNavigate = (userId: string) => {
       const subscriptionData = {
         webinarId: webinarId,
-        userId: this.userId,
+        userId: userId,
         transactionId: transactionId,
         amount: parseInt(this.webinarDetails?.price),
       };
 
       this.authService.subscribeToWebinar(subscriptionData).subscribe({
-        next: (response: any) => {
-          // Navigate to webinar registration success page
+        next: () => {
           this.router.navigate(['/auth/register', webinarType, webinarId], { queryParams: { success: 'true', txnId: transactionId } }).then(() => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           });
         },
         error: (error: any) => {
           console.error('Error completing registration API:', error);
-          
-          // Still navigate to success page since payment was successful
+
           this.router.navigate(['/auth/webinar-registration-success']).then(() => {
             this.toastr.warning('Payment successful, but registration confirmation pending. Please contact support if needed.');
           });
         }
       });
-    } else {
-      // New user - register user first, then subscribe to webinar
+    };
+
+    const registerAndSubscribe = () => {
       const registrationData = {
         first_name: this.firstName,
         user_type: 'trainee',
@@ -766,40 +831,49 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
 
       this.authService.registerWebinarWithUser(registrationData).subscribe({
         next: (response) => {
-          // Now subscribe to webinar with the newly created user ID
-          const subscriptionData = {
-            webinarId: webinarId,
-            userId: response.user.id,
-            amount: parseInt(this.webinarDetails?.price),
-            transactionId: transactionId,
-          };
-
-          this.authService.subscribeToWebinar(subscriptionData).subscribe({
-            next: (subscriptionResponse: any) => {
-              // Navigate to webinar registration success page
-              this.router.navigate(['/auth/register', webinarType, webinarId], { queryParams: { success: 'true', txnId: transactionId } }).then(() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              });
-            },
-            error: (error: any) => {
-              console.error('Webinar subscription error:', error);
-              
-              // Still navigate to success page since payment was successful
-              this.router.navigate(['/auth/webinar-registration-success']).then(() => {
-                this.toastr.warning('Payment successful, but registration confirmation pending. Please contact support if needed.');
-              });
-            }
-          });
+          const createdUserId = response?.user?.id;
+          if (createdUserId) {
+            this.userId = createdUserId;
+            subscribeAndNavigate(createdUserId);
+          } else {
+            console.warn('Registration succeeded but no user id returned.');
+            this.router.navigate(['/auth/webinar-registration-success']).then(() => {
+              this.toastr.warning('Registration completed, but confirmation pending. Please contact support if needed.');
+            });
+          }
         },
         error: (error) => {
           console.error('User registration error:', error);
-          
-          // Still navigate to success page since payment was successful
+
           this.router.navigate(['/auth/webinar-registration-success']).then(() => {
             this.toastr.warning('Payment successful, but registration confirmation pending. Please contact support if needed.');
           });
         }
       });
+    };
+
+    if (this.userId) {
+      subscribeAndNavigate(this.userId);
+      return;
+    }
+
+    if (this.email) {
+      this.authService.checkIfUserExists(this.email.trim()).subscribe({
+        next: (response) => {
+          this.handleUserExistenceResponse(response);
+          if (this.userId) {
+            subscribeAndNavigate(this.userId);
+          } else {
+            registerAndSubscribe();
+          }
+        },
+        error: (error) => {
+          console.error('Error checking user existence after payment:', error);
+          registerAndSubscribe();
+        }
+      });
+    } else {
+      registerAndSubscribe();
     }
   }
 

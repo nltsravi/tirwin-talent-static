@@ -76,6 +76,10 @@ export class AuthService {
     return this.http.post<any>(this.registerUserUrl, registrationData);
   }
 
+  checkIfUserExists(email: string): Observable<any> {
+    return this.http.post<any>(`${environment.api}/users/is-user-exists`, { email });
+  }
+
   subscribeToWebinar(subscriptionData: any): Observable<any> {
     return this.http.post<any>(`${environment.api}/webinar-subscriptions/subscribe`, subscriptionData);
   }
