@@ -27,6 +27,7 @@ import { AboutUsComponent } from './pages/about-us/about-us.component';
 import { LeadershipComponent } from './pages/leadership/leadership.component';
 import { ContactUsComponent } from './pages/contact-us/contact-us.component';
 import { DefaultLayoutModule } from './layout/default-layout/default-layout.module';
+import { BrandAwarenessComponent } from './pages/brand-awareness/brand-awareness.component';
 
 @NgModule({
     declarations: [
@@ -37,6 +38,7 @@ import { DefaultLayoutModule } from './layout/default-layout/default-layout.modu
         AboutUsComponent,
         LeadershipComponent,
         ContactUsComponent,
+        BrandAwarenessComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [

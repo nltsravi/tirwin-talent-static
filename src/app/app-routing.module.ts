@@ -13,6 +13,7 @@ import { PricingPolicyComponent } from './pages/pricing-policy/pricing-policy.co
 import { AboutUsComponent } from './pages/about-us/about-us.component';
 import { LeadershipComponent } from './pages/leadership/leadership.component';
 import { ContactUsComponent } from './pages/contact-us/contact-us.component';
+import { BrandAwarenessComponent } from './pages/brand-awareness/brand-awareness.component';
 
 const routes: Routes = [
   {
@@ -20,15 +21,16 @@ const routes: Routes = [
     component: DefaultLayoutComponent, // Default layout for the main pages
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' }, // Redirect root to home
-      { path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule), data: { showSlider: true }  }, // Lazy-loaded HomeModule
-      { path: 'auth', loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule), data: { showSlider: false }  }, // 
-      { path: 'profile', loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule), data: { showSlider: false }  }, // 
-      { path: 'webinar/:stype', loadChildren: () => import('./pages/webinar-list/webinar-list.module').then(m => m.WebinarListModule), data: { showSlider: false, account: true }  }, // 
+      { path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule), data: { showSlider: true } }, // Lazy-loaded HomeModule
+      { path: 'auth', loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule), data: { showSlider: false } }, // 
+      { path: 'profile', loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule), data: { showSlider: false } }, // 
+      { path: 'webinar/:stype', loadChildren: () => import('./pages/webinar-list/webinar-list.module').then(m => m.WebinarListModule), data: { showSlider: false, account: true } }, // 
       { path: 'webinar/:style/4e86e649-bb3c-45c4-a2ff-be4c625e2ac8', redirectTo: 'webinar-new/:style/4e86e649-bb3c-45c4-a2ff-be4c625e2ac8' }, // Redirect specific webinar to static page
-      { path: 'webinar/:style/:id', loadChildren: () => import('./pages/webinar-details/webinar-details.module').then(m => m.CourseDetailsModule), data: { showSlider: false, account: true }  }, // 
-      { path: 'webinar-new/:style/:id', loadChildren: () => import('./pages/webinar-new-details/webinar-new-details.module').then(m => m.WebinarNewDetailsModule), data: { showSlider: false, account: true }  }, // New webinar details
-      { path: 'checkout', loadChildren: () => import('./pages/checkout/checkout.module').then(m => m.CheckoutModule), data: { showSlider: false, account: true }  }, // 
-      { path: 'myregistration', loadChildren: () => import('./pages/my-courses/my-courses.module').then(m => m.MyCoursesModule), data: { showSlider: false, account: true }  }, // 
+      { path: 'webinar/:style/:id', loadChildren: () => import('./pages/webinar-details/webinar-details.module').then(m => m.CourseDetailsModule), data: { showSlider: false, account: true } }, // 
+      { path: 'webinar-new/:style/:id', loadChildren: () => import('./pages/webinar-new-details/webinar-new-details.module').then(m => m.WebinarNewDetailsModule), data: { showSlider: false, account: true } }, // New webinar details
+      { path: 'checkout', loadChildren: () => import('./pages/checkout/checkout.module').then(m => m.CheckoutModule), data: { showSlider: false, account: true } }, // 
+      { path: 'brand-awareness', component: BrandAwarenessComponent, data: { showSlider: false } },
+      { path: 'myregistration', loadChildren: () => import('./pages/my-courses/my-courses.module').then(m => m.MyCoursesModule), data: { showSlider: false, account: true } }, // 
       { path: 'admin/user', component: AdminUserComponent, data: { showSlider: false }, canActivate: [AdminGuard] },
       { path: 'admin/user/trainer/:id', component: TrainerDetailsComponent, data: { showSlider: false }, canActivate: [AdminGuard] },
       { path: 'become-instructor', component: BecomeInstructorLandingComponent, data: { showSlider: false } },
@@ -37,8 +39,9 @@ const routes: Routes = [
       { path: 'pricing-policy', component: PricingPolicyComponent, data: { showSlider: false } },
       { path: 'about-us', component: AboutUsComponent, data: { showSlider: false } },
       { path: 'leadership', component: LeadershipComponent, data: { showSlider: false } },
-        { path: 'contact-us', component: ContactUsComponent, data: { showSlider: false } },
-      { path: 'admin/webinar-management', component: AdminWebinarComponent, data: { showSlider: false }, canActivate: [AdminGuard],
+      { path: 'contact-us', component: ContactUsComponent, data: { showSlider: false } },
+      {
+        path: 'admin/webinar-management', component: AdminWebinarComponent, data: { showSlider: false }, canActivate: [AdminGuard],
         children: [
           { path: 'create', component: AdminWebinarComponent }
         ]
