@@ -41,7 +41,8 @@
               "src/assets/css/plugins.css",
               "src/assets/css/theme.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/animate.css/animate.min.css"
             ],
             "scripts": [
               "src/assets/js/jquery.js",
