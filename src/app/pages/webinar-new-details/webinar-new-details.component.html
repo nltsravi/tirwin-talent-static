@@ -8,7 +8,11 @@
       <p class="hero-subtitle">{{ getDisplayTagline() }}</p>
       <br>
       <div class="price-badge price-badge-clickable" (click)="redirectToWebinarRegistration()">
-        <span>Only {{ getDisplayPrice() }} - Seats Limited</span>
+        <span class="price-container">
+          <span class="original-price">₹399</span>
+          <span class="current-price">{{ getDisplayPrice() }}</span>
+          <span class="seats-text"> - Seats Limited</span>
+        </span>
       </div>
     </div>
   </div>
@@ -66,7 +70,7 @@
             </p>
             
             <p class="pricing-note">
-              <em>All this for less than the price of a coffee — just ₹99!</em>
+              <em>All this for less than the price of a coffee — <span class="price-container"><span class="original-price">₹399</span> <span class="current-price">just ₹99!</span></span></em>
             </p>
             
             <p class="urgency-note">
@@ -149,7 +153,10 @@
     <div class="card p-xl">
       <div class="stack">
         <button class="btn btn-primary secure-spot-btn" (click)="redirectToWebinarRegistration()">
-          Secure Your Spot ({{ getDisplayPrice() }})
+          <span class="price-container">
+            <span class="original-price">₹399</span>
+            <span class="current-price">Secure Your Spot ({{ getDisplayPrice() }})</span>
+          </span>
         </button>
         <p class="muted">Seats are limited! Complete your registration to receive the Zoom link.</p>
         

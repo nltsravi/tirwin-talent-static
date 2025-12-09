@@ -111,6 +111,39 @@
   cursor: pointer !important;
 }
 
+/* Price container with strikethrough */
+.price-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #d4af37;
+  font-size: 18px;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+/* Bright yellow for banner button only */
+.price-badge .original-price {
+  color: #ffd700;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.current-price {
+  font-weight: 700;
+  color: #10b981;
+  font-size: 1.1em;
+}
+
+.seats-text {
+  color: inherit;
+}
+
 /* Override any Angular-specific styling */
 ::ng-deep {
   /* Ensure the component takes full height */
@@ -342,10 +375,81 @@
 
 /* Mobile Responsive Styles */
 @media (max-width: 768px) {
+  /* Make host a flex container to enable ordering */
+  :host {
+    display: flex;
+    flex-direction: column;
+  }
+  
   /* Container and layout adjustments */
   .container {
     padding-left: 15px;
     padding-right: 15px;
+  }
+  
+  /* Reorder top-level sections in mobile view */
+  .hero-section {
+    order: 1;
+  }
+  
+  /* Hide the standalone mobile registration section */
+  .mobile-registration-section {
+    display: none !important;
+  }
+  
+  .main-content {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Make left-column use display: contents so its children can be ordered with right-column */
+  .main-content .left-column {
+    display: contents;
+  }
+  
+  /* Why Attend section - appears first after hero */
+  .main-content .left-column > .section:first-of-type {
+    order: 1;
+  }
+  
+  /* What You'll Learn section - appears second */
+  .main-content .left-column > .section:nth-of-type(2) {
+    order: 2;
+  }
+  
+  /* Show and position the right-column registration card after first two sections */
+  .main-content .right-column {
+    order: 3;
+    display: block !important;
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .main-content .right-column .sticky-registration-card {
+    position: relative;
+    top: auto;
+  }
+  
+  /* Who Should Attend section - fourth */
+  .main-content .left-column > .section:nth-of-type(3) {
+    order: 4;
+  }
+  
+  /* Proof Points section - fifth */
+  .main-content .left-column > .section:nth-of-type(4) {
+    order: 5;
+  }
+  
+  /* FAQs section - sixth */
+  .main-content .left-column > .section:nth-of-type(5) {
+    order: 6;
+  }
+  
+  /* Secure Your Spot and Final CTA cards - last */
+  .main-content .left-column > .card:not(.section .card) {
+    order: 7;
   }
   
   /* Two column layout mobile adjustments */
@@ -354,10 +458,13 @@
     max-width: 100% !important;
     gap: 15px;
     padding: 20px 15px;
+    display: flex;
   }
   
   .left-column {
     max-width: 100%;
+    display: flex;
+    flex-direction: column;
   }
   
   .right-column {
