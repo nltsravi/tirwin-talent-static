@@ -15,4 +15,8 @@ export class BrandAwarenessComponent {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   }
+
+  joinWaitlist(): void {
+    window.location.href = `mailto:${this.data.contactInfo.email}?subject=Join Waiting List`;
+  }
 }

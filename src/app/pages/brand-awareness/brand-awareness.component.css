@@ -35,6 +35,10 @@ h6 {
     letter-spacing: -0.025em;
 }
 
+.section-title {
+    color: var(--accent-color) !important;
+}
+
 .display-3 {
     font-weight: 800;
 }
@@ -50,7 +54,7 @@ h6 {
     z-index: 1;
     background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.8)), url('../../../assets/images/hero-bg.jpg') no-repeat center center/cover;
     min-height: 85vh;
-    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+
 }
 
 .hero-btn {
@@ -109,28 +113,48 @@ h6 {
 
 /* Accordion */
 .accordion-item {
-    border: none;
-    margin-bottom: 1rem;
-    border-radius: 0.75rem !important;
+    border: none !important;
+    margin-bottom: 1.5rem;
+    border-radius: 1rem !important;
     overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+}
+
+.accordion-item:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .accordion-button {
     font-weight: 600;
     background: var(--white);
-    padding: 1.25rem;
+    padding: 1.5rem;
+    border: none;
+    font-size: 1.1rem;
 }
 
 .accordion-button:not(.collapsed) {
     color: var(--accent-color);
-    background-color: #eff6ff;
+    background-color: #f0f7ff;
     box-shadow: none;
+    border-bottom: 2px solid rgba(59, 130, 246, 0.2);
 }
 
 .accordion-button:focus {
     box-shadow: none;
-    border-color: rgba(59, 130, 246, 0.5);
+    border-color: transparent;
+}
+
+.accordion-button::after {
+    display: none;
+}
+
+.accordion-button .bi-chevron-down {
+    transition: transform 0.3s ease;
+}
+
+.accordion-button:not(.collapsed) .bi-chevron-down {
+    transform: rotate(180deg);
 }
 
 /* Testimonials */
@@ -150,6 +174,42 @@ h6 {
     color: rgba(59, 130, 246, 0.1);
     font-family: serif;
     line-height: 1;
+}
+
+/* Carousel Styles */
+.carousel-item {
+    min-height: 450px;
+    padding: 2rem 0;
+    display: block !important;
+}
+
+.carousel-inner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    width: 2rem;
+    height: 2rem;
+}
+
+.carousel-indicators {
+    position: relative;
+    margin-top: 2rem;
+    bottom: auto !important;
+}
+
+.carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.carousel-indicators button.active {
+    background-color: var(--accent-color);
 }
 
 /* Utilities */
