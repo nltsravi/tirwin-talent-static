@@ -182,23 +182,27 @@
       <h2 class="display-5 fw-bold text-center mb-5 text-white">{{ data.testimonials.title }}</h2>
 
       <div class="row g-4 justify-content-center">
-        <div class="col-md-6" *ngFor="let story of data.testimonials.stories">
-          <div class="card border-0 bg-white text-dark p-4 shadow-lg rounded-4 testimonial-card h-100">
-            <div class="card-body">
-              <div class="d-flex align-items-center mb-4">
-                <div
-                  class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
-                  style="width: 70px; height: 70px; color: var(--accent-color); font-weight: bold; font-size: 1.8rem;">
-                  {{ story.name.charAt(0) }}
-                </div>
-                <div>
-                  <h5 class="mb-1 fw-bold">{{ story.name }}</h5>
-                  <small class="text-muted fw-medium d-block">{{ story.currentRole }} at {{ story.company }}</small>
-                  <div class="text-muted small"><i class="bi bi-geo-alt-fill me-1"></i>{{ story.location }}</div>
-                </div>
+        <div class="col-lg-8" *ngFor="let story of data.testimonials.stories; let last = last">
+          <div class="text-white p-4 testimonial-content h-100 position-relative">
+            <div class="position-relative">
+              <i
+                class="bi bi-quote quote-icon-start text-white opacity-25 display-1 position-absolute top-0 start-0 mt-n3 ms-n2"></i>
+              <div class="ps-5 pe-3 py-2 pt-4">
+                <p class="lead fst-italic mb-4 text-light position-relative z-1"><br><br>{{ story.quote }}</p>
               </div>
-              <p class="lead fst-italic mb-0 text-dark">"{{ story.quote }}"</p>
+
+              <div class="text-end pt-3 mx-2">
+                <h5 class="mb-1 fw-bold text-primary">{{ story.name }}</h5>
+                <small class="text-white-50 fw-bold d-block text-uppercase"
+                  style="font-size: 0.8rem; letter-spacing: 0.5px;">{{ story.currentRole }}</small>
+                <small class="text-white-50 d-block">{{ story.company }}</small>
+                <div class="text-muted small mt-1"><i class="bi bi-geo-alt-fill me-1 text-secondary"></i>{{
+                  story.location }}</div>
+              </div>
             </div>
+
+            <!-- Separator line for all except the last item -->
+            <div *ngIf="!last" class="border-bottom border-secondary opacity-25 mt-5"></div>
           </div>
         </div>
       </div>

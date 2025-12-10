@@ -165,22 +165,10 @@ h6 {
     overflow: hidden;
 }
 
-.testimonial-card::before {
-    content: '"';
-    position: absolute;
-    top: -20px;
-    right: 20px;
-    font-size: 10rem;
-    color: rgba(59, 130, 246, 0.1);
-    font-family: serif;
-    line-height: 1;
-}
+/* Removed old ::before quote styling */
 
-/* Carousel Styles */
-.carousel-item {
-    min-height: 450px;
-    padding: 2rem 0;
-    display: block !important;
+.quote-icon-start {
+    z-index: 0;
 }
 
 .carousel-inner {
