@@ -52,7 +52,7 @@ h6 {
 .hero-section {
     position: relative;
     z-index: 1;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.8)), url('../../../assets/images/hero-bg.jpg') no-repeat center center/cover;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.6), rgba(30, 41, 59, 0.5)), url('../../../assets/images/hero-bg.jpg') no-repeat center center/cover;
     min-height: 85vh;
 
 }
@@ -243,4 +243,62 @@ h6 {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
+}
+
+/* Who We Serve - Font Sizes */
+.who-we-serve .badge {
+    font-size: 1.1rem;
+}
+
+.who-we-serve .card-body p {
+    font-size: 1.15rem;
+}
+
+.who-we-serve .card-body .text-primary {
+    font-size: 1.15rem;
+}
+
+/* Mobile Font Size Adjustments */
+@media (max-width: 768px) {
+    .display-3 {
+        font-size: 3rem;
+        /* Adjusted for better mobile fit, still large */
+    }
+
+    .display-5 {
+        font-size: 2.2rem;
+    }
+
+    .lead {
+        font-size: 1.35rem !important;
+    }
+
+    p,
+    li {
+        font-size: 1.15rem;
+    }
+
+    .fs-5 {
+        font-size: 1.3rem !important;
+    }
+
+    .step-number {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 1.2rem !important;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        letter-spacing: normal;
+    }
+
+    .btn-lg {
+        font-size: 1.25rem;
+        padding: 1rem 2rem;
+    }
 }

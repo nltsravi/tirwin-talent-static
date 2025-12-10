@@ -1,20 +1,16 @@
 <div class="brand-awareness-page">
   <!-- Hero Section -->
+  <!-- Hero Section -->
   <section class="hero-section d-flex align-items-center justify-content-center text-center text-white">
     <div class="container position-relative px-3 px-md-4">
       <div class="animate__animated animate__fadeInDown">
-        <span
-          class="badge bg-white text-primary px-3 py-2 rounded-pill mb-4 fw-bold shadow-sm text-uppercase tracking-wider">Launch
-          Your Career</span>
         <h1 class="display-3 fw-bold mb-4">{{ data.programName }}</h1>
       </div>
-      <p class="lead fs-3 mb-5 text-white-50 animate__animated animate__fadeInUp animate__delay-1s"
-        style="max-width: 800px; margin: 0 auto;">{{ data.brandTagline }}</p>
-      <div class="w-100 d-flex justify-content-center px-2">
+      <div class="w-100 d-flex justify-content-center px-2 mt-5">
         <button
           class="btn btn-primary btn-lg px-4 px-md-5 py-3 rounded-pill shadow-lg hero-btn animate__animated animate__fadeInUp animate__delay-1s fw-bold"
           style="max-width: 280px; min-width: 240px;" (click)="scrollToSection('contact')">
-          Get Started Now <i class="bi bi-arrow-right ms-2"></i>
+          Join the Waitlist <i class="bi bi-arrow-right ms-2"></i>
         </button>
       </div>
     </div>
@@ -25,7 +21,6 @@
     <div class="container">
       <div class="row align-items-center g-5">
         <div class="col-lg-6 animate__animated animate__fadeInLeft">
-          <h2 class="text-uppercase text-primary fw-bold mb-3 ls-2 display-5">{{ data.introduction.title }}</h2>
           <h2 class="display-5 fw-bold mb-4 text-dark">{{ data.introduction.coreMessage }}</h2>
           <p class="lead text-muted mb-4">{{ data.introduction.description }}</p>
           <ul class="list-unstyled mt-4">
@@ -82,7 +77,7 @@
   </section>
 
   <!-- Who We Serve -->
-  <section class="section-padding bg-light-gradient">
+  <section class="section-padding bg-light-gradient who-we-serve">
     <div class="container">
       <div class="text-center mb-5 animate__animated animate__fadeInUp">
         <h2 class="display-5 fw-bold mb-3 section-title">{{ data.whoWeServe.title }}</h2>
@@ -141,37 +136,6 @@
     </div>
   </section>
 
-  <!-- Testimonials -->
-  <section class="section-padding bg-dark text-white position-relative overflow-hidden">
-    <div class="position-absolute top-0 start-0 w-100 h-100"
-      style="background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%); z-index: -1;"></div>
-    <div class="container">
-      <h2 class="display-5 fw-bold text-center mb-5 text-white">{{ data.testimonials.title }}</h2>
-
-      <div class="row g-4 justify-content-center">
-        <div class="col-md-6" *ngFor="let story of data.testimonials.stories">
-          <div class="card border-0 bg-white text-dark p-4 shadow-lg rounded-4 testimonial-card h-100">
-            <div class="card-body">
-              <div class="d-flex align-items-center mb-4">
-                <div
-                  class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
-                  style="width: 70px; height: 70px; color: var(--accent-color); font-weight: bold; font-size: 1.8rem;">
-                  {{ story.name.charAt(0) }}
-                </div>
-                <div>
-                  <h5 class="mb-1 fw-bold">{{ story.name }}</h5>
-                  <small class="text-muted fw-medium d-block">{{ story.currentRole }} at {{ story.company }}</small>
-                  <div class="text-muted small"><i class="bi bi-geo-alt-fill me-1"></i>{{ story.location }}</div>
-                </div>
-              </div>
-              <p class="lead fst-italic mb-0 text-dark">"{{ story.quote }}"</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Program Journey -->
   <section class="section-padding bg-light">
     <div class="container">
@@ -210,6 +174,37 @@
     </div>
   </section>
 
+  <!-- Testimonials -->
+  <section class="section-padding bg-dark text-white position-relative overflow-hidden">
+    <div class="position-absolute top-0 start-0 w-100 h-100"
+      style="background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%); z-index: -1;"></div>
+    <div class="container">
+      <h2 class="display-5 fw-bold text-center mb-5 text-white">{{ data.testimonials.title }}</h2>
+
+      <div class="row g-4 justify-content-center">
+        <div class="col-md-6" *ngFor="let story of data.testimonials.stories">
+          <div class="card border-0 bg-white text-dark p-4 shadow-lg rounded-4 testimonial-card h-100">
+            <div class="card-body">
+              <div class="d-flex align-items-center mb-4">
+                <div
+                  class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                  style="width: 70px; height: 70px; color: var(--accent-color); font-weight: bold; font-size: 1.8rem;">
+                  {{ story.name.charAt(0) }}
+                </div>
+                <div>
+                  <h5 class="mb-1 fw-bold">{{ story.name }}</h5>
+                  <small class="text-muted fw-medium d-block">{{ story.currentRole }} at {{ story.company }}</small>
+                  <div class="text-muted small"><i class="bi bi-geo-alt-fill me-1"></i>{{ story.location }}</div>
+                </div>
+              </div>
+              <p class="lead fst-italic mb-0 text-dark">"{{ story.quote }}"</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FAQ -->
   <section class="section-padding bg-white">
     <div class="container">
@@ -222,13 +217,13 @@
               class="accordion-button collapsed fw-bold rounded-4 bg-white d-flex justify-content-between align-items-center"
               type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="false"
               [attr.aria-controls]="'collapse' + i">
-              <span>{{ item.q }}</span>
+              <span class="text-start">{{ item.q }}</span>
               <i class="bi bi-chevron-down ms-3 fs-4 text-primary"></i>
             </button>
           </h2>
           <div [id]="'collapse' + i" class="accordion-collapse collapse" [attr.aria-labelledby]="'heading' + i"
             data-bs-parent="#faqAccordion">
-            <div class="accordion-body text-dark lh-lg px-4 py-3">
+            <div class="accordion-body text-dark lh-lg px-4 py-3 text-start">
               {{ item.a }}
             </div>
           </div>
