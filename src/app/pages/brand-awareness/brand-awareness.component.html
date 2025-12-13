@@ -10,7 +10,7 @@
         <button
           class="btn btn-primary btn-lg px-4 px-md-5 py-3 rounded-pill shadow-lg hero-btn animate__animated animate__fadeInUp animate__delay-1s fw-bold"
           style="max-width: 280px; min-width: 240px;" (click)="scrollToSection('contact')">
-          Join the Waitlist <i class="bi bi-arrow-right ms-2"></i>
+          Know More <i class="bi bi-arrow-right ms-2"></i>
         </button>
       </div>
     </div>
@@ -116,8 +116,11 @@
       <h2 class="display-5 fw-bold text-center mb-5 section-title">{{ data.whyChooseUs.title }}</h2>
       <div class="row g-4">
         <div class="col-lg-6" *ngFor="let reason of data.whyChooseUs.reasons">
-          <div class="d-flex p-4 h-100 border rounded-4 shadow-sm bg-white hover-card align-items-start">
-            <div>
+          <div class="h-100 border rounded-4 shadow-sm bg-white hover-card overflow-hidden">
+            <div class="banner-image-container">
+              <img [src]="reason.image" [alt]="reason.heading" class="w-100 h-100 object-fit-cover">
+            </div>
+            <div class="p-4">
               <h3 class="h4 fw-bold mb-3">{{ reason.heading }}</h3>
               <ul class="list-unstyled text-muted">
                 <li *ngFor="let detail of reason.details" class="mb-2 d-flex align-items-start">
@@ -174,40 +177,7 @@
     </div>
   </section>
 
-  <!-- Testimonials -->
-  <section class="section-padding bg-dark text-white position-relative overflow-hidden">
-    <div class="position-absolute top-0 start-0 w-100 h-100"
-      style="background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%); z-index: -1;"></div>
-    <div class="container">
-      <h2 class="display-5 fw-bold text-center mb-5 text-white">{{ data.testimonials.title }}</h2>
 
-      <div class="row g-4 justify-content-center">
-        <div class="col-lg-8" *ngFor="let story of data.testimonials.stories; let last = last">
-          <div class="text-white p-4 testimonial-content h-100 position-relative">
-            <div class="position-relative">
-              <i
-                class="bi bi-quote quote-icon-start text-white opacity-25 display-1 position-absolute top-0 start-0 mt-n3 ms-n2"></i>
-              <div class="ps-5 pe-3 py-2 pt-4">
-                <p class="lead fst-italic mb-4 text-light position-relative z-1"><br><br>{{ story.quote }}</p>
-              </div>
-
-              <div class="text-end pt-3 mx-2">
-                <h5 class="mb-1 fw-bold text-primary">{{ story.name }}</h5>
-                <small class="text-white-50 fw-bold d-block text-uppercase"
-                  style="font-size: 0.8rem; letter-spacing: 0.5px;">{{ story.currentRole }}</small>
-                <small class="text-white-50 d-block">{{ story.company }}</small>
-                <div class="text-muted small mt-1"><i class="bi bi-geo-alt-fill me-1 text-secondary"></i>{{
-                  story.location }}</div>
-              </div>
-            </div>
-
-            <!-- Separator line for all except the last item -->
-            <div *ngIf="!last" class="border-bottom border-secondary opacity-25 mt-5"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- FAQ -->
   <section class="section-padding bg-white">

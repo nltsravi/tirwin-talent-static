@@ -90,6 +90,12 @@ h6 {
     border-color: var(--accent-color);
 }
 
+.banner-image-container {
+    height: 200px;
+    width: 100%;
+    overflow: hidden;
+}
+
 /* Step Cards */
 .step-card {
     background: var(--white);
@@ -157,48 +163,7 @@ h6 {
     transform: rotate(180deg);
 }
 
-/* Testimonials */
-.testimonial-card {
-    background: var(--white);
-    border-radius: 1rem;
-    position: relative;
-    overflow: hidden;
-}
 
-/* Removed old ::before quote styling */
-
-.quote-icon-start {
-    z-index: 0;
-}
-
-.carousel-inner {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    width: 2rem;
-    height: 2rem;
-}
-
-.carousel-indicators {
-    position: relative;
-    margin-top: 2rem;
-    bottom: auto !important;
-}
-
-.carousel-indicators button {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.5);
-}
-
-.carousel-indicators button.active {
-    background-color: var(--accent-color);
-}
 
 /* Utilities */
 .text-gradient {

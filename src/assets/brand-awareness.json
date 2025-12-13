@@ -18,7 +18,7 @@
   },
   "whoWeAre": {
     "title": "WHO WE ARE",
-    "platformIdentity": "TIRWIN Talent is the skills platform for India's logistics industry. We don't just train. We transform careers.",
+    "platformIdentity": "Tirwin Talent is the skills platform offered by Tirwin Management Services transforming the Logistics & Freight forwarding industry for 15+ years. We don't just train. We transform careers.",
     "approach": {
       "name": "Skills-Based Staffing + Staffing-Based Skilling",
       "steps": [
@@ -37,14 +37,16 @@
         "segment": "Final Year Student",
         "painPoints": [
           "Worried about placement.",
-          "Confused about logistics career."
+          "Confused about logistics career.",
+          "Need Placement Support."
         ],
         "valueProp": "Want to be job-ready BEFORE you graduate."
       },
       {
         "segment": "Fresh Graduate",
         "painPoints": [
-          "Sent 20+ resumes. Zero interviews. Frustrated."
+          "Sent 20+ resumes. Zero interviews. Frustrated.",
+          "Need Placement Support."
         ],
         "valueProp": "Need clarity on what companies actually want."
       },
@@ -52,23 +54,10 @@
         "segment": "Early Professional (1-2 years experience)",
         "painPoints": [
           "Stuck in the same role.",
-          "Not getting promoted."
+          "Not getting promoted.",
+          "Need Placement Support."
         ],
         "valueProp": "Need the skills that lead to advancement."
-      },
-      {
-        "segment": "Switching Into Logistics",
-        "painPoints": [
-          "Coming from IT, commerce, or other background."
-        ],
-        "valueProp": "Want a clear entry strategy into logistics industry."
-      },
-      {
-        "segment": "Looking for Placement Support",
-        "painPoints": [
-          "Not just training. You want actual job opportunities."
-        ],
-        "valueProp": "You want to work with mentors who can place you."
       }
     ],
     "bottomLine": "If you're serious about a career in logistics, this is for people like you."
@@ -78,7 +67,8 @@
     "reasons": [
       {
         "id": 1,
-        "heading": "BACKED BY 15 YEARS OF INDUSTRY EXPERTISE",
+        "heading": "BACKED BY 15+ YRS OF INDUSTRY EXPERTISE",
+        "image": "assets/images/industry-expertise.png",
         "details": [
           "TIRWIN Management has been training & placing logistics professionals since 2008.",
           "Our trainers have 25+ years in freight forwarding & EXIM.",
@@ -87,7 +77,8 @@
       },
       {
         "id": 2,
-        "heading": "TRUSTED BY INDIA'S TOP LOGISTICS COMPANIES",
+        "heading": "TRUSTED BY INDIA'S TOP FREIGHT FORWARDING & LOGISTICS COMPANIES",
+        "image": "assets/images/trusted-companies.png",
         "trustedBy": [
           "Dachser (Global logistics leader)",
           "TVS Supply Chain (India's largest 3PL)",
@@ -101,6 +92,7 @@
       {
         "id": 3,
         "heading": "SKILLS-BASED APPROACH (NOT JUST THEORY)",
+        "image": "assets/images/skills-approach.png",
         "details": [
           "Most training teaches theory. We teach execution.",
           "Examples: Real freight scenarios, Actual negotiation practice, Real documentation, Personalized career roadmap.",
@@ -110,20 +102,12 @@
       {
         "id": 4,
         "heading": "PLACEMENT SUPPORT (BEYOND TRAINING)",
+        "image": "assets/images/placement-support.png",
         "details": [
           "We don't just train and disappear.",
           "After training, we match you with real job opportunities based on your skills, interests, and career goals.",
-          "You're not on your own — we help you get hired."
-        ]
-      },
-      {
-        "id": 5,
-        "heading": "1000+ SUCCESS STORIES",
-        "details": [
-          "1000+ logistics professionals trained.",
-          "Hundreds placed in major companies.",
-          "Dozens promoted to leadership roles.",
-          "Not just claims. Real people. Real results."
+          "You're not on your own — we help you get hired.",
+          "Resume Structuring"
         ]
       }
     ]
@@ -242,7 +226,7 @@
   "callToAction": {
     "headline": "Your logistics career starts with a single step.",
     "action": "Join the waiting list for the Logistics Career Compass webinar",
-    "buttonText": "Join The Waiting List",
+    "buttonText": "Know More",
     "closingMessage": "No pressure. No rush. But the opportunity is there. The path is clear. The support is real. Thousands have walked this path. Now it's your turn."
   },
   "contactInfo": {
