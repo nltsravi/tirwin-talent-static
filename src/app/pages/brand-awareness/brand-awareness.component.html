@@ -5,8 +5,13 @@
     <div class="container position-relative px-3 px-md-4">
       <div class="animate__animated animate__fadeInDown">
         <h1 class="display-3 fw-bold mb-4">{{ data.programName }}</h1>
+        <p class="h3 mb-4 fw-light text-white-50">{{ data.programSubline }}</p>
+        <div class="compass-container mt-4 mb-2">
+          <img src="assets/images/compass.png" alt="Compass"
+            class="compass-img animate__animated animate__zoomIn animate__delay-1s">
+        </div>
       </div>
-      <div class="w-100 d-flex justify-content-center px-2 mt-5">
+      <div class="w-100 d-flex justify-content-center px-2 mt-3">
         <button
           class="btn btn-primary btn-lg px-4 px-md-5 py-3 rounded-pill shadow-lg hero-btn animate__animated animate__fadeInUp animate__delay-1s fw-bold"
           style="max-width: 280px; min-width: 240px;" (click)="scrollToSection('contact')">

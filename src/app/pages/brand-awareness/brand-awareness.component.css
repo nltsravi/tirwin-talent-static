@@ -63,6 +63,11 @@ h6 {
     transition: var(--transition);
 }
 
+.compass-img {
+    max-width: 350px;
+    width: 100%;
+}
+
 .hero-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
@@ -94,6 +99,11 @@ h6 {
     height: 200px;
     width: 100%;
     overflow: hidden;
+}
+
+.banner-image-container img {
+    object-fit: cover;
+    object-position: top;
 }
 
 /* Step Cards */
@@ -169,6 +179,7 @@ h6 {
 .text-gradient {
     background: linear-gradient(135deg, var(--accent-color), var(--secondary-accent));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
