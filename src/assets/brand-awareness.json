@@ -146,20 +146,19 @@
     ]
   },
   "programJourney": {
-    "title": "THE TIRWIN LOGISTICS CAREER JOURNEY",
+    "title": "Logistics Career compass - Career journey from Tirwin Talent",
     "steps": [
       {
         "name": "DISCOVER",
         "actions": [
-          "Attend a webinar or explore our website",
-          "Understand what logistics career looks like",
-          "Get clarity on where you want to go"
+          "Attend our 90min preview webinar",
+          "Understand how you can take control of your career in Logistics"
         ]
       },
       {
         "name": "LEARN",
         "actions": [
-          "Join a structured training program",
+          "Join our structured training workshop",
           "Learn from industry experts",
           "Practice with real scenarios",
           "Build confidence + skills"
@@ -169,27 +168,25 @@
         "name": "PREPARE",
         "actions": [
           "Work with mentors",
-          "Prepare for interviews",
-          "Build your professional network",
-          "Get job-ready"
+          "Get your resume structured",
+          "Prepare for job interviews",
+          "Get job ready"
         ]
       },
       {
         "name": "PLACE",
         "actions": [
-          "Get matched to real job opportunities",
-          "Interview support from TIRWIN team",
-          "Negotiate with employers",
-          "Land your role"
+          "Get job enquiries",
+          "Interview support through Tirwin Talent",
+          "Land your dream job"
         ]
       },
       {
         "name": "GROW",
         "actions": [
-          "Keep learning (advanced modules available)",
-          "Get promoted with continued support",
-          "Eventually mentor others",
-          "Build your logistics leadership career"
+          "Keep learning through Tirwin Talent platform",
+          "Fast track your career growth",
+          "Aspire for leadership roles"
         ]
       }
     ]
@@ -225,7 +222,7 @@
   },
   "callToAction": {
     "headline": "Your logistics career starts with a single step.",
-    "action": "Join the waiting list for the Logistics Career Compass webinar",
+    "action": "Know more about the Logistics Career Compass webinar",
     "buttonText": "Know More",
     "closingMessage": "No pressure. No rush. But the opportunity is there. The path is clear. The support is real. Thousands have walked this path. Now it's your turn."
   },
