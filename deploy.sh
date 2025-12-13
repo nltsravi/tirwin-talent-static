@@ -7,8 +7,8 @@ export AWS_DEFAULT_PROFILE=dev.tirwin.fe.new
 # Configuration
 
 set -o allexport
-#source .env.production 
-source .env.development
+source .env.production 
+#source .env.development
 set +o allexport
 
 
