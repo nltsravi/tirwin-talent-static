@@ -82,9 +82,7 @@
         "image": "assets/images/trusted-companies.png",
         "trustedBy": [
           "Dachser (Global logistics leader)",
-          "TVS Supply Chain (India's largest 3PL)",
-          "The Timken Company (Global manufacturing leader)",
-          "DPL (Major freight forwarder)"
+          "TVS Supply Chain (India's largest 3PL)"
         ],
         "details": [
           "If we're good enough for them, we're good enough for getting YOU hired."
@@ -197,7 +195,7 @@
     "questions": [
       {
         "q": "Is this training only for people with logistics background?",
-        "a": "No. We've trained professionals from IT, commerce, engineering, and various backgrounds. The industry welcomes skilled people."
+        "a": "Yes. This training is designed specifically for individuals with a basic degree in logistics, freight forwarding, or EXIM. A foundational understanding of the industry will help participants gain maximum value from the program."
       },
       {
         "q": "Will I definitely get a job after training?",
@@ -214,10 +212,6 @@
       {
         "q": "Do I get a certificate?",
         "a": "Yes. Recognised within the industry + by TIRWIN's network."
-      },
-      {
-        "q": "What if I'm still unsure about logistics?",
-        "a": "Perfect. Attend the webinar first. Explore. Get clarity. Then decide. No pressure."
       }
     ]
   },

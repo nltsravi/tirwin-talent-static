@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import brandAwarenessData from '../../../assets/brand-awareness.json';
 
 @Component({
@@ -6,8 +6,12 @@ import brandAwarenessData from '../../../assets/brand-awareness.json';
   templateUrl: './brand-awareness.component.html',
   styleUrls: ['./brand-awareness.component.css']
 })
-export class BrandAwarenessComponent {
+export class BrandAwarenessComponent implements OnInit {
   data = brandAwarenessData;
+
+  ngOnInit(): void {
+    window.scrollTo(0, 0);
+  }
 
   scrollToSection(sectionId: string): void {
     const element = document.getElementById(sectionId);

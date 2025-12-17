@@ -6,15 +6,12 @@
       <div class="animate__animated animate__fadeInDown">
         <h1 class="display-3 fw-bold mb-4">{{ data.programName }}</h1>
         <p class="h3 mb-4 fw-light text-white-50">{{ data.programSubline }}</p>
-        <div class="compass-container mt-4 mb-2">
-          <img src="assets/images/compass.png" alt="Compass"
-            class="compass-img animate__animated animate__zoomIn animate__delay-1s">
-        </div>
+
       </div>
       <div class="w-100 d-flex justify-content-center px-2 mt-3">
         <button
           class="btn btn-primary btn-lg px-4 px-md-5 py-3 rounded-pill shadow-lg hero-btn animate__animated animate__fadeInUp animate__delay-1s fw-bold"
-          style="max-width: 280px; min-width: 240px;" (click)="scrollToSection('contact')">
+          style="max-width: 280px; min-width: 240px;" routerLink="/reg-min">
           Know More <i class="bi bi-arrow-right ms-2"></i>
         </button>
       </div>
@@ -224,11 +221,11 @@
           <p class="lead mb-5 text-light opacity-75">{{ data.callToAction.action }}</p>
           <button
             class="btn btn-success btn-lg px-5 py-4 rounded-pill shadow-lg mb-4 animate__animated animate__pulse animate__infinite fw-bold fs-5 d-none d-md-inline-block"
-            (click)="joinWaitlist()">
+            routerLink="/reg-min">
             {{ data.callToAction.buttonText }} <i class="bi bi-arrow-right-circle-fill ms-2"></i>
           </button>
           <a class="d-inline-block d-md-none text-success fw-bold fs-5 text-decoration-underline mb-4"
-            style="cursor: pointer;" (click)="joinWaitlist()">
+            style="cursor: pointer;" routerLink="/reg-min">
             {{ data.callToAction.buttonText }} <i class="bi bi-arrow-right"></i>
           </a>
           <p class="text-white-50 fst-italic mt-3" style="max-width: 600px; margin: 0 auto;">{{

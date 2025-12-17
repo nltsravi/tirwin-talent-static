@@ -53,7 +53,7 @@ h6 {
     position: relative;
     z-index: 1;
     background: linear-gradient(135deg, rgba(15, 23, 42, 0.6), rgba(30, 41, 59, 0.5)), url('/assets/images/hero-bg.jpeg') no-repeat center center/cover;
-    min-height: 85vh;
+    min-height: 40vh;
 
 }
 
@@ -63,10 +63,7 @@ h6 {
     transition: var(--transition);
 }
 
-.compass-img {
-    max-width: 350px;
-    width: 100%;
-}
+
 
 .hero-btn:hover {
     transform: translateY(-3px);
@@ -263,5 +260,9 @@ h6 {
     .btn-lg {
         font-size: 1.25rem;
         padding: 1rem 2rem;
+    }
+
+    .hero-section {
+        min-height: 40vh;
     }
 }

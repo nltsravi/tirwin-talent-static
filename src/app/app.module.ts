@@ -28,6 +28,8 @@ import { LeadershipComponent } from './pages/leadership/leadership.component';
 import { ContactUsComponent } from './pages/contact-us/contact-us.component';
 import { DefaultLayoutModule } from './layout/default-layout/default-layout.module';
 import { BrandAwarenessComponent } from './pages/brand-awareness/brand-awareness.component';
+import { RegMinComponent } from './pages/reg-min/reg-min.component';
+import { RegInfoComponent } from './pages/reg-info/reg-info.component';
 
 @NgModule({
     declarations: [
@@ -38,9 +40,12 @@ import { BrandAwarenessComponent } from './pages/brand-awareness/brand-awareness
         AboutUsComponent,
         LeadershipComponent,
         ContactUsComponent,
+        ContactUsComponent,
         BrandAwarenessComponent,
+        RegMinComponent,
+        RegInfoComponent,
     ],
-    bootstrap: [AppComponent], 
+    bootstrap: [AppComponent],
     imports: [
         RouterModule.forRoot([]),
         BrowserModule,

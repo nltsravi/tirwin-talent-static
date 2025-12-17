@@ -14,6 +14,8 @@ import { AboutUsComponent } from './pages/about-us/about-us.component';
 import { LeadershipComponent } from './pages/leadership/leadership.component';
 import { ContactUsComponent } from './pages/contact-us/contact-us.component';
 import { BrandAwarenessComponent } from './pages/brand-awareness/brand-awareness.component';
+import { RegMinComponent } from './pages/reg-min/reg-min.component';
+import { RegInfoComponent } from './pages/reg-info/reg-info.component';
 
 const routes: Routes = [
   {
@@ -30,6 +32,8 @@ const routes: Routes = [
       { path: 'webinar-new/:style/:id', loadChildren: () => import('./pages/webinar-new-details/webinar-new-details.module').then(m => m.WebinarNewDetailsModule), data: { showSlider: false, account: true } }, // New webinar details
       { path: 'checkout', loadChildren: () => import('./pages/checkout/checkout.module').then(m => m.CheckoutModule), data: { showSlider: false, account: true } }, // 
       { path: 'brand-awareness', component: BrandAwarenessComponent, data: { showSlider: false } },
+      { path: 'reg-min', component: RegMinComponent, data: { showSlider: false } },
+      { path: 'reg-info', component: RegInfoComponent, data: { showSlider: false } },
       { path: 'myregistration', loadChildren: () => import('./pages/my-courses/my-courses.module').then(m => m.MyCoursesModule), data: { showSlider: false, account: true } }, // 
       { path: 'admin/user', component: AdminUserComponent, data: { showSlider: false }, canActivate: [AdminGuard] },
       { path: 'admin/user/trainer/:id', component: TrainerDetailsComponent, data: { showSlider: false }, canActivate: [AdminGuard] },
