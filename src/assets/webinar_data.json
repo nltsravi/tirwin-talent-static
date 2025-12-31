@@ -2,11 +2,12 @@
   "title": "Launchpad to Logistics Leadership: Tirwin's Logistics Career Compass Preview workshop",
   "tagline": "Kickstart your journey in logistics, freight forwarding, and global trade with Tirwin !",
   "priceINR": 99,
-  "regUrl": "#",              
-  "altRegUrl": "#",            
+  "regUrl": "#",
+  "altRegUrl": "#",
   "ctaPrimaryLabel": "Register Now @ ₹99",
   "ctaSecondaryLabel": "Book My Seat Now @ ₹99",
-  "date": "2025-11-21",
+  "displayDate": "20th January 2025",
+  "date": "2025-01-20",
   "startTime": "19:00",
   "endTime": "21:00",
   "timezone": "Asia/Kolkata",
@@ -36,11 +37,71 @@
     "15+ years of industry experience",
     "10+ industry experts and mentors"
   ],
+  "careerJourney": [
+    {
+      "title": "DISCOVER",
+      "icon": "compass",
+      "points": [
+        "Attend our 90min preview webinar",
+        "Understand how you can take control of your career in Logistics"
+      ]
+    },
+    {
+      "title": "LEARN",
+      "icon": "book",
+      "points": [
+        "Join our structured training workshop",
+        "Learn from industry experts",
+        "Practice with real scenarios",
+        "Build confidence + skills"
+      ]
+    },
+    {
+      "title": "PREPARE",
+      "icon": "clipboard",
+      "points": [
+        "Work with mentors",
+        "Get your resume structured",
+        "Prepare for job interviews",
+        "Get job ready"
+      ]
+    },
+    {
+      "title": "PLACE",
+      "icon": "briefcase",
+      "points": [
+        "Get job enquiries",
+        "Interview support through Tirwin Talent",
+        "Land your dream job"
+      ]
+    },
+    {
+      "title": "GROW",
+      "icon": "chart",
+      "points": [
+        "Keep learning through Tirwin Talent platform",
+        "Fast track your career growth",
+        "Aspire for leadership roles"
+      ]
+    }
+  ],
   "faqs": [
-    { "q": "Why is the webinar priced at ₹99?", "a": "To ensure only serious learners join. It’s a small commitment for a big career opportunity." },
-    { "q": "Will I get a recording?", "a": "Yes, registered participants will receive access to the recording." },
-    { "q": "Will the webinar be in English?", "a": "Yes, Since its Pan india it will be in English" },
-    { "q": "What happens after the webinar?", "a": "You’ll get an exclusive offer to enrol in the Logistics Career Compass Program — with mentorship, certification, and placement support." }
+    {
+      "q": "Why is the webinar priced at ₹99?",
+      "a": "To ensure only serious learners join. It’s a small commitment for a big career opportunity."
+    },
+    {
+      "q": "Will I get a recording?",
+      "a": "Yes, registered participants will receive access to the recording."
+    },
+    {
+      "q": "Will the webinar be in English?",
+      "a": "Yes, Since its Pan india it will be in English"
+    },
+    {
+      "q": "What happens after the webinar?",
+      "a": "You’ll get an exclusive offer to enrol in the Logistics Career Compass Program — with mentorship, certification, and placement support."
+    }
   ],
   "finalCtaText": "Your career in Logistics starts here. Learn from industry leaders, gain clarity, and take the first step toward your future with Tirwin."
 }

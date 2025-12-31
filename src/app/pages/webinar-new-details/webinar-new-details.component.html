@@ -1,4 +1,3 @@
-
 <!-- Hero Section -->
 <div class="hero-section" *ngIf="!isLoading && !errorMessage && webinar">
   <div class="hero-background"></div>
@@ -24,18 +23,20 @@
           <div class="webinar-info">
             <div class="info-row">
               <span class="info-icon">📅</span>
-              <span class="info-value">{{ formatDate(webinar.start_time || getFallbackDate()) }}</span>
+              <span class="info-value">{{ webinar.display_date || formatDate(webinar.start_time || getFallbackDate())
+                }}</span>
             </div>
             <div class="info-row">
               <span class="info-icon">⏰</span>
-              <span class="info-value">{{ formatTime(webinar.start_time || getFallbackStartTime()) }} - {{ formatTime(webinar.end_time || getFallbackEndTime()) }}</span>
+              <span class="info-value">{{ formatTime(webinar.start_time || getFallbackStartTime()) }} - {{
+                formatTime(webinar.end_time || getFallbackEndTime()) }}</span>
             </div>
             <div class="info-row">
               <span class="info-icon">💻</span>
               <span class="info-value">{{ getPlatform() }}</span>
             </div>
           </div>
-          
+
           <div class="register-section">
             <button class="btn btn-primary register-btn" (click)="redirectToWebinarRegistration()">
               Register at ₹99
@@ -50,29 +51,29 @@
 
 <!-- Main Content with Two Column Layout -->
 <div class="container main-content two-column-layout" *ngIf="!isLoading && !errorMessage && webinar">
-  
+
   <!-- Left Column - Content -->
   <div class="left-column">
-    
+
     <!-- Why Attend This Webinar Card -->
     <div class="section">
       <div class="card why-attend-card">
         <div class="card-content p-xl">
           <div class="stack">
             <h3 class="benefits-title">Why attend this Webinar?</h3>
-            
+
             <p class="benefits-list">
               <label *ngFor="let benefit of getDisplayBenefits()" [innerHTML]="benefit"></label>
             </p>
-            
+
             <p class="pricing-note">
               <em>All this for less than the price of a coffee — just ₹99!</em>
             </p>
-            
+
             <p class="urgency-note">
               <strong>Seats are limited!</strong> Secure your spot now.
             </p>
-            
+
             <button class="btn btn-ghost" (click)="redirectToWebinarRegistration()">
               Register Now at ₹99
             </button>
@@ -107,6 +108,31 @@
             <span *ngIf="containsHtml(item)" [innerHTML]="sanitizeHtml(item)"></span>
           </li>
         </ul>
+      </div>
+    </div>
+
+    <!-- Career Journey Section -->
+    <div class="section" *ngIf="getCareerJourney().length > 0">
+      <h2 class="text-center career-journey-title">Logistics Career compass - Career journey from Tirwin Talent</h2>
+
+      <div class="career-journey-container">
+        <div class="journey-step-card card" *ngFor="let step of getCareerJourney(); let i = index">
+          <div class="step-icon-wrapper">
+            <div class="step-icon">
+              <span *ngIf="step.icon === 'compass'">🧭</span>
+              <span *ngIf="step.icon === 'book'">📖</span>
+              <span *ngIf="step.icon === 'clipboard'">📋</span>
+              <span *ngIf="step.icon === 'briefcase'">💼</span>
+              <span *ngIf="step.icon === 'chart'">📈</span>
+            </div>
+          </div>
+
+          <h3 class="step-title">{{ step.title }}</h3>
+
+          <ul class="step-points">
+            <li *ngFor="let point of step.points">{{ point }}</li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -152,11 +178,11 @@
           Secure Your Spot ({{ getDisplayPrice() }})
         </button>
         <p class="muted">Seats are limited! Complete your registration to receive the Zoom link.</p>
-        
+
         <button class="btn btn-ghost" *ngIf="getAltRegUrl() !== '#'">
           Alternative Link
         </button>
-        
+
         <p class="muted text-center font-size-14 margin-0">
           You'll receive the confirmation email with joining details immediately after payment.
         </p>
@@ -184,18 +210,20 @@
           <div class="webinar-info">
             <div class="info-row">
               <span class="info-icon">📅</span>
-              <span class="info-value">{{ formatDate(webinar.start_time || getFallbackDate()) }}</span>
+              <span class="info-value">{{ webinar.display_date || formatDate(webinar.start_time || getFallbackDate())
+                }}</span>
             </div>
             <div class="info-row">
               <span class="info-icon">⏰</span>
-              <span class="info-value">{{ formatTime(webinar.start_time || getFallbackStartTime()) }} - {{ formatTime(webinar.end_time || getFallbackEndTime()) }}</span>
+              <span class="info-value">{{ formatTime(webinar.start_time || getFallbackStartTime()) }} - {{
+                formatTime(webinar.end_time || getFallbackEndTime()) }}</span>
             </div>
             <div class="info-row">
               <span class="info-icon">💻</span>
               <span class="info-value">{{ getPlatform() }}</span>
             </div>
           </div>
-          
+
           <div class="register-section">
             <button class="btn btn-primary register-btn" (click)="redirectToWebinarRegistration()">
               Register at ₹99

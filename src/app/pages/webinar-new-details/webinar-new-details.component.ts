@@ -12,6 +12,7 @@ interface WebinarData {
   altRegUrl: string;
   ctaPrimaryLabel: string;
   ctaSecondaryLabel: string;
+  displayDate?: string;
   date: string;
   startTime: string;
   endTime: string;
@@ -21,6 +22,7 @@ interface WebinarData {
   learn: string[];
   audience: string[];
   proof: string[];
+  careerJourney: { title: string; icon: string; points: string[]; }[];
   faqs: { q: string; a: string; }[];
   finalCtaText: string;
 }
@@ -67,10 +69,10 @@ export class WebinarNewDetailsComponent implements OnInit {
     } else {
       this.currentPageType = 'Training'
     }
-    
+
     // Load fallback data
     this.loadFallbackData();
-    
+
     // For new version, we always load from JSON file
     this.loadNewWebinarData();
 
@@ -174,7 +176,7 @@ export class WebinarNewDetailsComponent implements OnInit {
     this.alertClass = '';
   }
 
-  socialLogin(provider: string,type:string,id:string) {
+  socialLogin(provider: string, type: string, id: string) {
     const returnUrl = this.router.url;
     sessionStorage.setItem('returnUrl', returnUrl);// ✅ Store it in sessionStorage
     if (provider === 'google') {
@@ -183,7 +185,7 @@ export class WebinarNewDetailsComponent implements OnInit {
       // Use route parameters instead of passed parameters
       const webinarId = this.route.snapshot.paramMap.get('id');
       const webinarType = this.route.snapshot.paramMap.get('style') || 'masterclass';
-      
+
       if (webinarId) {
         this.router.navigate(['/auth/register', webinarType, webinarId]);
       }
@@ -211,12 +213,12 @@ export class WebinarNewDetailsComponent implements OnInit {
   setupCountdown() {
     const checkJoinTime = () => {
       if (!this.webinar?.start_time) return;
-  
+
       const eventIST = new Date(this.webinar.start_time).getTime(); // Already in IST
       const joinIST = eventIST - 10 * 60 * 1000; // 10 mins before
-  
+
       const now = new Date().getTime(); // Browser local time (assumed to match IST for you)
-  
+
       if (now >= joinIST) {
         this.joinNow = true;
         this.timeLeft = '';
@@ -229,7 +231,7 @@ export class WebinarNewDetailsComponent implements OnInit {
         this.timeLeft = `${this.pad(hrs)}h ${this.pad(mins)}m ${this.pad(secs)}s`;
       }
     };
-  
+
     checkJoinTime();
     this.countdownInterval = setInterval(checkJoinTime, 1000);
   }
@@ -259,6 +261,7 @@ export class WebinarNewDetailsComponent implements OnInit {
           id: 'new-webinar-001',
           title: data.title,
           description: data.tagline,
+          display_date: data.displayDate,
           price: data.priceINR,
           start_time: data.date + 'T' + data.startTime + ':00',
           end_time: data.date + 'T' + data.endTime + ':00',
@@ -325,12 +328,12 @@ export class WebinarNewDetailsComponent implements OnInit {
     } else {
       price = this.fallbackData?.priceINR || 99;
     }
-    
+
     // Display "Free" if price is 0 or 0.00
     if (price === 0 || price === 0.00) {
       return 'Free';
     }
-    
+
     return `₹${price}`;
   }
 
@@ -387,6 +390,10 @@ export class WebinarNewDetailsComponent implements OnInit {
     return this.fallbackData?.faqs || [];
   }
 
+  getCareerJourney(): { title: string; icon: string; points: string[]; }[] {
+    return this.fallbackData?.careerJourney || [];
+  }
+
   getCtaPrimaryLabel(): string {
     return this.fallbackData?.ctaPrimaryLabel || 'Register Now @ ₹99';
   }
@@ -433,11 +440,11 @@ export class WebinarNewDetailsComponent implements OnInit {
       return 'TBD';
     }
     const date = new Date(dateString);
-    const options: Intl.DateTimeFormatOptions = { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     };
     return date.toLocaleDateString('en-IN', options);
   }
@@ -495,9 +502,9 @@ export class WebinarNewDetailsComponent implements OnInit {
 
   formatProofPointText(text: string): string {
     if (!text) return text;
-    
+
     console.log('formatProofPointText - Original:', text);
-    
+
     // Test with hardcoded example first
     if (text.includes('100+')) {
       return text.replace('100+', '<span class="highlight-number">100+</span>');
@@ -508,12 +515,12 @@ export class WebinarNewDetailsComponent implements OnInit {
     if (text.includes('10+')) {
       return text.replace('10+', '<span class="highlight-number">10+</span>');
     }
-    
+
     // Original regex approach
     let formattedText = text
       .replace(/\b(\d+)\+/g, '<span class="highlight-number">$1+</span>')
       .replace(/\b(\d+)\s*years?\b/gi, '<span class="highlight-number">$1 years</span>');
-    
+
     console.log('formatProofPointText - Formatted:', formattedText);
     return formattedText;
   }
@@ -528,12 +535,12 @@ export class WebinarNewDetailsComponent implements OnInit {
   /** Safely render HTML content */
   sanitizeHtml(content: string): string {
     if (!content) return '';
-    
+
     // If content doesn't contain HTML, return as is
     if (!this.containsHtml(content)) {
       return content;
     }
-    
+
     // Return HTML content for rendering with [innerHTML]
     return content;
   }
