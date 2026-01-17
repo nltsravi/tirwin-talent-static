@@ -52,6 +52,7 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
 
   // Thank you page state
   showThankYouPage: boolean = false;
+  isForcedFree: boolean = false;
 
   // Payment modal state (deprecated - now using window)
   showPaymentModal: boolean = false;
@@ -87,7 +88,7 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
     public router: Router,
     private toastr: ToastrService,
     private sanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Scroll to top when component loads
@@ -99,13 +100,20 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         // Show thank you page directly
         this.showThankYouPage = true;
       }
+
+      // Check if forced free mode
+      if (queryParams['isFree'] === 'true') {
+        // We need to wait for webinar details to load before overriding price
+        // Or we can set a flag and override it in loadWebinarDetails
+        this.isForcedFree = true;
+      }
     });
-    
+
     // Extract webinar parameters from URL
     this.route.params.subscribe(params => {
       const webinarType = params['webinarType'];
       const webinarId = params['webinarId'];
-      
+
       if (webinarType && webinarId) {
         this.showPaymentSection = true;
         this.loadWebinarDetails(webinarId);
@@ -120,12 +128,12 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     // Clean up event listener
     window.removeEventListener('message', this.handlePaymentMessage.bind(this));
-    
+
     // Clear monitoring interval
     if (this.iframeMonitorInterval) {
       clearInterval(this.iframeMonitorInterval);
     }
-    
+
     // Close payment window if open
     if (this.paymentWindow && !this.paymentWindow.closed) {
       this.paymentWindow.close();
@@ -139,7 +147,7 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
   handlePaymentMessage(event: MessageEvent): void {
     // For security, verify the origin if you know the payment gateway domain
     // if (event.origin !== 'https://payment-gateway.com') return;
-    
+
     // Check if payment is successful
     if (event.data && event.data.status === 'success') {
       this.handlePaymentSuccess(event.data);
@@ -153,6 +161,9 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
     this.paymentService.getWebinarDetails(webinarId).subscribe({
       next: (response) => {
         this.webinarDetails = response;
+        if (this.isForcedFree) {
+          this.webinarDetails.price = "0";
+        }
       },
       error: (error) => {
         console.error('Error loading webinar details:', error);
@@ -166,7 +177,7 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
    */
   generatePaymentInfo(type: string, webinarId: string): void {
     this.isLoadingPayment = true;
-    
+
     this.paymentService.generatePaymentInfo(type, webinarId).subscribe({
       next: (paymentInfo) => {
         this.paymentInfo = paymentInfo;
@@ -253,7 +264,7 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       error: (error: any) => {
         this.isVerifyingOtp = false;
         console.error('OTP verification error:', error);
-        
+
         if (error.error && error.error.message) {
           this.errorMessage = error.error.message;
         } else {
@@ -275,41 +286,41 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       next: (response: any) => {
         this.isOtpVerified = true;
         this.isVerifyingOtp = false;
-        
+
         // Check if user already exists and populate details
         if (response && response.user) {
           const user = response.user;
           this.isExistingUser = true;
-          
+
           // Store user ID for webinar subscription
           if (user.id) {
             this.userId = user.id;
           }
-          
+
           // Populate first name if available
           if (user.first_name) {
             this.firstName = user.first_name;
             this.isFirstNameDisabled = true;
           }
-          
+
           // Populate last name if available
           if (user.last_name) {
             this.lastName = user.last_name;
             this.isLastNameDisabled = true;
           }
-          
+
           // Populate job title if available
           if (user.job_title) {
             this.jobTitle = user.job_title;
             this.isJobTitleDisabled = true;
           }
-          
+
           // Populate company if available
           if (user.company || user.organization) {
             this.company = user.company || user.organization;
             this.isCompanyDisabled = true;
           }
-          
+
           // Populate phone if available
           if (user.phone) {
             this.phone = user.phone;
@@ -323,7 +334,7 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       error: (error: any) => {
         this.isVerifyingOtp = false;
         console.error('OTP verification error:', error);
-        
+
         if (error.error && error.error.message) {
           this.errorMessage = error.error.message;
         } else {
@@ -341,7 +352,7 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
     const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
     const randomSuffix = Math.random().toString(36).substring(2, 8).toUpperCase();
     const retTxnId = `FREE_${dateStr}_${timestamp}_${randomSuffix}`;
-    
+
     return `FREE_${dateStr}_${timestamp}_${randomSuffix}`;
   }
 
@@ -576,11 +587,11 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
           // Open payment gateway in new window (400x600)
           const windowFeatures = 'width=400,height=600,left=100,top=100,resizable=yes,scrollbars=yes';
           this.paymentWindow = window.open(response.redirectUrl, 'PaymentGateway', windowFeatures);
-          
+
           this.isPaymentProcessing = false;
-          
+
           this.toastr.success('Redirecting to payment gateway...');
-          
+
           // Start monitoring payment window for success
           this.startWindowMonitoring();
         } else {
@@ -619,17 +630,17 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         // Try to access window URL
         if (this.paymentWindow && this.paymentWindow.location) {
           const windowUrl = this.paymentWindow.location.href;
-          
+
           // Check if the URL contains success indicators
           if (this.isSuccessUrl(windowUrl)) {
             clearInterval(this.iframeMonitorInterval);
-            
+
             // Close payment window
             if (this.paymentWindow) {
               this.paymentWindow.close();
               this.paymentWindow = null;
             }
-            
+
             this.handlePaymentSuccess({ url: windowUrl });
           }
         }
@@ -648,13 +659,13 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
   closePaymentModal(): void {
     this.showPaymentModal = false;
     this.paymentRedirectUrl = null;
-    
+
     // Close payment window if open
     if (this.paymentWindow && !this.paymentWindow.closed) {
       this.paymentWindow.close();
       this.paymentWindow = null;
     }
-    
+
     // Stop monitoring
     if (this.iframeMonitorInterval) {
       clearInterval(this.iframeMonitorInterval);
@@ -671,7 +682,7 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       const iframe = document.querySelector('.payment-iframe') as HTMLIFrameElement;
       if (iframe && iframe.contentWindow) {
         const iframeUrl = iframe.contentWindow.location.href;
-        
+
         // Check if the URL contains success indicators
         if (this.isSuccessUrl(iframeUrl)) {
           this.handlePaymentSuccess({ url: iframeUrl });
@@ -694,8 +705,8 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       'payment-success',
       'registration-success'
     ];
-    
-    return successIndicators.some(indicator => 
+
+    return successIndicators.some(indicator =>
       url.toLowerCase().includes(indicator.toLowerCase())
     );
   }
@@ -709,30 +720,30 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
       this.paymentWindow.close();
       this.paymentWindow = null;
     }
-    
+
     // Stop monitoring
     if (this.iframeMonitorInterval) {
       clearInterval(this.iframeMonitorInterval);
       this.iframeMonitorInterval = null;
     }
-    
+
     // Close the modal (legacy)
     this.showPaymentModal = false;
     this.paymentRedirectUrl = null;
-    
+
     // Extract transaction ID from URL or data
     let transactionId = null;
-    
+
     // Try to extract from URL parameter
     if (data.url) {
       transactionId = this.extractTransactionIdFromUrl(data.url);
     }
-    
+
     // Fallback to data properties
     if (!transactionId && (data.transactionId || data.txnId)) {
       transactionId = data.transactionId || data.txnId;
     }
-    
+
     // Call subscribe API before showing success page
     if (transactionId) {
       this.completeRegistrationAfterPayment(transactionId);
@@ -751,7 +762,7 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
   extractTransactionIdFromUrl(url: string): string | null {
     try {
       const urlObj = new URL(url);
-      
+
       // Check common parameter names for transaction ID
       const paramNames = [
         'txnId',
@@ -765,16 +776,16 @@ export class WebinarRegisterComponent implements OnInit, OnDestroy {
         'refId',
         'ref_id',
         'merchantTxnId',
-       'merchant_txn_id',
+        'merchant_txn_id',
       ];
-      
+
       for (const paramName of paramNames) {
         const value = urlObj.searchParams.get(paramName);
         if (value) {
           return value;
         }
       }
-      
+
       return null;
     } catch (error) {
       console.error('Error parsing URL:', error);

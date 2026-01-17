@@ -30,6 +30,7 @@ const routes: Routes = [
       { path: 'webinar/:style/4e86e649-bb3c-45c4-a2ff-be4c625e2ac8', redirectTo: 'webinar-new/:style/4e86e649-bb3c-45c4-a2ff-be4c625e2ac8' }, // Redirect specific webinar to static page
       { path: 'webinar/:style/:id', loadChildren: () => import('./pages/webinar-details/webinar-details.module').then(m => m.CourseDetailsModule), data: { showSlider: false, account: true } }, // 
       { path: 'webinar-new/:style/:id', loadChildren: () => import('./pages/webinar-new-details/webinar-new-details.module').then(m => m.WebinarNewDetailsModule), data: { showSlider: false, account: true } }, // New webinar details
+      { path: 'webinar-free/:style/:id', loadChildren: () => import('./pages/webinar-free-details/webinar-free-details.module').then(m => m.WebinarFreeDetailsModule), data: { showSlider: false, account: true } }, // Free webinar details
       { path: 'checkout', loadChildren: () => import('./pages/checkout/checkout.module').then(m => m.CheckoutModule), data: { showSlider: false, account: true } }, // 
       { path: 'brand-awareness', component: BrandAwarenessComponent, data: { showSlider: false } },
       { path: 'reg-min', component: RegMinComponent, data: { showSlider: false } },

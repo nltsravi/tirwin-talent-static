@@ -4,11 +4,12 @@
 set -e
 
 export AWS_DEFAULT_PROFILE=dev.tirwin.fe.new
+export AWS_PAGER=""
 # Configuration
 
 set -o allexport
-#source .env.production 
-source .env.development
+source .env.production 
+#source .env.development
 set +o allexport
 
 
