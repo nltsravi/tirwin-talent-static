@@ -1,0 +1,89 @@
+/* Webinar Management Specific CSS */
+
+.active-menu {
+    border-right: 4px solid #2563eb;
+    border-radius: 4px 0 0 4px;
+    background-color: #f8fafc !important;
+    /* light gray hover */
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.sidebar {
+    position: sticky;
+    top: 80px;
+    /* offset header height */
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.create-webinar-two-col {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.create-webinar-form-col {
+    flex: 1 1 60%;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(30, 41, 59, 0.10);
+    padding: 32px 40px;
+}
+
+.create-webinar-preview-col {
+    flex: 1 1 40%;
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 1024px) {
+    .create-webinar-two-col {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .create-webinar-preview-col {
+        width: 100%;
+        margin-top: 24px;
+    }
+}
+
+.webinar-card-preview {
+    width: 100%;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(30, 41, 59, 0.10);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.webinar-card-banner {
+    width: 100%;
+    height: 180px;
+    background: #e5e7eb;
+}
+
+.webinar-card-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.webinar-card-banner.default-banner {
+    background: #e5e7eb url('https://via.placeholder.com/600x180?text=Webinar+Banner') center/cover no-repeat;
+}
+
+.webinar-card-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+}

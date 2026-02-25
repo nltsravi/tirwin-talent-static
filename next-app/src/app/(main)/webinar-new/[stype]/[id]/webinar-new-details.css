@@ -1,0 +1,120 @@
+.badge-no-outline {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.custom-link {
+    cursor: pointer;
+}
+
+.trainer-profile-card {
+    border-radius: 10px;
+    background: #ffffff;
+    transition: all 0.3s ease-in-out;
+    padding: 20px;
+}
+
+.trainer-profile-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #e3e6ea;
+}
+
+.trainer-info h5 {
+    color: #2c3e50;
+}
+
+.trainer-stats .badge {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    font-weight: 600;
+    border-radius: 5px;
+}
+
+.trainer-stats .fa {
+    margin-right: 5px;
+}
+
+.trainer-bio {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #555;
+    max-width: 80%;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Key takeaways list without bullets */
+.key-takeaways-list {
+    list-style: none !important;
+    padding-left: 0 !important;
+    margin: 0 !important;
+}
+
+.key-takeaways-list li {
+    list-style: none !important;
+    margin-bottom: 1.5rem;
+    padding: 1.25rem 1rem;
+    background: #f8fafc;
+    border-radius: 12px;
+    border-left: 4px solid #1e3a8a;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #1e293b;
+}
+
+.key-takeaways-list li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    border-left-color: #3b82f6;
+}
+
+.key-takeaways-list li strong {
+    color: #1e3a8a;
+    font-size: 1.15rem;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.key-takeaways-list li span {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #374151;
+}
+
+button.btn.btn-primary {
+    background-color: #2250fc;
+    border-color: #2250fc;
+}
+
+.font-btn {
+    font-size: 15px !important;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .hero-section {
+        padding: 2rem 1rem;
+        text-align: center;
+    }
+
+    .hero-section h1 {
+        font-size: 1.8rem;
+    }
+
+    .key-takeaways-list li {
+        padding: 1rem 0.75rem;
+        margin-bottom: 1.25rem;
+        font-size: 1rem;
+    }
+}

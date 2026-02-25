@@ -1,0 +1,39 @@
+/* Webinar Free Details CSS adjustments */
+
+.two-column-layout {
+    display: flex;
+    gap: 24px;
+    max-width: 1200px !important;
+    margin: 0 auto;
+}
+
+.left-column {
+    flex: 1;
+    max-width: 70%;
+}
+
+.right-column {
+    flex: 0 0 300px;
+}
+
+.border-dashed {
+    border-style: dashed !important;
+}
+
+@media (max-width: 991.98px) {
+    .two-column-layout {
+        flex-direction: column;
+        max-width: 100% !important;
+    }
+
+    .left-column {
+        max-width: 100%;
+    }
+}
+
+/* Additional component-specific styling from Angular template adapted to Bootstrap utilities */
+.accordion-button:not(.collapsed) {
+    background-color: #f8f9fa;
+    color: #1e3a8a;
+    box-shadow: none;
+}

@@ -1,0 +1,727 @@
+/* Webinar Registration Component Styles */
+
+.register-section {
+    position: relative;
+    top: -26px;
+}
+
+/* Thank You Page Styles */
+.thank-you-card {
+    max-width: 600px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    padding: 60px 40px;
+    text-align: center;
+    animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.success-animation {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkmark {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: #fff;
+    stroke-miterlimit: 10;
+    margin: 0 auto;
+    box-shadow: inset 0px 0px 0px #28a745;
+    animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+    position: relative;
+}
+
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #28a745;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    stroke: #fff;
+    stroke-width: 3;
+    stroke-linecap: round;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes scale {
+
+    0%,
+    100% {
+        transform: none;
+    }
+
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
+}
+
+@keyframes fill {
+    100% {
+        box-shadow: inset 0px 0px 0px 60px #28a745;
+    }
+}
+
+.thank-you-content {
+    animation: fadeIn 0.8s ease-out 0.4s both;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.thank-you-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+
+.thank-you-message {
+    font-size: 16px;
+    color: #64748b;
+    margin-bottom: 12px;
+    line-height: 1.6;
+}
+
+.thank-you-submessage {
+    font-size: 18px;
+    color: #28a745;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.btn-home {
+    padding: 14px 40px;
+    font-size: 16px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #1e3a8a, #7c3aed);
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+}
+
+.btn-home:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30, 58, 138, 0.4);
+}
+
+.btn-home i {
+    margin-right: 8px;
+}
+
+/* Main Registration Card */
+.webinar-registration-card {
+    max-width: 700px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: 20px;
+}
+
+/* Card Banner */
+.card-banner {
+    position: relative;
+    height: 200px;
+    background: url('/assets/images/new_webinar_banner.png') center center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #ffffff;
+    overflow: hidden;
+}
+
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.8), rgba(124, 58, 237, 0.7));
+}
+
+.banner-content {
+    position: relative;
+    z-index: 2;
+}
+
+.banner-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.banner-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #ffffff;
+}
+
+.banner-subtitle {
+    font-size: 14px;
+    opacity: 0.9;
+    margin: 0;
+    color: #ffffff;
+}
+
+/* Card Body Content */
+.card-body-content {
+    padding: 30px;
+}
+
+/* Webinar Title Section */
+.webinar-title-section {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.webinar-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* Date and Time Section */
+.datetime-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.datetime-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.datetime-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #1e3a8a, #7c3aed);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.datetime-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.datetime-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.datetime-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e3a8a;
+}
+
+.price-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: #28a745;
+}
+
+/* Registration Form Section */
+.registration-form-section {
+    margin-bottom: 24px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin-bottom: 6px;
+}
+
+.section-subtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+}
+
+/* Form Actions */
+.form-actions {
+    margin-top: 24px;
+}
+
+.btn-register {
+    width: 100%;
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Payment Section Styles */
+.payment-section {
+    margin-top: 24px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    border: 2px solid #dee2e6;
+}
+
+.payment-title {
+    color: #1e3a8a;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.payment-title i {
+    color: #28a745;
+    font-size: 20px;
+}
+
+.payment-info {
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    margin-bottom: 20px;
+}
+
+.amount-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.amount-label {
+    font-size: 14px;
+    color: #6c757d;
+    font-weight: 600;
+}
+
+.amount-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #28a745;
+}
+
+/* Pay Now & Register Buttons */
+.btn-pay-register,
+.btn-register {
+    width: 100%;
+    padding: 16px 32px;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.btn-pay-register {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-pay-register:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, #7b8eec 0%, #8659b3 100%);
+}
+
+.btn-pay-register:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+}
+
+.btn-pay-register:disabled,
+.btn-register:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-pay-register i,
+.btn-register i {
+    font-size: 20px;
+}
+
+.btn-register {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.btn-register:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    background: linear-gradient(135deg, #2dbc4e 0%, #24d9a8 100%);
+}
+
+.btn-register:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
+}
+
+.register-card {
+    width: 100%;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+h3 {
+    font-weight: bold;
+}
+
+.req-astrix {
+    color: red;
+}
+
+.alert {
+    color: #fff !important;
+}
+
+/* You can add global styles to this file, and also import other style files */
+button.btn.btn-primary {
+    background-color: #2250fc;
+    border-color: #2250fc;
+}
+
+.otp-section .card {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.otp-section .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 1rem;
+}
+
+.otp-section input[type="text"] {
+    font-weight: bold;
+    text-align: center;
+}
+
+.input-group .btn-outline-primary {
+    border: 2px solid #007bff;
+    color: #007bff;
+    border-left: none;
+}
+
+.input-group .btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.input-group .btn-outline-primary:disabled {
+    border-color: #6c757d;
+    color: #6c757d;
+    background-color: #f8f9fa;
+}
+
+.input-group .form-control {
+    border-right: none;
+}
+
+.input-group .form-control:focus {
+    border-right: none;
+    box-shadow: none;
+}
+
+.input-group .form-control:focus+.btn-outline-primary {
+    border-color: #667eea;
+    color: #667eea;
+}
+
+.payment-section {
+    margin-top: 2rem;
+}
+
+.payment-section .card {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.payment-section .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 1rem;
+}
+
+.qr-container {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.qr-container img {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+}
+
+.webinar-details-card {
+    background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+.webinar-details-card .card {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.webinar-details-card .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 1rem;
+}
+
+.webinar-image img {
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.meta-item {
+    padding: 0.5rem;
+}
+
+.meta-item i {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.price-badge .badge {
+    font-size: 1.1rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+}
+
+.free-webinar-notice {
+    margin: 1.5rem 0;
+}
+
+.notice-card {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 1px solid #0ea5e9;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.1);
+}
+
+.notice-icon {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.notice-content {
+    flex: 1;
+}
+
+.notice-title {
+    color: #0c4a6e;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+}
+
+.notice-text {
+    color: #075985;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.notice-text i {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .thank-you-card {
+        margin: 20px;
+        padding: 40px 30px;
+        border-radius: 16px;
+    }
+
+    .checkmark {
+        width: 90px;
+        height: 90px;
+    }
+
+    .thank-you-title {
+        font-size: 26px;
+        margin-bottom: 16px;
+    }
+
+    .thank-you-message {
+        font-size: 15px;
+    }
+
+    .btn-home {
+        width: 100%;
+        padding: 12px 30px;
+        font-size: 15px;
+    }
+
+    .webinar-registration-card {
+        margin: 10px;
+        border-radius: 16px;
+    }
+
+    .card-body-content {
+        padding: 20px;
+    }
+
+    .banner-title {
+        font-size: 20px;
+    }
+
+    .banner-subtitle {
+        font-size: 12px;
+    }
+
+    .webinar-title {
+        font-size: 18px;
+    }
+
+    .datetime-section {
+        padding: 16px;
+    }
+
+    .datetime-item {
+        flex-direction: column;
+        text-align: left;
+        gap: 8px;
+    }
+
+    .datetime-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+
+    .payment-section {
+        padding: 16px;
+    }
+
+    .amount-display {
+        flex-direction: column;
+        gap: 8px;
+        text-align: left;
+    }
+
+    .datetime-label,
+    .form-group label,
+    .payment-title,
+    .amount-label {
+        display: none !important;
+    }
+
+    .datetime-content {
+        text-align: left;
+    }
+
+    .form-control {
+        margin-bottom: 8px;
+        text-align: left;
+        font-weight: 600;
+    }
+}

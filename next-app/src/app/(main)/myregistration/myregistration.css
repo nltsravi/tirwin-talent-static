@@ -1,0 +1,31 @@
+/* Ensure All Cards Have the Same Height */
+.webinar-card {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.webinar-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Inherit standard gradient for primary buttons if needed */
+.btn-outline-primary {
+    border-color: #2563eb;
+    color: #2563eb;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background: linear-gradient(90deg, #2563eb, #1e40af);
+    border-color: transparent;
+    color: white;
+}
+
+.nav-pills .nav-link {
+    transition: all 0.3s ease;
+}
+
+.nav-pills .nav-link.active {
+    background: linear-gradient(90deg, #2563eb, #1e40af) !important;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+}

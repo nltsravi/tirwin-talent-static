@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+:host {
+    --primary-color: #0f172a;
+    /* Deep Navy */
+    --accent-color: #3b82f6;
+    /* Vibrant Blue */
+    --secondary-accent: #10b981;
+    /* Emerald Green */
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --bg-light: #f8fafc;
+    --white: #ffffff;
+    --font-family: 'Inter', sans-serif;
+    --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+    --hover-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.2);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.brand-awareness-page {
+    font-family: var(--font-family);
+    color: var(--text-dark);
+    overflow-x: hidden;
+}
+
+/* Typography Overrides */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+.section-title {
+    color: var(--accent-color) !important;
+}
+
+.display-3 {
+    font-weight: 800;
+}
+
+.lead {
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.6), rgba(30, 41, 59, 0.5)), url('/assets/images/hero-bg.jpeg') no-repeat center center/cover;
+    min-height: 40vh;
+
+}
+
+.hero-btn {
+    background: var(--accent-color);
+    border: none;
+    transition: var(--transition);
+}
+
+
+
+.hero-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+    background: #2563eb;
+}
+
+/* Cards & Glassmorphism */
+.glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: var(--card-shadow);
+    border-radius: 1rem;
+    transition: var(--transition);
+}
+
+.hover-card {
+    transition: var(--transition);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.hover-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--hover-shadow) !important;
+    border-color: var(--accent-color);
+}
+
+.banner-image-container {
+    height: 200px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.banner-image-container img {
+    object-fit: cover;
+}
+
+/* Step Cards */
+.step-card {
+    background: var(--white);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+    border: 1px solid transparent;
+    height: 100%;
+}
+
+.step-card:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-5px);
+}
+
+.step-number {
+    background: linear-gradient(135deg, var(--accent-color), #2563eb);
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+
+/* Accordion */
+.accordion-item {
+    border: none !important;
+    margin-bottom: 1.5rem;
+    border-radius: 1rem !important;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+}
+
+.accordion-item:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.accordion-button {
+    font-weight: 600;
+    background: var(--white);
+    padding: 1.5rem;
+    border: none;
+    font-size: 1.1rem;
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--accent-color);
+    background-color: #f0f7ff;
+    box-shadow: none;
+    border-bottom: 2px solid rgba(59, 130, 246, 0.2);
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.accordion-button::after {
+    display: none;
+}
+
+.accordion-button .bi-chevron-down {
+    transition: transform 0.3s ease;
+}
+
+.accordion-button:not(.collapsed) .bi-chevron-down {
+    transform: rotate(180deg);
+}
+
+
+
+/* Utilities */
+.text-gradient {
+    background: linear-gradient(135deg, var(--accent-color), var(--secondary-accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.bg-light-gradient {
+    background: linear-gradient(to bottom, #f8fafc, #ffffff);
+}
+
+.section-padding {
+    padding: 6rem 0;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Who We Serve - Font Sizes */
+.who-we-serve .badge {
+    font-size: 1.1rem;
+}
+
+.who-we-serve .card-body p {
+    font-size: 1.15rem;
+}
+
+.who-we-serve .card-body .text-primary {
+    font-size: 1.15rem;
+}
+
+/* Mobile Font Size Adjustments */
+@media (max-width: 768px) {
+    .display-3 {
+        font-size: 3rem;
+        /* Adjusted for better mobile fit, still large */
+    }
+
+    .display-5 {
+        font-size: 2.2rem;
+    }
+
+    .lead {
+        font-size: 1.35rem !important;
+    }
+
+    p,
+    li {
+        font-size: 1.15rem;
+    }
+
+    .fs-5 {
+        font-size: 1.3rem !important;
+    }
+
+    .step-number {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 1.2rem !important;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        letter-spacing: normal;
+    }
+
+    .btn-lg {
+        font-size: 1.25rem;
+        padding: 1rem 2rem;
+    }
+
+    .hero-section {
+        min-height: 40vh;
+    }
+}

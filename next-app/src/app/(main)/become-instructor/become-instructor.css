@@ -1,0 +1,282 @@
+.instructor-landing {
+    font-family: 'Inter', Arial, sans-serif;
+    color: #222;
+    background: #f8f9fb;
+}
+
+.hero {
+    background: #fff;
+    padding: 48px 0 32px 0;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.hero-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: 0 auto;
+    gap: 40px;
+}
+
+.hero-content h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 24px;
+}
+
+.cta-btn {
+    background: #2250fc;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 32px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.cta-btn:hover {
+    background: #183bb3;
+}
+
+.hero-img {
+    max-width: 340px;
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(34, 80, 252, 0.08);
+}
+
+.reasons {
+    background: #fff;
+    padding: 48px 0 32px 0;
+    text-align: center;
+}
+
+.reasons h2 {
+    font-size: 2rem;
+    margin-bottom: 32px;
+}
+
+.reasons-list {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.reason {
+    flex: 1;
+    min-width: 220px;
+    max-width: 300px;
+}
+
+.reason img {
+    height: 56px;
+    margin-bottom: 16px;
+}
+
+.reason h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.stats {
+    background: #2250fc;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    padding: 32px 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.stats .stat span {
+    font-size: 2rem;
+    font-weight: 700;
+    display: block;
+}
+
+.how-to-begin {
+    background: #fff;
+    padding: 48px 0 32px 0;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.how-to-begin h2 {
+    font-size: 2rem;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.steps-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 32px;
+}
+
+.steps-tabs span {
+    font-size: 1.1rem;
+    color: #888;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+}
+
+.steps-tabs .active {
+    color: #2250fc;
+    border-bottom: 2px solid #2250fc;
+    font-weight: 600;
+}
+
+.how-content {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.how-text {
+    flex: 1;
+    font-size: 1.1rem;
+}
+
+.how-img {
+    max-width: 320px;
+    width: 100%;
+}
+
+.testimonial {
+    background: #f8f9fb;
+    padding: 48px 0 32px 0;
+}
+
+.testimonial-content {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.testimonial-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(34, 80, 252, 0.08);
+}
+
+.testimonial blockquote {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin: 0;
+}
+
+.testimonial blockquote footer {
+    font-size: 1rem;
+    font-style: normal;
+    margin-top: 12px;
+    color: #2250fc;
+}
+
+.support {
+    background: #fff;
+    padding: 48px 0 32px 0;
+}
+
+.support-content {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.support-content img {
+    max-width: 180px;
+    width: 100%;
+}
+
+.support-content .learn-more {
+    color: #2250fc;
+    text-decoration: underline;
+    font-weight: 500;
+    display: inline-block;
+    margin-top: 12px;
+}
+
+.final-cta {
+    background: #f8f9fb;
+    text-align: center;
+    padding: 48px 0 64px 0;
+}
+
+.final-cta h2 {
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+
+.final-cta p {
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+}
+
+@media (max-width: 900px) {
+
+    .hero-content,
+    .reasons-list,
+    .how-content,
+    .testimonial-content,
+    .support-content {
+        flex-direction: column;
+        gap: 24px;
+        text-align: center;
+    }
+
+    .hero-content>div {
+        text-align: center;
+    }
+
+    .how-content {
+        align-items: flex-start;
+    }
+
+    .support-content>div {
+        text-align: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .stats {
+        flex-direction: column;
+        gap: 16px;
+        font-size: 1rem;
+    }
+
+    .reasons-list {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .how-img,
+    .testimonial-img,
+    .support-content img {
+        max-width: 100px;
+        width: 100%;
+    }
+}

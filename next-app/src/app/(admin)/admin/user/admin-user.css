@@ -1,0 +1,24 @@
+/* Admin User Specific Adjustments */
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.active-menu {
+    border-right: 4px solid #2563eb;
+    border-radius: 4px 0 0 4px;
+    background-color: #f8fafc !important;
+    /* light gray hover */
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.sidebar {
+    position: sticky;
+    top: 80px;
+    /* offset header height */
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+}

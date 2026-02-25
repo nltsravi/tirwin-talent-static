@@ -1,0 +1,183 @@
+import React from "react";
+import "./about-us.css";
+
+export const metadata = {
+    title: "About Us | Tirwin Talent",
+};
+
+export default function AboutUsPage() {
+    return (
+        <div className="about-us-page">
+            <div className="container">
+                <div className="row">
+                    <div className="col-12">
+                        <div className="page-header">
+                            <h1>About TIRWIN</h1>
+                            <p className="tagline">TRAINING - INNOVATION - RESOURCING</p>
+                        </div>
+
+                        <div className="about-content">
+                            <section className="about-section">
+                                <h2>Our Story</h2>
+                                <p>
+                                    TIRWIN Management Services Private Limited is a management
+                                    consulting firm based in Chennai, Tamil Nadu. The company
+                                    which got established in 2008 was built on the foundations of
+                                    serving the Logistics & Cargo industry. TIRWIN Management
+                                    Services has a rich history that spans ~15 years. Our legacy
+                                    has been shaped by the dedication, perseverance, and passion
+                                    of (late) Mr. B. Govindarajan.
+                                </p>
+
+                                <p>
+                                    At TIRWIN Management Services, we specialize in transforming
+                                    your Logistics & Cargo business through expert consulting,
+                                    technology innovation, comprehensive training and staffing
+                                    solutions.
+                                </p>
+
+                                <p>
+                                    The name TIRWIN has been coined to rightly reflect our core
+                                    business activities:
+                                </p>
+                                <ul>
+                                    <li>
+                                        <strong>TRAINING</strong>
+                                    </li>
+                                    <li>
+                                        <strong>INNOVATION</strong>
+                                    </li>
+                                    <li>
+                                        <strong>RESOURCING</strong>
+                                    </li>
+                                </ul>
+                                <p>
+                                    And work towards guaranteeing a WIN/WIN outcome to all
+                                    stakeholders. The objective is to make TIRWIN as a Leader in
+                                    enabling and complementing growth of Logistics & Cargo
+                                    industry.
+                                </p>
+                            </section>
+
+                            <section className="about-section">
+                                <h2>Why Choose TIRWIN as your partner?</h2>
+                                <p>
+                                    Choose TIRWIN for our expertise, innovation, and commitment to
+                                    delivering tailored solutions that drive your success. We
+                                    partner with you to meet your unique needs and ensure
+                                    scalable, efficient outcomes.
+                                </p>
+
+                                <div className="features-grid">
+                                    <div className="feature-card">
+                                        <div className="feature-icon">
+                                            <i className="fas fa-users"></i>
+                                        </div>
+                                        <h3>Expertise</h3>
+                                        <p>
+                                            We have seasoned consultants and industry advisors who can
+                                            bring in unparalleled knowledge and insights to help you
+                                            achieve your business goals.
+                                        </p>
+                                    </div>
+
+                                    <div className="feature-card">
+                                        <div className="feature-icon">
+                                            <i className="fas fa-graduation-cap"></i>
+                                        </div>
+                                        <h3>Comprehensive Training</h3>
+                                        <p>
+                                            We offer a wide range of training programs tailored to
+                                            your needs through &quot;TIRWIN Talent&quot;.
+                                        </p>
+                                    </div>
+
+                                    <div className="feature-card">
+                                        <div className="feature-icon">
+                                            <i className="fas fa-cogs"></i>
+                                        </div>
+                                        <h3>Skill Transformation</h3>
+                                        <p>
+                                            Through &quot;TIRWIN Talent&quot; Our staffing services not only
+                                            addresses right fitment of resources in shortest possible
+                                            time, but it is also complemented through suitable career
+                                            advisory to make talent future ready.
+                                        </p>
+                                    </div>
+
+                                    <div className="feature-card">
+                                        <div className="feature-icon">
+                                            <i className="fas fa-rocket"></i>
+                                        </div>
+                                        <h3>Trailblazing Technology</h3>
+                                        <p>
+                                            Through &quot;TIRWIN Tech&quot;: Be it platform related to the
+                                            business, new age solutions leveraging Gen AI, IoT,
+                                            advanced analytics, process automation for operational
+                                            efficiency or insightful dashboards, we&apos;ve got you covered
+                                            through our partnerships and solution library.
+                                        </p>
+                                    </div>
+
+                                    <div className="feature-card">
+                                        <div className="feature-icon">
+                                            <i className="fas fa-book"></i>
+                                        </div>
+                                        <h3>IATA Publications</h3>
+                                        <p>
+                                            As a regional distributor, we provide access to essential
+                                            IATA publications, keeping you informed and compliant.
+                                        </p>
+                                    </div>
+
+                                    <div className="feature-card">
+                                        <div className="feature-icon">
+                                            <i className="fas fa-heart"></i>
+                                        </div>
+                                        <h3>Corporate Social Responsibility</h3>
+                                        <p>
+                                            TIRWIN is not only committed to excellence, but also
+                                            dedicated to community. We strive to make a positive impact
+                                            on the community we serve through sustainable practices,
+                                            ethical business operations and meaningful community
+                                            engagement. TIRWIN has been actively contributing to
+                                            education and health sector over last decade.
+                                        </p>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section className="about-section">
+                                <h2>Our Ventures</h2>
+                                <div className="ventures-grid">
+                                    <div className="venture-card">
+                                        <h3>TIRWIN Tech</h3>
+                                        <p>Technology solutions and innovation platform</p>
+                                    </div>
+                                    <div className="venture-card">
+                                        <h3>TIRWIN Talent</h3>
+                                        <p>Comprehensive training and staffing solutions</p>
+                                    </div>
+                                    <div className="venture-card">
+                                        <h3>TIRWIN Touch</h3>
+                                        <p>Community engagement and social responsibility</p>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section className="about-section">
+                                <h2>Our Publication</h2>
+                                <div className="publication-info">
+                                    <p>
+                                        TIRWIN is IATA&apos;s Channel partner to distribute IATA Publication&apos;s
+                                        in IATA. For more details or enquiries, contact us.
+                                    </p>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
