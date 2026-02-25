@@ -8,8 +8,8 @@ export AWS_PAGER=""
 # Configuration
 
 set -o allexport
-source .env.production 
-#source .env.development
+#source .env.production 
+source .env.development
 set +o allexport
 
 

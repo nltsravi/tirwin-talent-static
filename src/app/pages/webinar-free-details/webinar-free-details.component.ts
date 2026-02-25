@@ -373,7 +373,7 @@ export class WebinarFreeDetailsComponent implements OnInit {
   }
 
   getCtaPrimaryLabel(): string {
-    return 'Register Now';
+    return 'Register Now For Free';
   }
 
   getCtaSecondaryLabel(): string {
