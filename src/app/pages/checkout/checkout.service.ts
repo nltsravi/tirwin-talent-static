@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -9,14 +9,15 @@ import { environment } from '../../../environments/environment';
 export class CartService {
   private baseUrl = environment.api;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getCartItems(userId: string) {
-    return this.http.get<any[]>(`${this.baseUrl}/cart/${userId}`);
+    return this.http.get<any[]>(`assets/api-data/cart.json`);
   }
 
   removeFromCart(itemId: string) {
-    return this.http.delete(`${this.baseUrl}/cart/remove/${itemId}`);
+    console.log('Simulated removeFromCart:', itemId);
+    return of({ status: 'success', message: 'Simulated operation' });
   }
 
   /** Register user for a webinar */
@@ -31,6 +32,7 @@ export class CartService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.post(`${this.baseUrl}/webinar-subscriptions/subscribe`, payload, { headers });
+    console.log('Simulated Checkout Register:', payload);
+    return of({ status: 'success', message: 'Simulated operation' });
   }
 }

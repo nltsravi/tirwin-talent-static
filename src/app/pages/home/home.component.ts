@@ -107,7 +107,7 @@ export class HomeComponent implements OnInit {
     return this.trainerBannerColors[index % this.trainerBannerColors.length];
   }
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient) { }
 
   ngOnInit(): void {
     const userStr = sessionStorage.getItem('user');
@@ -127,7 +127,7 @@ export class HomeComponent implements OnInit {
   fetchTrainers() {
     this.isLoadingTrainers = true;
     this.trainersError = '';
-    const url = `${environment.api}/admin/users/by-type?userType=trainer&isVerified=true`;
+    const url = `assets/api-data/trainers.json`;
     this.http.get(url).subscribe({
       next: (res: any) => {
         let trainers: any[] = [];
@@ -160,11 +160,11 @@ export class HomeComponent implements OnInit {
   navigateToLogistics(item: any) {
     if (item?.redirect) {
       if (item?.title === 'Logistics') {
-          this.router.navigate(['/webinar/events'], { queryParams: { type: 'logistics' } });
+        this.router.navigate(['/webinar/events'], { queryParams: { type: 'logistics' } });
       } else {
-          this.router.navigate(['/webinar/masterclass'], { queryParams: { type: 'freight-cargo-management' } });          
-        }
+        this.router.navigate(['/webinar/masterclass'], { queryParams: { type: 'freight-cargo-management' } });
       }
+    }
   }
 
   navigateToTrainerRegistration(event: Event) {

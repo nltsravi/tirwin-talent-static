@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -10,20 +10,20 @@ export class WebinarService {
   private subscribeUrl = `${environment.api}/webinar-subscriptions/subscribe`;
   private baseUrl = `${environment.api}`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getWebinarById(id: string): Observable<any> {
     const token = sessionStorage.getItem("authToken");
     const currentUser: any = JSON.parse(sessionStorage.getItem('user') || '{}');
-    console.log("currentUser",currentUser)    
+    console.log("currentUser", currentUser)
     let headers = new HttpHeaders();
 
     if (token) {
       headers = headers.set("Authorization", `Bearer ${token}`);
-      return this.http.get<any>(`${this.baseUrl}/webinars/${id}/${currentUser?.id}`, { headers });
+      return this.http.get<any>(`assets/api-data/webinar_details.json`, { headers });
     } else {
       return this.http.get<any>(
-        `${this.baseUrl}/webinars/get-webinar-public/${id}`
+        `assets/api-data/webinar_details.json`
       );
     }
   }
@@ -43,11 +43,13 @@ export class WebinarService {
       amount: parseFloat(amount),
     };
 
-    return this.http.post<any>(`${this.baseUrl}/webinar-subscriptions/subscribe`, payload, { headers });
+    console.log('Simulated registerForWebinar:', payload);
+    return of({ status: 'success', message: 'Simulated operation' });
   }
 
   addToCart(data: { webinarId: string; userId: string }) {
-    return this.http.post(`${this.baseUrl}/cart/add`, data);
+    console.log('Simulated addToCart:', data);
+    return of({ status: 'success', message: 'Simulated operation' });
   }
 
 
@@ -63,7 +65,8 @@ export class WebinarService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.post(`${this.baseUrl}/webinar-subscriptions/subscribe`, payload, { headers });
+    console.log('Simulated registerForWebinarFlow:', payload);
+    return of({ status: 'success', message: 'Simulated operation' });
   }
-  
+
 }

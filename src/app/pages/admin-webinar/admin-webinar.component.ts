@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
@@ -181,7 +182,8 @@ export class AdminWebinarComponent implements OnInit, OnDestroy {
       reqBody.documents = { resume: this.resumeUrl };
     }
     try {
-      await this.http.post(`${environment.api}/admin/webinars`, reqBody).toPromise();
+      console.log('Simulated create webinar:', reqBody);
+      await of({ status: 'success' }).toPromise();
       this.toastr.success('Webinar created successfully!');
       this.router.navigate(['/admin/webinar-management']);
     } catch (err: any) {
@@ -206,7 +208,7 @@ export class AdminWebinarComponent implements OnInit, OnDestroy {
   fetchAllWebinars() {
     this.loading = true;
     this.error = '';
-    this.http.get<any>(`${environment.api}/admin/webinars?page=${this.currentPage}&limit=${this.pageSize}`)
+    this.http.get<any>(`assets/api-data/admin_webinars.json`)
       .subscribe({
         next: (response) => {
           let webinars = response || [];
@@ -232,7 +234,7 @@ export class AdminWebinarComponent implements OnInit, OnDestroy {
   fetchUpcomingWebinars() {
     this.loading = true;
     this.error = '';
-    this.http.get<any>(`${environment.api}/admin/webinars/upcoming?page=${this.currentPage}&limit=${this.pageSize}`)
+    this.http.get<any>(`assets/api-data/admin_webinars_upcoming.json`)
       .subscribe({
         next: (response) => {
           this.upcomingWebinars = response.data || [];
@@ -251,7 +253,7 @@ export class AdminWebinarComponent implements OnInit, OnDestroy {
   fetchPastWebinars() {
     this.loading = true;
     this.error = '';
-    this.http.get<any>(`${environment.api}/admin/webinars/past?page=${this.currentPage}&limit=${this.pageSize}`)
+    this.http.get<any>(`assets/api-data/admin_webinars_past.json`)
       .subscribe({
         next: (response) => {
           this.pastWebinars = response.data || [];
@@ -286,9 +288,9 @@ export class AdminWebinarComponent implements OnInit, OnDestroy {
       this.sortDirection = 'asc';
     }
 
-    const items = this.selectedWebinarMenu === 'upcoming' ? this.upcomingWebinars : 
-                 this.selectedWebinarMenu === 'past' ? this.pastWebinars : 
-                 this.allWebinars;
+    const items = this.selectedWebinarMenu === 'upcoming' ? this.upcomingWebinars :
+      this.selectedWebinarMenu === 'past' ? this.pastWebinars :
+        this.allWebinars;
 
     items.sort((a, b) => {
       let valueA = a[column].toLowerCase();
@@ -386,7 +388,7 @@ export class AdminWebinarComponent implements OnInit, OnDestroy {
   }
 
   fetchWebinarTypes() {
-    this.http.get<any>(`${environment.api}/admin/webinar-types`).subscribe({
+    this.http.get<any>(`assets/api-data/admin_webinar_types.json`).subscribe({
       next: (res) => {
         this.typeOptions = Array.isArray(res) ? res : (res.data || []);
       },
@@ -397,7 +399,7 @@ export class AdminWebinarComponent implements OnInit, OnDestroy {
   }
 
   fetchSessionTypes() {
-    this.http.get<any>(`${environment.api}/admin/session-types`).subscribe({
+    this.http.get<any>(`assets/api-data/admin_session_types.json`).subscribe({
       next: (res) => {
         this.sessionTypeOptions = Array.isArray(res) ? res : (res.data || []);
       },
@@ -408,7 +410,7 @@ export class AdminWebinarComponent implements OnInit, OnDestroy {
   }
 
   fetchCategories() {
-    this.http.get<any>(`${environment.api}/categories/master/category`).subscribe({
+    this.http.get<any>(`assets/api-data/categories.json`).subscribe({
       next: (res) => {
         this.categoryOptions = Array.isArray(res) ? res : (res.data || []);
       },
@@ -419,7 +421,7 @@ export class AdminWebinarComponent implements OnInit, OnDestroy {
   }
 
   fetchTrainers() {
-    this.http.get<any>(`${environment.api}/admin/users/trainers`).subscribe({
+    this.http.get<any>(`assets/api-data/trainers.json`).subscribe({
       next: (res) => {
         this.trainersOptions = Array.isArray(res) ? res : (res.data || []);
       },
@@ -538,7 +540,8 @@ export class AdminWebinarComponent implements OnInit, OnDestroy {
   deleteWebinar() {
     if (!this.selectedWebinar) return;
 
-    this.http.delete(`${environment.api}/admin/webinars/${this.selectedWebinar.id}`)
+    console.log('Simulated delete webinar:', this.selectedWebinar?.id);
+    of({ status: 'success' })
       .subscribe({
         next: () => {
           this.toastr.success('Webinar deleted successfully', 'Success');

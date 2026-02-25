@@ -1,0 +1,22 @@
+[
+    {
+        "id": "4e86e649-bb3c-45c4-a2ff-be4c625e2ac8",
+        "course_name": "Logistics Career Compass",
+        "description": "Kickstart your journey in logistics.",
+        "sub_description": "Kickstart your journey in logistics.",
+        "price": 99,
+        "total_slots": 100,
+        "available_slots": 80,
+        "webinar_image": "https://placehold.co/600x400/png",
+        "webinar_status": "UPCOMING",
+        "sessionDates": [
+            {
+                "id": "date-1",
+                "date": "2026-01-31T00:00:00.000Z",
+                "start_time": "19:00:00",
+                "end_time": "21:00:00",
+                "meeting_link": "https://zoom.us/mock-link"
+            }
+        ]
+    }
+]

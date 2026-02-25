@@ -1,0 +1,10 @@
+[
+    {
+        "id": "session-1",
+        "type_name": "Live Online"
+    },
+    {
+        "id": "session-2",
+        "type_name": "In Person"
+    }
+]

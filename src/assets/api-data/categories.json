@@ -1,0 +1,10 @@
+[
+    {
+        "id": "cat-1",
+        "category_name": "Logistics"
+    },
+    {
+        "id": "cat-2",
+        "category_name": "Supply Chain"
+    }
+]

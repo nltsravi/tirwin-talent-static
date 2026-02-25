@@ -1,0 +1,9 @@
+[
+    {
+        "id": "1",
+        "name": "John Doe",
+        "email": "john@example.com",
+        "phone_no": "1234567890",
+        "enrolled_date": "2026-01-01T00:00:00.000Z"
+    }
+]

@@ -47,7 +47,7 @@ import { RegInfoComponent } from './pages/reg-info/reg-info.component';
     ],
     bootstrap: [AppComponent],
     imports: [
-        RouterModule.forRoot([]),
+
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,

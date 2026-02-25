@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
@@ -75,7 +76,7 @@ export class AdminUserComponent implements OnInit {
     this.currentPage = 1;
     this.selectedWebinar = null;
     this.subscribers = [];
-    
+
     if (menu === 'trainer') {
       this.fetchTrainers();
     } else if (menu === 'trainee') {
@@ -96,16 +97,14 @@ export class AdminUserComponent implements OnInit {
     this.loading = true;
     this.error = '';
     let params = new HttpParams();
-    
+
     if (this.selectedTrainerFilter === 'approved') {
       params = params.set('isVerified', 'true');
     } else if (this.selectedTrainerFilter === 'pending') {
       params = params.set('isVerified', 'false');
     }
 
-    this.http.get<any[]>(`${environment.api}/admin/users/by-type`, {
-      params: params.set('userType', 'trainer')
-    }).subscribe({
+    this.http.get<any[]>(`assets/api-data/trainers.json`).subscribe({
       next: (data) => {
         this.trainers = data;
         this.loading = false;
@@ -121,7 +120,7 @@ export class AdminUserComponent implements OnInit {
   fetchTrainees() {
     this.loading = true;
     this.error = '';
-    this.http.get<any>(`${environment.api}/admin/users/by-type?userType=trainee&isVerified=true&page=${this.currentPage}&limit=${this.pageSize}`)
+    this.http.get<any>(`assets/api-data/admin_enrolled_users.json`)
       .subscribe({
         next: (response) => {
           this.trainees = response || [];
@@ -140,7 +139,7 @@ export class AdminUserComponent implements OnInit {
   fetchAdminUsers() {
     this.loading = true;
     this.error = '';
-    this.http.get<any>(`${environment.api}/admin/users/by-type?userType=admin&isVerified=true&page=${this.currentPage}&limit=${this.pageSize}`)
+    this.http.get<any>(`assets/api-data/admin_enrolled_users.json`)
       .subscribe({
         next: (response) => {
           this.adminUsers = response || [];
@@ -159,19 +158,20 @@ export class AdminUserComponent implements OnInit {
   fetchWebinars() {
     this.loading = true;
     this.error = '';
-    this.http.get<any[]>(`${environment.api}/admin/webinars`).subscribe({
+    this.http.get<any>(`assets/api-data/admin_webinars.json`).subscribe({
       next: (data) => {
         // Filter webinars with price greater than 0
         //this.webinars = (data || []).filter(webinar => webinar.price > 0);
-        this.webinars = data || [];
-        
+        let arr = Array.isArray(data) ? data : (data.data || []);
+        this.webinars = arr;
+
         // Sort by start date (newest first)
         this.webinars.sort((a, b) => {
           const dateA = new Date(a.start_time || 0);
           const dateB = new Date(b.start_time || 0);
           return dateB.getTime() - dateA.getTime(); // Descending order (newest first)
         });
-        
+
         this.loading = false;
       },
       error: (err) => {
@@ -195,14 +195,13 @@ export class AdminUserComponent implements OnInit {
   fetchSubscribers(webinarId: string) {
     this.loading = true;
     this.error = '';
-    
-    this.http.get<any>(`${environment.api}/admin/webinars/${webinarId}/enrolled-users`).subscribe({
+
+    this.http.get<any>(`assets/api-data/admin_enrolled_users.json`).subscribe({
       next: (data) => {
         console.log('Enrolled users data received:', data);
-        // Fix: extract the array from data.enrolled_users
-        this.subscribers = (data && data.enrolled_users) ? data.enrolled_users : [];
+        this.subscribers = Array.isArray(data) ? data : (data.enrolled_users || []);
         this.loading = false;
-        
+
         // Log the first subscriber to see the structure
         if (this.subscribers.length > 0) {
           console.log('First subscriber structure:', this.subscribers[0]);
@@ -323,7 +322,8 @@ export class AdminUserComponent implements OnInit {
 
     console.log('Sending webinar meeting notification with payload:', requestBody);
 
-    this.http.post(`${environment.api}/admin/users/send-webinar-meeting-notification`, requestBody)
+    console.log('Simulated send email to selected:', requestBody);
+    of({ status: 'success' })
       .subscribe({
         next: (response) => {
           console.log('Notification sent successfully:', response);
@@ -373,7 +373,8 @@ export class AdminUserComponent implements OnInit {
 
     console.log('Sending individual notification with payload:', requestBody);
 
-    this.http.post(`${environment.api}/admin/users/send-webinar-meeting-notification`, requestBody)
+    console.log('Simulated send notification:', requestBody);
+    of({ status: 'success' })
       .subscribe({
         next: (response) => {
           console.log('Individual notification sent successfully:', response);
@@ -479,7 +480,7 @@ export class AdminUserComponent implements OnInit {
     const now = new Date();
     const startTime = new Date(webinar.start_time);
     const endTime = webinar.end_time ? new Date(webinar.end_time) : null;
-    
+
     if (endTime && now > endTime) {
       return 'Completed';
     } else if (now >= startTime && (!endTime || now <= endTime)) {
@@ -565,7 +566,8 @@ export class AdminUserComponent implements OnInit {
   onApproveTrainer(trainer: any) {
     if (!trainer.trainer.id) return;
     this.approvingTrainers[trainer.trainer.id] = true;
-    this.http.patch(`${environment.api}/users/trainer/${trainer.trainer.id}/verify-profile`, {}).subscribe({
+    console.log('Simulated approve trainer:', trainer.trainer.id);
+    of({ status: 'success' }).subscribe({
       next: () => {
         this.approvingTrainers[trainer.trainer.id] = false;
         // Remove the approved trainer from the list
@@ -608,13 +610,13 @@ export class AdminUserComponent implements OnInit {
       }
     } else {
       items = this.selectedUserMenu === 'trainer' ? this.trainers :
-             this.selectedUserMenu === 'trainee' ? this.trainees :
-             this.adminUsers;
+        this.selectedUserMenu === 'trainee' ? this.trainees :
+          this.adminUsers;
     }
 
     items.sort((a, b) => {
       let valueA: string, valueB: string;
-      
+
       if (this.selectedUserMenu === 'webinar-subscriptions') {
         if (this.selectedWebinar) {
           // Handle enrolled user sorting
@@ -661,11 +663,11 @@ export class AdminUserComponent implements OnInit {
         }
       } else {
         // Handle regular user sorting
-        valueA = column === 'name' ? 
-          `${a.first_name} ${a.last_name}`.toLowerCase() : 
+        valueA = column === 'name' ?
+          `${a.first_name} ${a.last_name}`.toLowerCase() :
           a[column].toLowerCase();
-        valueB = column === 'name' ? 
-          `${b.first_name} ${b.last_name}`.toLowerCase() : 
+        valueB = column === 'name' ?
+          `${b.first_name} ${b.last_name}`.toLowerCase() :
           b[column].toLowerCase();
       }
 

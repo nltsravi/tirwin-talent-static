@@ -1,0 +1,11 @@
+[
+    {
+        "id": "cart-item-1",
+        "webinar": {
+            "id": "4e86e649-bb3c-45c4-a2ff-be4c625e2ac8",
+            "course_name": "Logistics Career Compass",
+            "price": 99,
+            "webinar_image": "https://placehold.co/600x400/png"
+        }
+    }
+]

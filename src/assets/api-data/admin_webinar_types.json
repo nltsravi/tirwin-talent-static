@@ -1,0 +1,10 @@
+[
+    {
+        "id": "type-1",
+        "type_name": "Workshop"
+    },
+    {
+        "id": "type-2",
+        "type_name": "Seminar"
+    }
+]

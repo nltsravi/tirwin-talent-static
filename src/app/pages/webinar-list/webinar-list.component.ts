@@ -17,31 +17,31 @@ export class WebinarListComponent implements OnInit {
   errorMessage = '';
   currentPageType: string = ''
   queryString: string = ''
-  isLoggedIn: boolean = false; 
+  isLoggedIn: boolean = false;
   activeTab: string = ''; // Default empty, set dynamically
-// ✅ Dynamic Tabs Configuration
-tabs: { id: string; label: string; show: boolean }[] = [];
-  constructor(private webinarService: WebinarService, private route: Router,private router: ActivatedRoute,) {}
+  // ✅ Dynamic Tabs Configuration
+  tabs: { id: string; label: string; show: boolean }[] = [];
+  constructor(private webinarService: WebinarService, private route: Router, private router: ActivatedRoute,) { }
 
   ngOnInit(): void {
     this.isLoggedIn = !!sessionStorage.getItem('authToken');
-     // ✅ Define Tabs Dynamically
-     this.tabs = [
+    // ✅ Define Tabs Dynamically
+    this.tabs = [
       { id: 'allCourses', label: 'All Courses', show: true },
       { id: 'myCourses', label: 'My Courses', show: this.isLoggedIn }
     ];
-    this.router.params.subscribe((params:any) => {
+    this.router.params.subscribe((params: any) => {
       this.currentPageType = params?.stype || 'allCourses'; // Default to "allCourses"
       this.activeTab = this.tabs.find(tab => tab.id === this.currentPageType)?.id || 'allCourses';
       console.log(this.activeTab)
-      this.fetchWebinars(params?.stype,'allCourses');
+      this.fetchWebinars(params?.stype, 'allCourses');
     });
-    this.router.queryParams.subscribe((params:any) => {
+    this.router.queryParams.subscribe((params: any) => {
       const type = params['type'];
       this.queryString = type
     });
 
-   
+
   }
 
   /**
@@ -60,13 +60,13 @@ tabs: { id: string; label: string; show: boolean }[] = [];
     if (!dateString || this.isTBDDate(dateString)) {
       return 'TBD';
     }
-    return new Date(dateString).toLocaleDateString('en-GB', { 
-      day: '2-digit', 
-      month: 'short', 
-      year: 'numeric', 
-      hour: '2-digit', 
-      minute: '2-digit', 
-      hour12: true 
+    return new Date(dateString).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
     });
   }
 
@@ -89,30 +89,30 @@ tabs: { id: string; label: string; show: boolean }[] = [];
     return `${firstName} ${lastName}`;
   }
 
-  fetchWebinars(stype:string,tabType:string) {
+  fetchWebinars(stype: string, tabType: string) {
     console.log(this.queryString)
     this.isLoading = true;
-    this.webinarService.getWebinars(stype,tabType).subscribe({
+    this.webinarService.getWebinars(stype, tabType).subscribe({
       next: (data) => {
         console.log(data);
         this.webinars = data.map(webinar => ({
           id: webinar.id,
           title: webinar.title,
           description: webinar.description,
-          session_type:webinar.session_type,
-          session_description:webinar.session_description,
-          trainer_ids:webinar.trainer_ids,
-          image: webinar.media.find((m:any) => m.media_type === 'banner')?.media_url || 'https://via.placeholder.com/300',
-          author: (this.currentPageType === 'events')? 'Panel Members': this.formatTrainerName(webinar.trainer?.user?.first_name, webinar.trainer?.user?.last_name),
+          session_type: webinar.session_type,
+          session_description: webinar.session_description,
+          trainer_ids: webinar.trainer_ids,
+          image: webinar.media?.find((m: any) => m.media_type === 'banner')?.media_url || 'https://via.placeholder.com/300',
+          author: (this.currentPageType === 'events') ? 'Panel Members' : this.formatTrainerName(webinar.trainer?.user?.first_name, webinar.trainer?.user?.last_name),
           start_time: this.formatDisplayDate(webinar.start_time),
-          end_time: webinar.end_time && !this.isTBDDate(webinar.start_time)?new Date(webinar.end_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }):null,
-          category: webinar.category.name,
+          end_time: webinar.end_time && !this.isTBDDate(webinar.start_time) ? new Date(webinar.end_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : null,
+          category: webinar.category?.name || 'Uncategorized',
           isNew: new Date(webinar.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Mark as new if created within the last 7 days
         }));
 
         // Extract unique categories
         this.categories = [...new Set(this.webinars.map(w => w.category))];
-        if(this.queryString) {
+        if (this.queryString) {
           this.selectedCategory = this.categories[0]
         }
         this.filteredWebinars = [...this.webinars];
@@ -134,15 +134,15 @@ tabs: { id: string; label: string; show: boolean }[] = [];
     });
   }
 
-  viewDetails(webinar:any) {
-    console.log("webinar",webinar)
-    
+  viewDetails(webinar: any) {
+    console.log("webinar", webinar)
+
     // Check if webinar ID matches specific IDs for static page
     const staticWebinarIds = [
       '4e86e649-bb3c-45c4-a2ff-be4c625e2ac8',
       '87d95e20-2caf-461a-92ce-94ff99d465c6'
     ];
-    
+
     if (staticWebinarIds.includes(webinar?.id)) {
       // Redirect to static webinar page
       this.route.navigate([`webinar-new/${this.currentPageType}/${webinar?.id}`]);
@@ -152,9 +152,9 @@ tabs: { id: string; label: string; show: boolean }[] = [];
     }
   }
 
-  setActiveTab(tabtype:string) {
+  setActiveTab(tabtype: string) {
     this.searchQuery = '';
     this.selectedCategory = '';
-    this.fetchWebinars(this.currentPageType,tabtype)
+    this.fetchWebinars(this.currentPageType, tabtype)
   }
- }
+}
